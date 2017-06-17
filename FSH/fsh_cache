@@ -1,0 +1,554 @@
+zle -N orig-s0.0000060000-r9037-forward-word forward-word-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-forward-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-forward-word -- "$@" }
+zle -N forward-word _zsh_highlight_widget_orig-s0.0000060000-r9037-forward-word
+zle -N orig-s0.0000060000-r9037-zzcomplete zzcomplete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zzcomplete() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zzcomplete -- "$@" }
+zle -N zzcomplete _zsh_highlight_widget_orig-s0.0000060000-r9037-zzcomplete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-add-next() { _zsh_highlight_call_widget .vi-add-next -- "$@" }
+zle -N vi-add-next _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-add-next
+zle -C orig-s0.0000060000-r9037-delete-char-or-list .delete-char-or-list _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-delete-char-or-list() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-delete-char-or-list -- "$@" }
+zle -N delete-char-or-list _zsh_highlight_widget_orig-s0.0000060000-r9037-delete-char-or-list
+zle -C orig-s0.0000060000-r9037-_correct_word .complete-word _correct_word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_correct_word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_correct_word -- "$@" }
+zle -N _correct_word _zsh_highlight_widget_orig-s0.0000060000-r9037-_correct_word
+zle -C orig-s0.0000060000-r9037-_complete_debug .complete-word _complete_debug
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_complete_debug() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_complete_debug -- "$@" }
+zle -N _complete_debug _zsh_highlight_widget_orig-s0.0000060000-r9037-_complete_debug
+zle -N orig-s0.0000060000-r9037-history-search-multi-word history-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-multi-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-history-search-multi-word -- "$@" }
+zle -N history-search-multi-word _zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-multi-word
+zle -N orig-s0.0000060000-r9037-tag-search-multi-word-backwards tag-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-tag-search-multi-word-backwards() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-tag-search-multi-word-backwards -- "$@" }
+zle -N tag-search-multi-word-backwards _zsh_highlight_widget_orig-s0.0000060000-r9037-tag-search-multi-word-backwards
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-set-buffer() { _zsh_highlight_call_widget .vi-set-buffer -- "$@" }
+zle -N vi-set-buffer _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-set-buffer
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-digit-or-beginning-of-line() { _zsh_highlight_call_widget .vi-digit-or-beginning-of-line -- "$@" }
+zle -N vi-digit-or-beginning-of-line _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-digit-or-beginning-of-line
+zle -C orig-s0.0000060000-r9037-_complete_help .complete-word _complete_help
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_complete_help() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_complete_help -- "$@" }
+zle -N _complete_help _zsh_highlight_widget_orig-s0.0000060000-r9037-_complete_help
+_zsh_highlight_widget_orig-s0.0000060000-r9037-where-is() { _zsh_highlight_call_widget .where-is -- "$@" }
+zle -N where-is _zsh_highlight_widget_orig-s0.0000060000-r9037-where-is
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-insert() { _zsh_highlight_call_widget .vi-insert -- "$@" }
+zle -N vi-insert _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-insert
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-add-eol() { _zsh_highlight_call_widget .vi-add-eol -- "$@" }
+zle -N vi-add-eol _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-add-eol
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-word() { _zsh_highlight_call_widget .vi-forward-word -- "$@" }
+zle -N vi-forward-word _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-auto-suffix-retain() { _zsh_highlight_call_widget .auto-suffix-retain -- "$@" }
+zle -N auto-suffix-retain _zsh_highlight_widget_orig-s0.0000060000-r9037-auto-suffix-retain
+zle -C orig-s0.0000060000-r9037-_most_recent_file .complete-word _most_recent_file
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_most_recent_file() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_most_recent_file -- "$@" }
+zle -N _most_recent_file _zsh_highlight_widget_orig-s0.0000060000-r9037-_most_recent_file
+_zsh_highlight_widget_orig-s0.0000060000-r9037-delete-char() { _zsh_highlight_call_widget .delete-char -- "$@" }
+zle -N delete-char _zsh_highlight_widget_orig-s0.0000060000-r9037-delete-char
+_zsh_highlight_widget_orig-s0.0000060000-r9037-accept-search() { _zsh_highlight_call_widget .accept-search -- "$@" }
+zle -N accept-search _zsh_highlight_widget_orig-s0.0000060000-r9037-accept-search
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-word-end() { _zsh_highlight_call_widget .vi-forward-word-end -- "$@" }
+zle -N vi-forward-word-end _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-word-end
+zle -N orig-s0.0000060000-r9037-edit-command-line edit-command-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-edit-command-line() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-edit-command-line -- "$@" }
+zle -N edit-command-line _zsh_highlight_widget_orig-s0.0000060000-r9037-edit-command-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-list-expand() { _zsh_highlight_call_widget .list-expand -- "$@" }
+zle -N list-expand _zsh_highlight_widget_orig-s0.0000060000-r9037-list-expand
+_zsh_highlight_widget_orig-s0.0000060000-r9037-pound-insert() { _zsh_highlight_call_widget .pound-insert -- "$@" }
+zle -N pound-insert _zsh_highlight_widget_orig-s0.0000060000-r9037-pound-insert
+_zsh_highlight_widget_orig-s0.0000060000-r9037-insert-last-word() { _zsh_highlight_call_widget .insert-last-word -- "$@" }
+zle -N insert-last-word _zsh_highlight_widget_orig-s0.0000060000-r9037-insert-last-word
+zle -N orig-s0.0000060000-r9037-uizcm uizcm
+_zsh_highlight_widget_orig-s0.0000060000-r9037-uizcm() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-uizcm -- "$@" }
+zle -N uizcm _zsh_highlight_widget_orig-s0.0000060000-r9037-uizcm
+_zsh_highlight_widget_orig-s0.0000060000-r9037-push-line() { _zsh_highlight_call_widget .push-line -- "$@" }
+zle -N push-line _zsh_highlight_widget_orig-s0.0000060000-r9037-push-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-delete() { _zsh_highlight_call_widget .vi-delete -- "$@" }
+zle -N vi-delete _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-delete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-backward-delete-char() { _zsh_highlight_call_widget .backward-delete-char -- "$@" }
+zle -N backward-delete-char _zsh_highlight_widget_orig-s0.0000060000-r9037-backward-delete-char
+zle -C orig-s0.0000060000-r9037-menu-complete .menu-complete _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-menu-complete() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-menu-complete -- "$@" }
+zle -N menu-complete _zsh_highlight_widget_orig-s0.0000060000-r9037-menu-complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-history() { _zsh_highlight_call_widget .end-of-history -- "$@" }
+zle -N end-of-history _zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-beginning-of-line-hist() { _zsh_highlight_call_widget .beginning-of-line-hist -- "$@" }
+zle -N beginning-of-line-hist _zsh_highlight_widget_orig-s0.0000060000-r9037-beginning-of-line-hist
+_zsh_highlight_widget_orig-s0.0000060000-r9037-transpose-chars() { _zsh_highlight_call_widget .transpose-chars -- "$@" }
+zle -N transpose-chars _zsh_highlight_widget_orig-s0.0000060000-r9037-transpose-chars
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-fetch-history() { _zsh_highlight_call_widget .vi-fetch-history -- "$@" }
+zle -N vi-fetch-history _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-fetch-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-history-search-backward() { _zsh_highlight_call_widget .vi-history-search-backward -- "$@" }
+zle -N vi-history-search-backward _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-history-search-backward
+_zsh_highlight_widget_orig-s0.0000060000-r9037-universal-argument() { _zsh_highlight_call_widget .universal-argument -- "$@" }
+zle -N universal-argument _zsh_highlight_widget_orig-s0.0000060000-r9037-universal-argument
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-blank-word() { _zsh_highlight_call_widget .vi-forward-blank-word -- "$@" }
+zle -N vi-forward-blank-word _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-blank-word
+zle -N orig-s0.0000060000-r9037-zew-rotate-shell-words zew-rotate-shell-words
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zew-rotate-shell-words() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zew-rotate-shell-words -- "$@" }
+zle -N zew-rotate-shell-words _zsh_highlight_widget_orig-s0.0000060000-r9037-zew-rotate-shell-words
+_zsh_highlight_widget_orig-s0.0000060000-r9037-up-history() { _zsh_highlight_call_widget .up-history -- "$@" }
+zle -N up-history _zsh_highlight_widget_orig-s0.0000060000-r9037-up-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-pound-insert() { _zsh_highlight_call_widget .vi-pound-insert -- "$@" }
+zle -N vi-pound-insert _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-pound-insert
+zle -C orig-s0.0000060000-r9037-expand-or-complete-prefix .expand-or-complete-prefix _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-expand-or-complete-prefix() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-expand-or-complete-prefix -- "$@" }
+zle -N expand-or-complete-prefix _zsh_highlight_widget_orig-s0.0000060000-r9037-expand-or-complete-prefix
+_zsh_highlight_widget_orig-s0.0000060000-r9037-clear-screen() { _zsh_highlight_call_widget .clear-screen -- "$@" }
+zle -N clear-screen _zsh_highlight_widget_orig-s0.0000060000-r9037-clear-screen
+_zsh_highlight_widget_orig-s0.0000060000-r9037-emacs-backward-word() { _zsh_highlight_call_widget .emacs-backward-word -- "$@" }
+zle -N emacs-backward-word _zsh_highlight_widget_orig-s0.0000060000-r9037-emacs-backward-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-down-case() { _zsh_highlight_call_widget .vi-down-case -- "$@" }
+zle -N vi-down-case _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-down-case
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-replace() { _zsh_highlight_call_widget .vi-replace -- "$@" }
+zle -N vi-replace _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-replace
+_zsh_highlight_widget_orig-s0.0000060000-r9037-down-history() { _zsh_highlight_call_widget .down-history -- "$@" }
+zle -N down-history _zsh_highlight_widget_orig-s0.0000060000-r9037-down-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-get-line() { _zsh_highlight_call_widget .get-line -- "$@" }
+zle -N get-line _zsh_highlight_widget_orig-s0.0000060000-r9037-get-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-rev-repeat-search() { _zsh_highlight_call_widget .vi-rev-repeat-search -- "$@" }
+zle -N vi-rev-repeat-search _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-rev-repeat-search
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-change-whole-line() { _zsh_highlight_call_widget .vi-change-whole-line -- "$@" }
+zle -N vi-change-whole-line _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-change-whole-line
+zle -N orig-s0.0000060000-r9037-autosuggest-execute _zsh_autosuggest_widget_execute
+_zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-execute() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-autosuggest-execute -- "$@" }
+zle -N autosuggest-execute _zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-execute
+zle -N orig-s0.0000060000-r9037-copy-earlier-word copy-earlier-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-copy-earlier-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-copy-earlier-word -- "$@" }
+zle -N copy-earlier-word _zsh_highlight_widget_orig-s0.0000060000-r9037-copy-earlier-word
+zle -N orig-s0.0000060000-r9037-zew-history-complete-word-backwards zew-history-complete-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zew-history-complete-word-backwards() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zew-history-complete-word-backwards -- "$@" }
+zle -N zew-history-complete-word-backwards _zsh_highlight_widget_orig-s0.0000060000-r9037-zew-history-complete-word-backwards
+zle -C orig-s0.0000060000-r9037-_expand_alias .complete-word _expand_alias
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_expand_alias() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_expand_alias -- "$@" }
+zle -N _expand_alias _zsh_highlight_widget_orig-s0.0000060000-r9037-_expand_alias
+_zsh_highlight_widget_orig-s0.0000060000-r9037-down-line() { _zsh_highlight_call_widget .down-line -- "$@" }
+zle -N down-line _zsh_highlight_widget_orig-s0.0000060000-r9037-down-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-cmd-mode() { _zsh_highlight_call_widget .vi-cmd-mode -- "$@" }
+zle -N vi-cmd-mode _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-cmd-mode
+zle -N orig-s0.0000060000-r9037-autosuggest-clear _zsh_autosuggest_widget_clear
+_zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-clear() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-autosuggest-clear -- "$@" }
+zle -N autosuggest-clear _zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-clear
+_zsh_highlight_widget_orig-s0.0000060000-r9037-redo() { _zsh_highlight_call_widget .redo -- "$@" }
+zle -N redo _zsh_highlight_widget_orig-s0.0000060000-r9037-redo
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-repeat-search() { _zsh_highlight_call_widget .vi-repeat-search -- "$@" }
+zle -N vi-repeat-search _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-repeat-search
+_zsh_highlight_widget_orig-s0.0000060000-r9037-overwrite-mode() { _zsh_highlight_call_widget .overwrite-mode -- "$@" }
+zle -N overwrite-mode _zsh_highlight_widget_orig-s0.0000060000-r9037-overwrite-mode
+_zsh_highlight_widget_orig-s0.0000060000-r9037-neg-argument() { _zsh_highlight_call_widget .neg-argument -- "$@" }
+zle -N neg-argument _zsh_highlight_widget_orig-s0.0000060000-r9037-neg-argument
+zle -C orig-s0.0000060000-r9037-_history-complete-older .complete-word _history_complete_word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_history-complete-older() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_history-complete-older -- "$@" }
+zle -N _history-complete-older _zsh_highlight_widget_orig-s0.0000060000-r9037-_history-complete-older
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-match-bracket() { _zsh_highlight_call_widget .vi-match-bracket -- "$@" }
+zle -N vi-match-bracket _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-match-bracket
+zle -N orig-s0.0000060000-r9037-capitalize-word capitalize-word-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-capitalize-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-capitalize-word -- "$@" }
+zle -N capitalize-word _zsh_highlight_widget_orig-s0.0000060000-r9037-capitalize-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-end-of-line() { _zsh_highlight_call_widget .vi-end-of-line -- "$@" }
+zle -N vi-end-of-line _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-end-of-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-delete-word() { _zsh_highlight_call_widget .delete-word -- "$@" }
+zle -N delete-word _zsh_highlight_widget_orig-s0.0000060000-r9037-delete-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-down-line-or-search() { _zsh_highlight_call_widget .down-line-or-search -- "$@" }
+zle -N down-line-or-search _zsh_highlight_widget_orig-s0.0000060000-r9037-down-line-or-search
+_zsh_highlight_widget_orig-s0.0000060000-r9037-deactivate-region() { _zsh_highlight_call_widget .deactivate-region -- "$@" }
+zle -N deactivate-region _zsh_highlight_widget_orig-s0.0000060000-r9037-deactivate-region
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-forward() { _zsh_highlight_call_widget .history-search-forward -- "$@" }
+zle -N history-search-forward _zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-forward
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-quoted-insert() { _zsh_highlight_call_widget .vi-quoted-insert -- "$@" }
+zle -N vi-quoted-insert _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-quoted-insert
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-up-case() { _zsh_highlight_call_widget .vi-up-case -- "$@" }
+zle -N vi-up-case _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-up-case
+zle -C orig-s0.0000060000-r9037-expand-or-complete .expand-or-complete _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-expand-or-complete() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-expand-or-complete -- "$@" }
+zle -N expand-or-complete _zsh_highlight_widget_orig-s0.0000060000-r9037-expand-or-complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-kill-whole-line() { _zsh_highlight_call_widget .kill-whole-line -- "$@" }
+zle -N kill-whole-line _zsh_highlight_widget_orig-s0.0000060000-r9037-kill-whole-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-backward-delete-word() { _zsh_highlight_call_widget .backward-delete-word -- "$@" }
+zle -N backward-delete-word _zsh_highlight_widget_orig-s0.0000060000-r9037-backward-delete-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-read-command() { _zsh_highlight_call_widget .read-command -- "$@" }
+zle -N read-command _zsh_highlight_widget_orig-s0.0000060000-r9037-read-command
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-swap-case() { _zsh_highlight_call_widget .vi-swap-case -- "$@" }
+zle -N vi-swap-case _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-swap-case
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-first-non-blank() { _zsh_highlight_call_widget .vi-first-non-blank -- "$@" }
+zle -N vi-first-non-blank _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-first-non-blank
+_zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-line-hist() { _zsh_highlight_call_widget .end-of-line-hist -- "$@" }
+zle -N end-of-line-hist _zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-line-hist
+_zsh_highlight_widget_orig-s0.0000060000-r9037-beginning-of-history() { _zsh_highlight_call_widget .beginning-of-history -- "$@" }
+zle -N beginning-of-history _zsh_highlight_widget_orig-s0.0000060000-r9037-beginning-of-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-up-line-or-search() { _zsh_highlight_call_widget .up-line-or-search -- "$@" }
+zle -N up-line-or-search _zsh_highlight_widget_orig-s0.0000060000-r9037-up-line-or-search
+zle -N orig-s0.0000060000-r9037-autosuggest-fetch _zsh_autosuggest_widget_fetch
+_zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-fetch() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-autosuggest-fetch -- "$@" }
+zle -N autosuggest-fetch _zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-fetch
+zle -N orig-s0.0000060000-r9037-zle-line-finish _zle_line_finish
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zle-line-finish() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zle-line-finish -- "$@" }
+zle -N zle-line-finish _zsh_highlight_widget_orig-s0.0000060000-r9037-zle-line-finish
+zle -C orig-s0.0000060000-r9037-_bash_list-choices .list-choices _bash_completions
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_bash_list-choices() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_bash_list-choices -- "$@" }
+zle -N _bash_list-choices _zsh_highlight_widget_orig-s0.0000060000-r9037-_bash_list-choices
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-char() { _zsh_highlight_call_widget .vi-backward-char -- "$@" }
+zle -N vi-backward-char _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-char
+_zsh_highlight_widget_orig-s0.0000060000-r9037-accept-line-and-down-history() { _zsh_highlight_call_widget .accept-line-and-down-history -- "$@" }
+zle -N accept-line-and-down-history _zsh_highlight_widget_orig-s0.0000060000-r9037-accept-line-and-down-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-describe-key-briefly() { _zsh_highlight_call_widget .describe-key-briefly -- "$@" }
+zle -N describe-key-briefly _zsh_highlight_widget_orig-s0.0000060000-r9037-describe-key-briefly
+zle -N orig-s0.0000060000-r9037-_end_paste _end_paste
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_end_paste() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_end_paste -- "$@" }
+zle -N _end_paste _zsh_highlight_widget_orig-s0.0000060000-r9037-_end_paste
+_zsh_highlight_widget_orig-s0.0000060000-r9037-down-line-or-history() { _zsh_highlight_call_widget .down-line-or-history -- "$@" }
+zle -N down-line-or-history _zsh_highlight_widget_orig-s0.0000060000-r9037-down-line-or-history
+zle -N orig-s0.0000060000-r9037-autosuggest-suggest _zsh_autosuggest_widget_suggest
+_zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-suggest() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-autosuggest-suggest -- "$@" }
+zle -N autosuggest-suggest _zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-suggest
+_zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-buffer-or-history() { _zsh_highlight_call_widget .end-of-buffer-or-history -- "$@" }
+zle -N end-of-buffer-or-history _zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-buffer-or-history
+zle -N orig-s0.0000060000-r9037-self-insert url-quote-magic
+_zsh_highlight_widget_orig-s0.0000060000-r9037-self-insert() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-self-insert -- "$@" }
+zle -N self-insert _zsh_highlight_widget_orig-s0.0000060000-r9037-self-insert
+zle -N orig-s0.0000060000-r9037-zew-backward-kill-shell-word zew-backward-kill-shell-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zew-backward-kill-shell-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zew-backward-kill-shell-word -- "$@" }
+zle -N zew-backward-kill-shell-word _zsh_highlight_widget_orig-s0.0000060000-r9037-zew-backward-kill-shell-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-recursive-edit() { _zsh_highlight_call_widget .recursive-edit -- "$@" }
+zle -N recursive-edit _zsh_highlight_widget_orig-s0.0000060000-r9037-recursive-edit
+zle -N orig-s0.0000060000-r9037-zew-history-complete-word zew-history-complete-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zew-history-complete-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zew-history-complete-word -- "$@" }
+zle -N zew-history-complete-word _zsh_highlight_widget_orig-s0.0000060000-r9037-zew-history-complete-word
+zle -C orig-s0.0000060000-r9037-_history-complete-newer .complete-word _history_complete_word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_history-complete-newer() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_history-complete-newer -- "$@" }
+zle -N _history-complete-newer _zsh_highlight_widget_orig-s0.0000060000-r9037-_history-complete-newer
+zle -N orig-s0.0000060000-r9037-backward-kill-word backward-kill-word-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-backward-kill-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-backward-kill-word -- "$@" }
+zle -N backward-kill-word _zsh_highlight_widget_orig-s0.0000060000-r9037-backward-kill-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-backward-kill-line() { _zsh_highlight_call_widget .backward-kill-line -- "$@" }
+zle -N backward-kill-line _zsh_highlight_widget_orig-s0.0000060000-r9037-backward-kill-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-split-undo() { _zsh_highlight_call_widget .split-undo -- "$@" }
+zle -N split-undo _zsh_highlight_widget_orig-s0.0000060000-r9037-split-undo
+zle -N orig-s0.0000060000-r9037-autosuggest-accept _zsh_autosuggest_widget_accept
+_zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-accept() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-autosuggest-accept -- "$@" }
+zle -N autosuggest-accept _zsh_highlight_widget_orig-s0.0000060000-r9037-autosuggest-accept
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-join() { _zsh_highlight_call_widget .vi-join -- "$@" }
+zle -N vi-join _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-join
+_zsh_highlight_widget_orig-s0.0000060000-r9037-up-line-or-history() { _zsh_highlight_call_widget .up-line-or-history -- "$@" }
+zle -N up-line-or-history _zsh_highlight_widget_orig-s0.0000060000-r9037-up-line-or-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-put-after() { _zsh_highlight_call_widget .vi-put-after -- "$@" }
+zle -N vi-put-after _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-put-after
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-repeat-change() { _zsh_highlight_call_widget .vi-repeat-change -- "$@" }
+zle -N vi-repeat-change _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-repeat-change
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-blank-word-end() { _zsh_highlight_call_widget .vi-backward-blank-word-end -- "$@" }
+zle -N vi-backward-blank-word-end _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-blank-word-end
+zle -N orig-s0.0000060000-r9037-zc-logo zc-logo
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zc-logo() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zc-logo -- "$@" }
+zle -N zc-logo _zsh_highlight_widget_orig-s0.0000060000-r9037-zc-logo
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-find-prev-char-skip() { _zsh_highlight_call_widget .vi-find-prev-char-skip -- "$@" }
+zle -N vi-find-prev-char-skip _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-find-prev-char-skip
+zle -N orig-s0.0000060000-r9037-run-with-sudo run-with-sudo
+_zsh_highlight_widget_orig-s0.0000060000-r9037-run-with-sudo() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-run-with-sudo -- "$@" }
+zle -N run-with-sudo _zsh_highlight_widget_orig-s0.0000060000-r9037-run-with-sudo
+zle -N orig-s0.0000060000-r9037-up-case-word up-case-word-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-up-case-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-up-case-word -- "$@" }
+zle -N up-case-word _zsh_highlight_widget_orig-s0.0000060000-r9037-up-case-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-find-next-char() { _zsh_highlight_call_widget .vi-find-next-char -- "$@" }
+zle -N vi-find-next-char _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-find-next-char
+zle -N orig-s0.0000060000-r9037-history-search-multi-word-pbackwards history-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-multi-word-pbackwards() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-history-search-multi-word-pbackwards -- "$@" }
+zle -N history-search-multi-word-pbackwards _zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-multi-word-pbackwards
+_zsh_highlight_widget_orig-s0.0000060000-r9037-digit-argument() { _zsh_highlight_call_widget .digit-argument -- "$@" }
+zle -N digit-argument _zsh_highlight_widget_orig-s0.0000060000-r9037-digit-argument
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-caps-lock-panic() { _zsh_highlight_call_widget .vi-caps-lock-panic -- "$@" }
+zle -N vi-caps-lock-panic _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-caps-lock-panic
+zle -N orig-s0.0000060000-r9037-tag-search-multi-word-pforwards tag-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-tag-search-multi-word-pforwards() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-tag-search-multi-word-pforwards -- "$@" }
+zle -N tag-search-multi-word-pforwards _zsh_highlight_widget_orig-s0.0000060000-r9037-tag-search-multi-word-pforwards
+zle -N orig-s0.0000060000-r9037-transpose-words-match transpose-words-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-transpose-words-match() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-transpose-words-match -- "$@" }
+zle -N transpose-words-match _zsh_highlight_widget_orig-s0.0000060000-r9037-transpose-words-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-kill-eol() { _zsh_highlight_call_widget .vi-kill-eol -- "$@" }
+zle -N vi-kill-eol _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-kill-eol
+zle -N orig-s0.0000060000-r9037-zca-widget zca-widget
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zca-widget() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zca-widget -- "$@" }
+zle -N zca-widget _zsh_highlight_widget_orig-s0.0000060000-r9037-zca-widget
+zle -C orig-s0.0000060000-r9037-menu-select .menu-select _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-menu-select() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-menu-select -- "$@" }
+zle -N menu-select _zsh_highlight_widget_orig-s0.0000060000-r9037-menu-select
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-find-prev-char() { _zsh_highlight_call_widget .vi-find-prev-char -- "$@" }
+zle -N vi-find-prev-char _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-find-prev-char
+zle -N orig-s0.0000060000-r9037-kill-word kill-word-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-kill-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-kill-word -- "$@" }
+zle -N kill-word _zsh_highlight_widget_orig-s0.0000060000-r9037-kill-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-incremental-pattern-search-forward() { _zsh_highlight_call_widget .history-incremental-pattern-search-forward -- "$@" }
+zle -N history-incremental-pattern-search-forward _zsh_highlight_widget_orig-s0.0000060000-r9037-history-incremental-pattern-search-forward
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-blank-word() { _zsh_highlight_call_widget .vi-backward-blank-word -- "$@" }
+zle -N vi-backward-blank-word _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-blank-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-down-line-or-history() { _zsh_highlight_call_widget .vi-down-line-or-history -- "$@" }
+zle -N vi-down-line-or-history _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-down-line-or-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-select-a-word() { _zsh_highlight_call_widget .select-a-word -- "$@" }
+zle -N select-a-word _zsh_highlight_widget_orig-s0.0000060000-r9037-select-a-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-kill-line() { _zsh_highlight_call_widget .kill-line -- "$@" }
+zle -N kill-line _zsh_highlight_widget_orig-s0.0000060000-r9037-kill-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-goto-mark-line() { _zsh_highlight_call_widget .vi-goto-mark-line -- "$@" }
+zle -N vi-goto-mark-line _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-goto-mark-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-yank-pop() { _zsh_highlight_call_widget .yank-pop -- "$@" }
+zle -N yank-pop _zsh_highlight_widget_orig-s0.0000060000-r9037-yank-pop
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-kill-line() { _zsh_highlight_call_widget .vi-kill-line -- "$@" }
+zle -N vi-kill-line _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-kill-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-quote-line() { _zsh_highlight_call_widget .quote-line -- "$@" }
+zle -N quote-line _zsh_highlight_widget_orig-s0.0000060000-r9037-quote-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-word() { _zsh_highlight_call_widget .vi-backward-word -- "$@" }
+zle -N vi-backward-word _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-beginning-of-line() { _zsh_highlight_call_widget .vi-beginning-of-line -- "$@" }
+zle -N vi-beginning-of-line _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-beginning-of-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-gosmacs-transpose-chars() { _zsh_highlight_call_widget .gosmacs-transpose-chars -- "$@" }
+zle -N gosmacs-transpose-chars _zsh_highlight_widget_orig-s0.0000060000-r9037-gosmacs-transpose-chars
+zle -C orig-s0.0000060000-r9037-_read_comp .complete-word _read_comp
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_read_comp() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_read_comp -- "$@" }
+zle -N _read_comp _zsh_highlight_widget_orig-s0.0000060000-r9037-_read_comp
+_zsh_highlight_widget_orig-s0.0000060000-r9037-push-input() { _zsh_highlight_call_widget .push-input -- "$@" }
+zle -N push-input _zsh_highlight_widget_orig-s0.0000060000-r9037-push-input
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-incremental-search-forward() { _zsh_highlight_call_widget .history-incremental-search-forward -- "$@" }
+zle -N history-incremental-search-forward _zsh_highlight_widget_orig-s0.0000060000-r9037-history-incremental-search-forward
+zle -C orig-s0.0000060000-r9037-_list_expansions .list-choices _expand_word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_list_expansions() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_list_expansions -- "$@" }
+zle -N _list_expansions _zsh_highlight_widget_orig-s0.0000060000-r9037-_list_expansions
+zle -N orig-s0.0000060000-r9037-down-case-word down-case-word-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-down-case-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-down-case-word -- "$@" }
+zle -N down-case-word _zsh_highlight_widget_orig-s0.0000060000-r9037-down-case-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-quote-region() { _zsh_highlight_call_widget .quote-region -- "$@" }
+zle -N quote-region _zsh_highlight_widget_orig-s0.0000060000-r9037-quote-region
+zle -N orig-s0.0000060000-r9037-tetris tetris
+_zsh_highlight_widget_orig-s0.0000060000-r9037-tetris() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-tetris -- "$@" }
+zle -N tetris _zsh_highlight_widget_orig-s0.0000060000-r9037-tetris
+_zsh_highlight_widget_orig-s0.0000060000-r9037-argument-base() { _zsh_highlight_call_widget .argument-base -- "$@" }
+zle -N argument-base _zsh_highlight_widget_orig-s0.0000060000-r9037-argument-base
+_zsh_highlight_widget_orig-s0.0000060000-r9037-spell-word() { _zsh_highlight_call_widget .spell-word -- "$@" }
+zle -N spell-word _zsh_highlight_widget_orig-s0.0000060000-r9037-spell-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-beginning-of-line() { _zsh_highlight_call_widget .beginning-of-line -- "$@" }
+zle -N beginning-of-line _zsh_highlight_widget_orig-s0.0000060000-r9037-beginning-of-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-find-next-char-skip() { _zsh_highlight_call_widget .vi-find-next-char-skip -- "$@" }
+zle -N vi-find-next-char-skip _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-find-next-char-skip
+_zsh_highlight_widget_orig-s0.0000060000-r9037-visual-mode() { _zsh_highlight_call_widget .visual-mode -- "$@" }
+zle -N visual-mode _zsh_highlight_widget_orig-s0.0000060000-r9037-visual-mode
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-goto-column() { _zsh_highlight_call_widget .vi-goto-column -- "$@" }
+zle -N vi-goto-column _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-goto-column
+_zsh_highlight_widget_orig-s0.0000060000-r9037-select-in-shell-word() { _zsh_highlight_call_widget .select-in-shell-word -- "$@" }
+zle -N select-in-shell-word _zsh_highlight_widget_orig-s0.0000060000-r9037-select-in-shell-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-kill-word() { _zsh_highlight_call_widget .vi-backward-kill-word -- "$@" }
+zle -N vi-backward-kill-word _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-kill-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-accept-and-infer-next-history() { _zsh_highlight_call_widget .accept-and-infer-next-history -- "$@" }
+zle -N accept-and-infer-next-history _zsh_highlight_widget_orig-s0.0000060000-r9037-accept-and-infer-next-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-select-a-shell-word() { _zsh_highlight_call_widget .select-a-shell-word -- "$@" }
+zle -N select-a-shell-word _zsh_highlight_widget_orig-s0.0000060000-r9037-select-a-shell-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-copy-region-as-kill() { _zsh_highlight_call_widget .copy-region-as-kill -- "$@" }
+zle -N copy-region-as-kill _zsh_highlight_widget_orig-s0.0000060000-r9037-copy-region-as-kill
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-repeat-find() { _zsh_highlight_call_widget .vi-repeat-find -- "$@" }
+zle -N vi-repeat-find _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-repeat-find
+zle -N orig-s0.0000060000-r9037-history-search-multi-word-pforwards history-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-multi-word-pforwards() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-history-search-multi-word-pforwards -- "$@" }
+zle -N history-search-multi-word-pforwards _zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-multi-word-pforwards
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-yank() { _zsh_highlight_call_widget .vi-yank -- "$@" }
+zle -N vi-yank _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-yank
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-up-line-or-history() { _zsh_highlight_call_widget .vi-up-line-or-history -- "$@" }
+zle -N vi-up-line-or-history _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-up-line-or-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-history-search-forward() { _zsh_highlight_call_widget .vi-history-search-forward -- "$@" }
+zle -N vi-history-search-forward _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-history-search-forward
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-insert-bol() { _zsh_highlight_call_widget .vi-insert-bol -- "$@" }
+zle -N vi-insert-bol _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-insert-bol
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-open-line-below() { _zsh_highlight_call_widget .vi-open-line-below -- "$@" }
+zle -N vi-open-line-below _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-open-line-below
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-delete-char() { _zsh_highlight_call_widget .vi-delete-char -- "$@" }
+zle -N vi-delete-char _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-delete-char
+_zsh_highlight_widget_orig-s0.0000060000-r9037-execute-last-named-cmd() { _zsh_highlight_call_widget .execute-last-named-cmd -- "$@" }
+zle -N execute-last-named-cmd _zsh_highlight_widget_orig-s0.0000060000-r9037-execute-last-named-cmd
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-blank-word-end() { _zsh_highlight_call_widget .vi-forward-blank-word-end -- "$@" }
+zle -N vi-forward-blank-word-end _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-blank-word-end
+zle -N orig-s0.0000060000-r9037-history-search-multi-word-backwards history-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-multi-word-backwards() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-history-search-multi-word-backwards -- "$@" }
+zle -N history-search-multi-word-backwards _zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-multi-word-backwards
+_zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-line() { _zsh_highlight_call_widget .end-of-line -- "$@" }
+zle -N end-of-line _zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-emacs-forward-word() { _zsh_highlight_call_widget .emacs-forward-word -- "$@" }
+zle -N emacs-forward-word _zsh_highlight_widget_orig-s0.0000060000-r9037-emacs-forward-word
+zle -C orig-s0.0000060000-r9037-menu-expand-or-complete .menu-expand-or-complete _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-menu-expand-or-complete() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-menu-expand-or-complete -- "$@" }
+zle -N menu-expand-or-complete _zsh_highlight_widget_orig-s0.0000060000-r9037-menu-expand-or-complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-indent() { _zsh_highlight_call_widget .vi-indent -- "$@" }
+zle -N vi-indent _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-indent
+zle -N orig-s0.0000060000-r9037-tag-search-multi-word-pbackwards tag-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-tag-search-multi-word-pbackwards() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-tag-search-multi-word-pbackwards -- "$@" }
+zle -N tag-search-multi-word-pbackwards _zsh_highlight_widget_orig-s0.0000060000-r9037-tag-search-multi-word-pbackwards
+_zsh_highlight_widget_orig-s0.0000060000-r9037-expand-history() { _zsh_highlight_call_widget .expand-history -- "$@" }
+zle -N expand-history _zsh_highlight_widget_orig-s0.0000060000-r9037-expand-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-oper-swap-case() { _zsh_highlight_call_widget .vi-oper-swap-case -- "$@" }
+zle -N vi-oper-swap-case _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-oper-swap-case
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-goto-mark() { _zsh_highlight_call_widget .vi-goto-mark -- "$@" }
+zle -N vi-goto-mark _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-goto-mark
+_zsh_highlight_widget_orig-s0.0000060000-r9037-what-cursor-position() { _zsh_highlight_call_widget .what-cursor-position -- "$@" }
+zle -N what-cursor-position _zsh_highlight_widget_orig-s0.0000060000-r9037-what-cursor-position
+zle -N orig-s0.0000060000-r9037-tag-search-multi-word tag-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-tag-search-multi-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-tag-search-multi-word -- "$@" }
+zle -N tag-search-multi-word _zsh_highlight_widget_orig-s0.0000060000-r9037-tag-search-multi-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-set-mark() { _zsh_highlight_call_widget .vi-set-mark -- "$@" }
+zle -N vi-set-mark _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-set-mark
+_zsh_highlight_widget_orig-s0.0000060000-r9037-auto-suffix-remove() { _zsh_highlight_call_widget .auto-suffix-remove -- "$@" }
+zle -N auto-suffix-remove _zsh_highlight_widget_orig-s0.0000060000-r9037-auto-suffix-remove
+_zsh_highlight_widget_orig-s0.0000060000-r9037-quoted-insert() { _zsh_highlight_call_widget .quoted-insert -- "$@" }
+zle -N quoted-insert _zsh_highlight_widget_orig-s0.0000060000-r9037-quoted-insert
+_zsh_highlight_widget_orig-s0.0000060000-r9037-kill-buffer() { _zsh_highlight_call_widget .kill-buffer -- "$@" }
+zle -N kill-buffer _zsh_highlight_widget_orig-s0.0000060000-r9037-kill-buffer
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-change-eol() { _zsh_highlight_call_widget .vi-change-eol -- "$@" }
+zle -N vi-change-eol _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-change-eol
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-replace-chars() { _zsh_highlight_call_widget .vi-replace-chars -- "$@" }
+zle -N vi-replace-chars _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-replace-chars
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-open-line-above() { _zsh_highlight_call_widget .vi-open-line-above -- "$@" }
+zle -N vi-open-line-above _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-open-line-above
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-change() { _zsh_highlight_call_widget .vi-change -- "$@" }
+zle -N vi-change _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-change
+_zsh_highlight_widget_orig-s0.0000060000-r9037-accept-and-menu-complete() { _zsh_highlight_call_widget .accept-and-menu-complete -- "$@" }
+zle -N accept-and-menu-complete _zsh_highlight_widget_orig-s0.0000060000-r9037-accept-and-menu-complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-set-mark-command() { _zsh_highlight_call_widget .set-mark-command -- "$@" }
+zle -N set-mark-command _zsh_highlight_widget_orig-s0.0000060000-r9037-set-mark-command
+_zsh_highlight_widget_orig-s0.0000060000-r9037-put-replace-selection() { _zsh_highlight_call_widget .put-replace-selection -- "$@" }
+zle -N put-replace-selection _zsh_highlight_widget_orig-s0.0000060000-r9037-put-replace-selection
+zle -N orig-s0.0000060000-r9037-znt-history-widget znt-history-widget
+_zsh_highlight_widget_orig-s0.0000060000-r9037-znt-history-widget() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-znt-history-widget -- "$@" }
+zle -N znt-history-widget _zsh_highlight_widget_orig-s0.0000060000-r9037-znt-history-widget
+_zsh_highlight_widget_orig-s0.0000060000-r9037-backward-char() { _zsh_highlight_call_widget .backward-char -- "$@" }
+zle -N backward-char _zsh_highlight_widget_orig-s0.0000060000-r9037-backward-char
+zle -C orig-s0.0000060000-r9037-list-choices .list-choices _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-list-choices() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-list-choices -- "$@" }
+zle -N list-choices _zsh_highlight_widget_orig-s0.0000060000-r9037-list-choices
+_zsh_highlight_widget_orig-s0.0000060000-r9037-exchange-point-and-mark() { _zsh_highlight_call_widget .exchange-point-and-mark -- "$@" }
+zle -N exchange-point-and-mark _zsh_highlight_widget_orig-s0.0000060000-r9037-exchange-point-and-mark
+_zsh_highlight_widget_orig-s0.0000060000-r9037-select-in-blank-word() { _zsh_highlight_call_widget .select-in-blank-word -- "$@" }
+zle -N select-in-blank-word _zsh_highlight_widget_orig-s0.0000060000-r9037-select-in-blank-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-accept-line() { _zsh_highlight_call_widget .accept-line -- "$@" }
+zle -N accept-line _zsh_highlight_widget_orig-s0.0000060000-r9037-accept-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-visual-line-mode() { _zsh_highlight_call_widget .visual-line-mode -- "$@" }
+zle -N visual-line-mode _zsh_highlight_widget_orig-s0.0000060000-r9037-visual-line-mode
+_zsh_highlight_widget_orig-s0.0000060000-r9037-select-a-blank-word() { _zsh_highlight_call_widget .select-a-blank-word -- "$@" }
+zle -N select-a-blank-word _zsh_highlight_widget_orig-s0.0000060000-r9037-select-a-blank-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-unindent() { _zsh_highlight_call_widget .vi-unindent -- "$@" }
+zle -N vi-unindent _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-unindent
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-undo-change() { _zsh_highlight_call_widget .vi-undo-change -- "$@" }
+zle -N vi-undo-change _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-undo-change
+_zsh_highlight_widget_orig-s0.0000060000-r9037-infer-next-history() { _zsh_highlight_call_widget .infer-next-history -- "$@" }
+zle -N infer-next-history _zsh_highlight_widget_orig-s0.0000060000-r9037-infer-next-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-forward-char() { _zsh_highlight_call_widget .forward-char -- "$@" }
+zle -N forward-char _zsh_highlight_widget_orig-s0.0000060000-r9037-forward-char
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-rev-repeat-find() { _zsh_highlight_call_widget .vi-rev-repeat-find -- "$@" }
+zle -N vi-rev-repeat-find _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-rev-repeat-find
+_zsh_highlight_widget_orig-s0.0000060000-r9037-expand-cmd-path() { _zsh_highlight_call_widget .expand-cmd-path -- "$@" }
+zle -N expand-cmd-path _zsh_highlight_widget_orig-s0.0000060000-r9037-expand-cmd-path
+zle -C orig-s0.0000060000-r9037-_bash_complete-word .complete-word _bash_completions
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_bash_complete-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_bash_complete-word -- "$@" }
+zle -N _bash_complete-word _zsh_highlight_widget_orig-s0.0000060000-r9037-_bash_complete-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-incremental-pattern-search-backward() { _zsh_highlight_call_widget .history-incremental-pattern-search-backward -- "$@" }
+zle -N history-incremental-pattern-search-backward _zsh_highlight_widget_orig-s0.0000060000-r9037-history-incremental-pattern-search-backward
+zle -C orig-s0.0000060000-r9037-_complete_tag .complete-word _complete_tag
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_complete_tag() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_complete_tag -- "$@" }
+zle -N _complete_tag _zsh_highlight_widget_orig-s0.0000060000-r9037-_complete_tag
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-word-end() { _zsh_highlight_call_widget .vi-backward-word-end -- "$@" }
+zle -N vi-backward-word-end _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-word-end
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-substitute() { _zsh_highlight_call_widget .vi-substitute -- "$@" }
+zle -N vi-substitute _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-substitute
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-put-before() { _zsh_highlight_call_widget .vi-put-before -- "$@" }
+zle -N vi-put-before _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-put-before
+_zsh_highlight_widget_orig-s0.0000060000-r9037-kill-region() { _zsh_highlight_call_widget .kill-region -- "$@" }
+zle -N kill-region _zsh_highlight_widget_orig-s0.0000060000-r9037-kill-region
+zle -N orig-s0.0000060000-r9037-transpose-words transpose-words-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-transpose-words() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-transpose-words -- "$@" }
+zle -N transpose-words _zsh_highlight_widget_orig-s0.0000060000-r9037-transpose-words
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-delete-char() { _zsh_highlight_call_widget .vi-backward-delete-char -- "$@" }
+zle -N vi-backward-delete-char _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-backward-delete-char
+_zsh_highlight_widget_orig-s0.0000060000-r9037-bracketed-paste() { _zsh_highlight_call_widget .bracketed-paste -- "$@" }
+zle -N bracketed-paste _zsh_highlight_widget_orig-s0.0000060000-r9037-bracketed-paste
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-beginning-search-backward() { _zsh_highlight_call_widget .history-beginning-search-backward -- "$@" }
+zle -N history-beginning-search-backward _zsh_highlight_widget_orig-s0.0000060000-r9037-history-beginning-search-backward
+_zsh_highlight_widget_orig-s0.0000060000-r9037-copy-prev-word() { _zsh_highlight_call_widget .copy-prev-word -- "$@" }
+zle -N copy-prev-word _zsh_highlight_widget_orig-s0.0000060000-r9037-copy-prev-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-self-insert-unmeta() { _zsh_highlight_call_widget .self-insert-unmeta -- "$@" }
+zle -N self-insert-unmeta _zsh_highlight_widget_orig-s0.0000060000-r9037-self-insert-unmeta
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-char() { _zsh_highlight_call_widget .vi-forward-char -- "$@" }
+zle -N vi-forward-char _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-forward-char
+_zsh_highlight_widget_orig-s0.0000060000-r9037-send-break() { _zsh_highlight_call_widget .send-break -- "$@" }
+zle -N send-break _zsh_highlight_widget_orig-s0.0000060000-r9037-send-break
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-backward() { _zsh_highlight_call_widget .history-search-backward -- "$@" }
+zle -N history-search-backward _zsh_highlight_widget_orig-s0.0000060000-r9037-history-search-backward
+zle -C orig-s0.0000060000-r9037-complete-word .complete-word _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-complete-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-complete-word -- "$@" }
+zle -N complete-word _zsh_highlight_widget_orig-s0.0000060000-r9037-complete-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-accept-and-hold() { _zsh_highlight_call_widget .accept-and-hold -- "$@" }
+zle -N accept-and-hold _zsh_highlight_widget_orig-s0.0000060000-r9037-accept-and-hold
+zle -C orig-s0.0000060000-r9037-_expand_word .complete-word _expand_word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_expand_word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_expand_word -- "$@" }
+zle -N _expand_word _zsh_highlight_widget_orig-s0.0000060000-r9037-_expand_word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-beginning-of-buffer-or-history() { _zsh_highlight_call_widget .beginning-of-buffer-or-history -- "$@" }
+zle -N beginning-of-buffer-or-history _zsh_highlight_widget_orig-s0.0000060000-r9037-beginning-of-buffer-or-history
+_zsh_highlight_widget_orig-s0.0000060000-r9037-undefined-key() { _zsh_highlight_call_widget .undefined-key -- "$@" }
+zle -N undefined-key _zsh_highlight_widget_orig-s0.0000060000-r9037-undefined-key
+zle -N orig-s0.0000060000-r9037-zle-line-init _zle_line_init
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zle-line-init() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zle-line-init -- "$@" }
+zle -N zle-line-init _zsh_highlight_widget_orig-s0.0000060000-r9037-zle-line-init
+_zsh_highlight_widget_orig-s0.0000060000-r9037-magic-space() { _zsh_highlight_call_widget .magic-space -- "$@" }
+zle -N magic-space _zsh_highlight_widget_orig-s0.0000060000-r9037-magic-space
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-yank-whole-line() { _zsh_highlight_call_widget .vi-yank-whole-line -- "$@" }
+zle -N vi-yank-whole-line _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-yank-whole-line
+zle -C orig-s0.0000060000-r9037-_correct_filename .complete-word _correct_filename
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_correct_filename() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_correct_filename -- "$@" }
+zle -N _correct_filename _zsh_highlight_widget_orig-s0.0000060000-r9037-_correct_filename
+_zsh_highlight_widget_orig-s0.0000060000-r9037-vi-yank-eol() { _zsh_highlight_call_widget .vi-yank-eol -- "$@" }
+zle -N vi-yank-eol _zsh_highlight_widget_orig-s0.0000060000-r9037-vi-yank-eol
+zle -N orig-s0.0000060000-r9037-paste-insert _paste_insert
+_zsh_highlight_widget_orig-s0.0000060000-r9037-paste-insert() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-paste-insert -- "$@" }
+zle -N paste-insert _zsh_highlight_widget_orig-s0.0000060000-r9037-paste-insert
+zle -C orig-s0.0000060000-r9037-_next_tags .list-choices _next_tags
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_next_tags() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_next_tags -- "$@" }
+zle -N _next_tags _zsh_highlight_widget_orig-s0.0000060000-r9037-_next_tags
+_zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-list() { _zsh_highlight_call_widget .end-of-list -- "$@" }
+zle -N end-of-list _zsh_highlight_widget_orig-s0.0000060000-r9037-end-of-list
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-incremental-search-backward() { _zsh_highlight_call_widget .history-incremental-search-backward -- "$@" }
+zle -N history-incremental-search-backward _zsh_highlight_widget_orig-s0.0000060000-r9037-history-incremental-search-backward
+_zsh_highlight_widget_orig-s0.0000060000-r9037-history-beginning-search-forward() { _zsh_highlight_call_widget .history-beginning-search-forward -- "$@" }
+zle -N history-beginning-search-forward _zsh_highlight_widget_orig-s0.0000060000-r9037-history-beginning-search-forward
+zle -N orig-s0.0000060000-r9037-zew-transpose-shell-words zew-transpose-shell-words
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zew-transpose-shell-words() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zew-transpose-shell-words -- "$@" }
+zle -N zew-transpose-shell-words _zsh_highlight_widget_orig-s0.0000060000-r9037-zew-transpose-shell-words
+zle -C orig-s0.0000060000-r9037-reverse-menu-complete .reverse-menu-complete _main_complete
+_zsh_highlight_widget_orig-s0.0000060000-r9037-reverse-menu-complete() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-reverse-menu-complete -- "$@" }
+zle -N reverse-menu-complete _zsh_highlight_widget_orig-s0.0000060000-r9037-reverse-menu-complete
+zle -N orig-s0.0000060000-r9037-zbrowse zbrowse
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zbrowse() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zbrowse -- "$@" }
+zle -N zbrowse _zsh_highlight_widget_orig-s0.0000060000-r9037-zbrowse
+zle -N orig-s0.0000060000-r9037-_start_paste _start_paste
+_zsh_highlight_widget_orig-s0.0000060000-r9037-_start_paste() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-_start_paste -- "$@" }
+zle -N _start_paste _zsh_highlight_widget_orig-s0.0000060000-r9037-_start_paste
+_zsh_highlight_widget_orig-s0.0000060000-r9037-redisplay() { _zsh_highlight_call_widget .redisplay -- "$@" }
+zle -N redisplay _zsh_highlight_widget_orig-s0.0000060000-r9037-redisplay
+zle -N orig-s0.0000060000-r9037-insert-files insert-files
+_zsh_highlight_widget_orig-s0.0000060000-r9037-insert-files() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-insert-files -- "$@" }
+zle -N insert-files _zsh_highlight_widget_orig-s0.0000060000-r9037-insert-files
+zle -N orig-s0.0000060000-r9037-zew-rotate-shell-words-backwards zew-rotate-shell-words
+_zsh_highlight_widget_orig-s0.0000060000-r9037-zew-rotate-shell-words-backwards() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-zew-rotate-shell-words-backwards -- "$@" }
+zle -N zew-rotate-shell-words-backwards _zsh_highlight_widget_orig-s0.0000060000-r9037-zew-rotate-shell-words-backwards
+_zsh_highlight_widget_orig-s0.0000060000-r9037-up-line() { _zsh_highlight_call_widget .up-line -- "$@" }
+zle -N up-line _zsh_highlight_widget_orig-s0.0000060000-r9037-up-line
+_zsh_highlight_widget_orig-s0.0000060000-r9037-copy-prev-shell-word() { _zsh_highlight_call_widget .copy-prev-shell-word -- "$@" }
+zle -N copy-prev-shell-word _zsh_highlight_widget_orig-s0.0000060000-r9037-copy-prev-shell-word
+zle -N orig-s0.0000060000-r9037-backward-word backward-word-match
+_zsh_highlight_widget_orig-s0.0000060000-r9037-backward-word() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-backward-word -- "$@" }
+zle -N backward-word _zsh_highlight_widget_orig-s0.0000060000-r9037-backward-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-reset-prompt() { _zsh_highlight_call_widget .reset-prompt -- "$@" }
+zle -N reset-prompt _zsh_highlight_widget_orig-s0.0000060000-r9037-reset-prompt
+zle -N orig-s0.0000060000-r9037-__zconvey_zle_paster __zconvey_zle_paster
+_zsh_highlight_widget_orig-s0.0000060000-r9037-__zconvey_zle_paster() { _zsh_highlight_call_widget orig-s0.0000060000-r9037-__zconvey_zle_paster -- "$@" }
+zle -N __zconvey_zle_paster _zsh_highlight_widget_orig-s0.0000060000-r9037-__zconvey_zle_paster
+_zsh_highlight_widget_orig-s0.0000060000-r9037-push-line-or-edit() { _zsh_highlight_call_widget .push-line-or-edit -- "$@" }
+zle -N push-line-or-edit _zsh_highlight_widget_orig-s0.0000060000-r9037-push-line-or-edit
+_zsh_highlight_widget_orig-s0.0000060000-r9037-execute-named-cmd() { _zsh_highlight_call_widget .execute-named-cmd -- "$@" }
+zle -N execute-named-cmd _zsh_highlight_widget_orig-s0.0000060000-r9037-execute-named-cmd
+_zsh_highlight_widget_orig-s0.0000060000-r9037-undo() { _zsh_highlight_call_widget .undo -- "$@" }
+zle -N undo _zsh_highlight_widget_orig-s0.0000060000-r9037-undo
+_zsh_highlight_widget_orig-s0.0000060000-r9037-select-in-word() { _zsh_highlight_call_widget .select-in-word -- "$@" }
+zle -N select-in-word _zsh_highlight_widget_orig-s0.0000060000-r9037-select-in-word
+_zsh_highlight_widget_orig-s0.0000060000-r9037-expand-word() { _zsh_highlight_call_widget .expand-word -- "$@" }
+zle -N expand-word _zsh_highlight_widget_orig-s0.0000060000-r9037-expand-word
+_zsh_highlight_widget_zle-isearch-update() { :; _zsh_highlight; }
+zle -N zle-isearch-update _zsh_highlight_widget_zle-isearch-update

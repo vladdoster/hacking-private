@@ -1,0 +1,15 @@
+repeat 10 zsh -i -c exit
+Startup time with FSH using the cache feature, in ~/.fsh_cache, compiled (~/.fsh_cache.zwc)
+
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,18s system 96% cpu 0,384 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 96% cpu 0,382 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 90% cpu 0,411 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,18s system 96% cpu 0,382 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 96% cpu 0,384 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,377 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,373 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 96% cpu 0,380 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,384 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,374 total
+
+0.384+0.382+0.411+0.382+0.384+0.377+0.373+0.380+0.384+0.374 => 0.3831
