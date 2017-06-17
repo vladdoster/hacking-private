@@ -1,0 +1,48 @@
+repeat 10 time zsh -i -c exit
+
+First run after compiling with -R option, can have slow moments
+
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 73% cpu 0,495 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,372 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,18s system 97% cpu 0,405 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,367 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,376 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,383 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,16s system 97% cpu 0,365 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,388 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,372 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,373 total
+
+0.495+0.372+0.405+0.367+0.376+0.383+0.365+0.388+0.372+0.373 => 0.3896
+
+Third from three consecutive runs:
+
+This Zshell's ID: <5>, name: admin2
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,382 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,17s system 97% cpu 0,391 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,373 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,384 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,373 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,374 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 96% cpu 0,369 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,369 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,366 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,18s system 97% cpu 0,381 total
+
+0.382+0.391+0.373+0.384+0.373+0.374+0.369+0.369+0.366+0.381 => 0.3762
+
+
+Normal (the third) FSH run, for comparsion, OS seems to have better and worse moments:
+
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,382 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,388 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,378 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,383 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,377 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,17s system 97% cpu 0,389 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,16s system 97% cpu 0,370 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,17s system 97% cpu 0,386 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,377 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,17s system 97% cpu 0,390 total
+
+0.382+0.388+0.378+0.383+0.377+0.389+0.370+0.386+0.377+0.390 => 0.382
