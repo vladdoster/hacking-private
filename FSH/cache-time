@@ -13,3 +13,22 @@ Startup time with FSH using the cache feature, in ~/.fsh_cache
 /usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,19s system 97% cpu 0,412 total
 
 0.411+0.424+0.411+0.417+0.599+0.406+0.416+0.424+0.409+0.412 => 0.4329 average
+0.411+0.424+0.411+0.417+0.406+0.416+0.424+0.409+0.412 => 0.414444
+
+With setopt noaliases:
+
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,22s user 0,19s system 97% cpu 0,421 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,19s system 96% cpu 0,419 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,19s system 97% cpu 0,417 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,22s user 0,20s system 97% cpu 0,427 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,19s system 97% cpu 0,417 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,19s system 97% cpu 0,410 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,19s system 97% cpu 0,410 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,22s user 0,20s system 97% cpu 0,429 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,21s user 0,19s system 97% cpu 0,410 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,22s user 0,20s system 83% cpu 0,499 total
+
+0.421+0.419+0.417+0.427+0.417+0.410+0.410+0.429+0.410+0.499 => 0.4259
+
+With no 0.499:
+0.421+0.419+0.417+0.427+0.417+0.410+0.410+0.429+0.410 => 0.417778

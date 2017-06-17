@@ -13,3 +13,33 @@ Startup time with FSH using the cache feature, in ~/.fsh_cache, compiled (~/.fsh
 /usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,374 total
 
 0.384+0.382+0.411+0.382+0.384+0.377+0.373+0.380+0.384+0.374 => 0.3831
+
+With setopt noaliases:
+
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 96% cpu 0,373 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,371 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,375 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,372 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 96% cpu 0,372 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,384 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,381 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,369 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,376 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 96% cpu 0,380 total
+
+0.373+0.371+0.375+0.372+0.372+0.384+0.381+0.369+0.376+0.380 => 0.3753
+
+One more time *with* aliases:
+
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,18s system 97% cpu 0,380 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,18s system 97% cpu 0,384 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,18s system 97% cpu 0,387 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,376 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,370 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,16s system 97% cpu 0,360 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 96% cpu 0,374 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,20s user 0,17s system 97% cpu 0,378 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 97% cpu 0,375 total
+/usr/local/bin/zsh-5.3.1-dev-0_O2 -i -c exit  0,19s user 0,17s system 96% cpu 0,375 total
+
+0.380+0.384+0.387+0.376+0.370+0.360+0.374+0.378+0.375+0.375 = 0.3759
