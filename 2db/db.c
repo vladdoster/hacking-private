@@ -32,12 +32,10 @@
 #include "db.pro"
 #include "db.h"
 
-/* MACROS {{{ */
 #ifndef PM_UPTODATE
 #define PM_UPTODATE     (1<<19) /* Parameter has up-to-date data (e.g. loaded from DB) */
 #endif
-/* }}} */
-/* DECLARATIONS {{{ */
+
 static void ztie_usage();
 static void zuntie_usage();
 static void ztaddress_usage();
@@ -65,8 +63,7 @@ static HashTable backends_hash = NULL;
 /* For searching with scanhashtable */
 char *In_ParamName = NULL;
 DbBackendEntryPoint Out_FoundBe = NULL;
-/* }}} */
-/* ARRAY: builtin {{{ */
+
 static struct builtin bintab[] =
 {
     /* h - help, d - backend type, r - read-only, a/f - address/file,
@@ -77,13 +74,10 @@ static struct builtin bintab[] =
     BUILTIN("ztaddress", 0, bin_ztaddress, 0, -1, 0, "h", NULL),
     BUILTIN("ztclear", 0, bin_ztclear, 0, -1, 0, "h", NULL),
 };
-/* }}} */
-/* ARRAY: other {{{ */
+
 #define ROARRPARAMDEF(name, var)                                        \
     { name, PM_ARRAY | PM_READONLY, (void *) var, NULL,  NULL, NULL, NULL }
-/* }}} */
 
-/* FUNCTION: update_user_hash {{{ */
 static void update_user_hash(char *id, int is_loading) {
     Param pm = (Param) paramtab->getnode(paramtab, "zdb_backends");
     HashTable ht;
@@ -127,8 +121,6 @@ static void update_user_hash(char *id, int is_loading) {
         addhashnode(ht, ztrdup(id), val_pm); /* sets pm->node.nam */
     }
 }
-/* }}} */
-/* FUNCTION: zsh_db_register_backend {{{ */
 
 /**/
 void
@@ -144,8 +136,6 @@ zsh_db_register_backend(char *id, void *entry_point) {
 
     update_user_hash(id, 1);
 }
-/* }}} */
-/* FUNCTION: zsh_db_unregister_backend {{{ */
 
 /**/
 void
@@ -156,8 +146,6 @@ zsh_db_unregister_backend(char *id) {
     }
     update_user_hash(id, 0);
 }
-/* }}} */
-/* FUNCTION: bin_ztie {{{ */
 
 /**/
 static int
@@ -256,8 +244,6 @@ bin_ztie(char *nam, char **args, Options ops, UNUSED(int func))
 
     return be(DB_TIE, address, rdonly, zcache, pass, pfile, pprompt, pmname, lazy);
 }
-/* }}} */
-/* FUNCTION: bin_zuntie {{{ */
 
 /**/
 static int
@@ -296,8 +282,6 @@ bin_zuntie(char *nam, char **args, Options ops, UNUSED(int func))
 
     return ret;
 }
-/* }}} */
-/* FUNCTION: bin_ztaddress {{{ */
 
 /**/
 static int
@@ -331,8 +315,6 @@ bin_ztaddress(char *nam, char **args, Options ops, UNUSED(int func))
 
     return ret;
 }
-/* }}} */
-/* FUNCTION: bin_ztclear {{{ */
 
 /**/
 static int
@@ -368,11 +350,9 @@ bin_ztclear(char *nam, char **args, Options ops, UNUSED(int func))
 
     return ret;
 }
-/* }}} */
 
 /*************** MAIN CODE ***************/
 
-/* ARRAY features {{{ */
 static struct features module_features =
 {
     bintab, sizeof(bintab)/sizeof(*bintab),
@@ -381,9 +361,6 @@ static struct features module_features =
     NULL, 0,
     0
 };
-/* }}} */
-
-/* FUNCTION: setup_ {{{ */
 
 /**/
 int
@@ -423,8 +400,6 @@ setup_(UNUSED(Module m))
 
     return 0;
 }
-/* }}} */
-/* FUNCTION: features_ {{{ */
 
 /**/
 int
@@ -433,8 +408,6 @@ features_(Module m, char ***features)
     *features = featuresarray(m, &module_features);
     return 0;
 }
-/* }}} */
-/* FUNCTION: enables_ {{{ */
 
 /**/
 int
@@ -442,8 +415,6 @@ enables_(Module m, int **enables)
 {
     return handlefeatures(m, &module_features, enables);
 }
-/* }}} */
-/* FUNCTION: boot_ {{{ */
 
 /**/
 int
@@ -451,8 +422,6 @@ boot_(UNUSED(Module m))
 {
     return 0;
 }
-/* }}} */
-/* FUNCTION: cleanup_ {{{ */
 
 /**/
 int
@@ -466,8 +435,6 @@ cleanup_(Module m)
         backends_hash = NULL;
     }
 }
-/* }}} */
-/* FUNCTION: finish_ {{{ */
 
 /**/
 int
@@ -479,7 +446,6 @@ finish_(UNUSED(Module m))
 
 /*************** UTILITIES ***************/
 
-/* FUNCTION: createhashtable {{{ */
 static HashTable
 createhashtable(char *name)
 {
@@ -502,8 +468,7 @@ createhashtable(char *name)
 
     return ht;
 }
-/* }}} */
-/* FUNCTION: createhashparam {{{ */
+
 static Param
 createhashparam(char *name, int flags)
 {
@@ -532,16 +497,14 @@ createhashparam(char *name, int flags)
 
     return pm;
 }
-/* }}} */
-/* FUNCTION: freebackendnode {{{ */
+
 static void
 freebackendnode(HashNode hn)
 {
     zsfree(hn->nam);
     zfree(hn, sizeof(struct backend_node));
 }
-/* }}} */
-/* FUNCTION: backend_scan_fun {{{ */
+
 static void
 backend_scan_fun(HashNode hn, int unused)
 {
@@ -556,11 +519,8 @@ backend_scan_fun(HashNode hn, int unused)
         Out_FoundBe = be;
     }
 }
-/* }}} */
 
 /*********** SHARED UTILITIES ***********/
-
-/* FUNCTION: zsh_db_unmetafy_zalloc {{{ */
 
 /*
  * Unmetafy that:
@@ -595,8 +555,6 @@ zsh_db_unmetafy_zalloc(const char *to_copy, int *new_len)
 
     return to_return;
 }
-/* }}} */
-/* FUNCTION: zsh_db_set_length {{{ */
 
 /* For zsh-allocator, rest of Zsh seems to use
  * free() instead of zsfree(), and such length
@@ -612,8 +570,6 @@ zsh_db_set_length(char *buf, int size)
         buf[size]=' ';
     }
 }
-/* }}} */
-/* FUNCTION: zsh_db_standarize_hash {{{ */
 
 /**/
 void
@@ -639,8 +595,6 @@ zsh_db_standarize_hash(Param pm) {
     ht->enablenode  = NULL;
     ht->freenode    = zsh_db_freeparamnode;
 }
-/* }}} */
-/* FUNCTION: zsh_db_arr_append {{{ */
 
 /*
  * Adds parameter name (to given `*_tied` array)
@@ -669,8 +623,6 @@ zsh_db_arr_append(char ***arr, const char *input_s)
 
     return 0;
 }
-/* }}} */
-/* FUNCTION: zsh_db_filter_arr {{{ */
 
 /*
  * Removes parameter name (from given `*_tied` array)
@@ -723,8 +675,6 @@ zsh_db_filter_arr(char ***arr, const char *input_s)
 
     return 0;
 }
-/* }}} */
-/* FUNCTION: zsh_db_freeparamnode {{{ */
 
 /**/
 void
@@ -749,11 +699,8 @@ zsh_db_freeparamnode(HashNode hn)
     }
     zfree(pm, sizeof(struct param));
 }
-/* }}} */
 
 /***************** USAGE *****************/
-
-/* FUNCTION: ztie_usage {{{ */
 
 static void
 ztie_usage()
@@ -772,8 +719,6 @@ ztie_usage()
     fprintf(stdout, "The {parameter_name} - choose name for the created database-bound parameter\n");
     fflush(stdout);
 }
-/* }}} */
-/* FUNCTION: zuntie_usage {{{ */
 
 static void
 zuntie_usage()
@@ -785,8 +730,6 @@ zuntie_usage()
     fprintf(stdout, "             database is not cleared (unlike when unset)\n");
     fflush(stdout);
 }
-/* }}} */
-/* FUNCTION: ztaddress_usage {{{ */
 
 static void
 ztaddress_usage()
@@ -795,8 +738,6 @@ ztaddress_usage()
     fprintf(stdout, "Description: stores address used by given parameter to $REPLY\n");
     fflush(stdout);
 }
-/* }}} */
-/* FUNCTION: ztclear_usage {{{ */
 
 static void
 ztclear_usage()
@@ -807,5 +748,3 @@ ztclear_usage()
     fprintf(stdout, "             pass `-z' to ztie to globally disable cache for parameter\n");
     fflush(stdout);
 }
-/* }}} */
-

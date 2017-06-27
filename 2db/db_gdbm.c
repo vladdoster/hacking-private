@@ -61,8 +61,6 @@ static int no_database_action = 0;
 
 #include <gdbm.h>
 
-/* ARRAY: GSU {{{ */
-
 /*
  * Longer GSU structure, to carry GDBM_FILE of owning
  * database. Every parameter (hash value) receives GSU
@@ -110,9 +108,7 @@ char **zgdbm_tied;
 
 static struct paramdef patab[] =
     { ROARRPARAMDEF( "zgdbm_tied", &zgdbm_tied ), };
-/* }}} */
 
-/* FUNCTION: gdbm_main_entry {{{ */
 static int
 gdbm_main_entry(VA_ALIST1(int cmd))
     VA_DCL
@@ -191,8 +187,6 @@ gdbm_main_entry(VA_ALIST1(int cmd))
     }
     return 1;
 }
-/* }}} */
-/* FUNCTION: zgtie_cmd {{{ */
 
 /**/
 static int
@@ -285,8 +279,6 @@ zgtie_cmd(char *address, int rdonly, int zcache, char *pass, char *pfile, int pp
 
     return 0;
 }
-/* }}} */
-/* FUNCTION: zguntie_cmd {{{ */
 
 /**/
 static int
@@ -322,8 +314,6 @@ zguntie_cmd(int rountie, char **args)
 
     return ret;
 }
-/* }}} */
-/* FUNCTION: gdbmpath_cmd{{{ */
 
 /**/
 static int
@@ -356,8 +346,6 @@ gdbmpath_cmd(char *pmname)
 
     return 0;
 }
-/* }}} */
-/* FUNCTION: gdbmclear_cmd {{{ */
 
 /**/
 static int
@@ -396,9 +384,6 @@ gdbmclear_cmd(char *pmname, char *key)
 
     return 0;
 }
-/* }}} */
-
-/* FUNCTION: gdbmgetfn {{{ */
 
 /*
  * The param is actual param in hash – always, because
@@ -473,8 +458,6 @@ gdbmgetfn(Param pm)
 
     return "";
 }
-/* }}} */
-/* FUNCTION: gdbmsetfn {{{ */
 
 /**/
 static void
@@ -529,8 +512,7 @@ gdbmsetfn(Param pm, char *val)
         zsfree(umkey);
     }
 }
-/* }}} */
-/* FUNCTION: gdbmunsetfn {{{ */
+
 /**/
 static void
 gdbmunsetfn(Param pm, UNUSED(int um))
@@ -538,9 +520,6 @@ gdbmunsetfn(Param pm, UNUSED(int um))
     /* Set with NULL */
     gdbmsetfn(pm, NULL);
 }
-/* }}} */
-
-/* FUNCTION: getgdbmnode {{{ */
 
 /**/
 static HashNode
@@ -576,8 +555,6 @@ getgdbmnode(HashTable ht, const char *name)
 
     return (HashNode) val_pm;
 }
-/* }}} */
-/* FUNCTION: scangdbmkeys {{{ */
 
 /**/
 static void
@@ -608,9 +585,6 @@ scangdbmkeys(HashTable ht, ScanFunc func, int flags)
     }
 
 }
-/* }}} */
-
-/* FUNCTION: gdbmhashsetfn {{{ */
 
 /*
  * Replace database with new hash
@@ -697,8 +671,6 @@ gdbmhashsetfn(Param pm, HashTable ht)
     /* We reuse our hash, the input is to be deleted */
     deleteparamtable(ht);
 }
-/* }}} */
-/* FUNCTION: gdbmuntie {{{*/
 
 /**/
 static void
@@ -726,8 +698,7 @@ gdbmuntie(Param pm)
     pm->node.flags &= ~(PM_SPECIAL|PM_READONLY);
     pm->gsu.h = &stdhash_gsu;
 }
-/* }}} */
-/* FUNCTION: gdbmhashunsetfn {{{ */
+
 /**/
 static void
 gdbmhashunsetfn(Param pm, UNUSED(int exp))
@@ -751,9 +722,7 @@ gdbmhashunsetfn(Param pm, UNUSED(int exp))
 
     pm->node.flags |= PM_UNSET;
 }
-/* }}} */
 
-/* ARRAY: module_features {{{ */
 static struct features module_features =
 {
     NULL, 0,
@@ -762,9 +731,6 @@ static struct features module_features =
     patab, sizeof(patab)/sizeof(*patab),
     0
 };
-/* }}} */
-
-/* FUNCTION: setup_ {{{ */
 
 /**/
 int
@@ -772,8 +738,7 @@ setup_(UNUSED(Module m))
 {
     return 0;
 }
-/* }}} */
-/* FUNCTION: features_ {{{ */
+
 /**/
 int
 features_(Module m, char ***features)
@@ -781,8 +746,6 @@ features_(Module m, char ***features)
     *features = featuresarray(m, &module_features);
     return 0;
 }
-/* }}} */
-/* FUNCTION: enables_ {{{ */
 
 /**/
 int
@@ -790,8 +753,6 @@ enables_(Module m, int **enables)
 {
     return handlefeatures(m, &module_features, enables);
 }
-/* }}} */
-/* FUNCTION: boot_ {{{ */
 
 /**/
 int
@@ -801,8 +762,6 @@ boot_(UNUSED(Module m))
     zsh_db_register_backend("db/gdbm", gdbm_main_entry);
     return 0;
 }
-/* }}} */
-/* FUNCTION: cleanup_ {{{ */
 
 /**/
 int
@@ -813,21 +772,17 @@ cleanup_(Module m)
     /* This frees `zgdbm_tied` */
     return setfeatureenables(m, &module_features, NULL);
 }
-/* }}} */
-/* FUNCTION: finish_ {{{ */
+
 /**/
 int
 finish_(UNUSED(Module m))
 {
     return 0;
 }
-/* }}} */
 
 /*********************
  * Utility functions *
  *********************/
-
-/* FUNCTION: createhash {{{ */
 
 static Param createhash( char *name, int flags ) {
     Param pm;
@@ -859,8 +814,7 @@ static Param createhash( char *name, int flags ) {
 
     return pm;
 }
-/* }}} */
-/* FUNCTION: is_tied_cmd {{{ */
+
 static int
 is_tied_cmd(char *pmname)
 {
@@ -871,8 +825,6 @@ is_tied_cmd(char *pmname)
 
     return 1 - is_tied(pm); /* negation for shell-code */
 }
-/* }}} */
-/* FUNCTION: is_tied {{{ */
 
 static int
 is_tied(Param pm)
@@ -883,7 +835,6 @@ is_tied(Param pm)
 
     return 0;
 }
-/* }}} */
 
 #else
 # error no gdbm
