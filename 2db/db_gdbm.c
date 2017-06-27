@@ -653,9 +653,8 @@ gdbmhashsetfn(Param pm, HashTable ht)
             content.dsize = umlen;
             (void)gdbm_store(dbf, key, content, GDBM_REPLACE);
 
-            /* Free - zsh_db_unmetafy_zalloc allocates exact required
-             * space, however unmetafied string can have zeros
-             * in content, so we must first fill with non-0 bytes */
+            /* Free - zsh_db_unmetafy_zalloc allocates
+             * exact required space + 1 null byte */
             zfree(umval, content.dsize+1);
             zfree(umkey, key.dsize+1);
 
