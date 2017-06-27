@@ -556,21 +556,6 @@ zsh_db_unmetafy_zalloc(const char *to_copy, int *new_len)
     return to_return;
 }
 
-/* For zsh-allocator, rest of Zsh seems to use
- * free() instead of zsfree(), and such length
- * restoration causes slowdown, but all is this
- * way strict - correct */
-
-/**/
-void
-zsh_db_set_length(char *buf, int size)
-{
-    buf[size]='\0';
-    while (-- size >= 0) {
-        buf[size]=' ';
-    }
-}
-
 /**/
 void
 zsh_db_standarize_hash(Param pm) {

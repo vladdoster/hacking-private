@@ -444,17 +444,15 @@ gdbmgetfn(Param pm)
         /* gdbm allocates with malloc */
         free(content.dptr);
 
-        /* Free key, restoring its original length */
-        zsh_db_set_length(umkey, umlen);
-        zsfree(umkey);
+        /* Free key */
+        zfree(umkey, umlen+1);
 
         /* Can return pointer, correctly saved inside hash */
         return pm->u.str;
     }
 
-    /* Free key, restoring its original length */
-    zsh_db_set_length(umkey, umlen);
-    zsfree(umkey);
+    /* Free key */
+    zfree(umkey, umlen+1);
 
     return "";
 }
@@ -501,15 +499,13 @@ gdbmsetfn(Param pm, char *val)
             (void)gdbm_store(dbf, key, content, GDBM_REPLACE);
 
             /* Free */
-            zsh_db_set_length(umval, umlen);
-            zsfree(umval);
+            zfree(umval, umlen+1);
         } else {
             (void)gdbm_delete(dbf, key);
         }
 
         /* Free key */
-        zsh_db_set_length(umkey, key.dsize);
-        zsfree(umkey);
+        zfree(umkey, key.dsize+1);
     }
 }
 
@@ -660,10 +656,8 @@ gdbmhashsetfn(Param pm, HashTable ht)
             /* Free - zsh_db_unmetafy_zalloc allocates exact required
              * space, however unmetafied string can have zeros
              * in content, so we must first fill with non-0 bytes */
-            zsh_db_set_length(umval, content.dsize);
-            zsfree(umval);
-            zsh_db_set_length(umkey, key.dsize);
-            zsfree(umkey);
+            zfree(umval, content.dsize+1);
+            zfree(umkey, key.dsize+1);
 
             unqueue_signals();
         }
