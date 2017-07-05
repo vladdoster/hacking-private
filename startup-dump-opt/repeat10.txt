@@ -1,0 +1,31 @@
+07:44[/Users/sgniazdowski]2 >: repeat 10 { time /usr/local/bin/zsh-5.3.1-dev-0 -i -c exit }
+
+no opt:
+
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,19s user 0,05s system 96% cpu 0,249 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,17s user 0,05s system 96% cpu 0,232 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,18s user 0,05s system 96% cpu 0,241 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,19s user 0,05s system 96% cpu 0,250 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,19s user 0,05s system 96% cpu 0,252 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,18s user 0,05s system 96% cpu 0,243 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,18s user 0,05s system 95% cpu 0,247 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,18s user 0,05s system 96% cpu 0,246 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,18s user 0,05s system 96% cpu 0,242 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,18s user 0,05s system 96% cpu 0,242 total
+
+0.249 + 0.232 + 0.241 + 0.250 + 0.252 + 0.243 + 0.247 + 0.246 + 0.242 + 0.242 => 2.444 / 10 = 0.244
+
+optimized:
+
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,16s user 0,05s system 96% cpu 0,223 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,17s user 0,05s system 96% cpu 0,229 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,18s user 0,06s system 95% cpu 0,241 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,16s user 0,05s system 96% cpu 0,223 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,17s user 0,06s system 96% cpu 0,240 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,16s user 0,05s system 96% cpu 0,222 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,17s user 0,05s system 96% cpu 0,233 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,16s user 0,05s system 95% cpu 0,227 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,17s user 0,05s system 96% cpu 0,231 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,17s user 0,05s system 96% cpu 0,227 total
+
+0.223 + 0.229 + 0.241 + 0.223 + 0.240 + 0.222 + 0.233 + 0.227 + 0.231 + 0.227 => 2.296 / 10 = 0.229
