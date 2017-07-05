@@ -1,0 +1,29 @@
+O2, optimized (hasher use):
+
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 94% cpu 0,189 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,06s system 95% cpu 0,198 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,06s system 94% cpu 0,193 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,06s system 94% cpu 0,200 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 95% cpu 0,190 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 94% cpu 0,193 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 94% cpu 0,190 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,06s system 94% cpu 0,196 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 95% cpu 0,188 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,12s user 0,05s system 94% cpu 0,189 total
+
+0.189 + 0.198 + 0.193 + 0.200 + 0.190 + 0.193 + 0.190 + 0.196 + 0.188 + 0.189 => 1.926 / 10 = 0.192
+
+O2, no optimizations:
+
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,05s system 94% cpu 0,200 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,05s system 95% cpu 0,201 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,05s system 95% cpu 0,209 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,05s system 95% cpu 0,203 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,05s system 95% cpu 0,205 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,15s user 0,05s system 95% cpu 0,216 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,05s system 95% cpu 0,207 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,06s system 95% cpu 0,208 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,05s system 95% cpu 0,206 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,14s user 0,05s system 95% cpu 0,199 total
+
+0.200 + 0.201 + 0.209 + 0.203 + 0.205 + 0.216 + 0.207 + 0.208 + 0.206 + 0.199 => 2.054 / 10 = 0.205
