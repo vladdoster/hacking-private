@@ -1,0 +1,44 @@
+diff --git a/Src/parse.c b/Src/parse.c
+index 8769baa..00a8f6a 100644
+--- a/Src/parse.c
++++ b/Src/parse.c
+@@ -396,6 +396,8 @@ ecstrcode(char *s)
+ {
+     int l, t = has_token(s);
+ 
++    unsigned val = hasher(s);
++
+     if ((l = strlen(s) + 1) && l <= 4) {
+ 	wordcode c = (t ? 3 : 2);
+ 	switch (l) {
+@@ -410,8 +412,9 @@ ecstrcode(char *s)
+ 	int cmp;
+ 
+ 	for (pp = &ecstrs; (p = *pp); ) {
+-	    if (!(cmp = p->nfunc - ecnfunc) && !(cmp = strcmp(p->str, s)))
++	    if (!(cmp = p->nfunc - ecnfunc) && !(cmp = (((signed)p->hashval) - ((signed)val))) && !(cmp = strcmp(p->str, s))) {
+ 		return p->offs;
++            }
+ 	    pp = (cmp < 0 ? &(p->left) : &(p->right));
+ 	}
+ 	p = *pp = (Eccstr) zhalloc(sizeof(*p));
+@@ -420,6 +423,7 @@ ecstrcode(char *s)
+ 	p->aoffs = ecsoffs;
+ 	p->str = s;
+ 	p->nfunc = ecnfunc;
++        p->hashval = val;
+ 	ecsoffs += l;
+ 
+ 	return p->offs;
+diff --git a/Src/zsh.h b/Src/zsh.h
+index 137b2a5..5973cf4 100644
+--- a/Src/zsh.h
++++ b/Src/zsh.h
+@@ -813,6 +813,7 @@ struct eccstr {
+     char *str;
+     wordcode offs, aoffs;
+     int nfunc;
++    int hashval;
+ };
+ 
+ #define EC_NODUP  0
