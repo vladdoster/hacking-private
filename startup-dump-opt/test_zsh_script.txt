@@ -1,0 +1,40 @@
+source "$HOME/.zplugin/bin/zplugin.zsh"
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
+
+autoload -Uz compinit
+compinit
+
+zplugin snippet https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh
+zplugin snippet https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/git.zsh
+zplugin cdclear -q
+
+zstyle ":plugin:zconvey" check_interval "1"
+zstyle ":plugin:zconvey" greeting "text"
+zstyle ":plugin:zconvey" expire_seconds "20"
+
+#zmodload zsh/zprof
+#() {
+fpath[1,0]=( ~/.zplugin/lexicon.zwc )
+autoload -Uzw ~/.zplugin/lexicon.zwc
+
+zplugin light psprint zsh-navigation-tools
+zplugin light psprint zsh-editing-workbench
+zplugin light psprint zsh-cmd-architect
+zplugin light psprint zsh-select
+zplugin light psprint zprompts
+zplugin light psprint zzcomplete
+zplugin light rimraf k
+zplugin light psprint history-search-multi-word
+zplugin light zdharma zbrowse
+zplugin light oz safe-paste
+zplugin light zsh-users zsh-autosuggestions
+zplugin light psprint zcommodore
+zplugin light zdharma/fast-syntax-highlighting
+
+zplugin cdreplay
+
+#zprof | head -n 14
+#}
+
+# vim:ft=zsh
