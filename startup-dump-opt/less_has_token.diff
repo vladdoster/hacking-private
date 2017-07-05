@@ -1,0 +1,26 @@
+diff --git a/Src/parse.c b/Src/parse.c
+index 8769baa..6f193f3 100644
+--- a/Src/parse.c
++++ b/Src/parse.c
+@@ -394,9 +394,10 @@ ecdel(int p)
+ static wordcode
+ ecstrcode(char *s)
+ {
+-    int l, t = has_token(s);
++    int l, t;
+ 
+     if ((l = strlen(s) + 1) && l <= 4) {
++        t = has_token(s);
+ 	wordcode c = (t ? 3 : 2);
+ 	switch (l) {
+ 	case 4: c |= ((wordcode) STOUC(s[2])) << 19;
+@@ -414,6 +415,9 @@ ecstrcode(char *s)
+ 		return p->offs;
+ 	    pp = (cmp < 0 ? &(p->left) : &(p->right));
+ 	}
++
++        t = has_token(s);
++
+ 	p = *pp = (Eccstr) zhalloc(sizeof(*p));
+ 	p->left = p->right = 0;
+ 	p->offs = ((ecsoffs - ecssub) << 2) | (t ? 1 : 0);
