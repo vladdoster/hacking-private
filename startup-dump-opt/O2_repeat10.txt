@@ -1,3 +1,5 @@
+repeat 10 { time /usr/local/bin/zsh-5.3.1-dev-0 -i -c exit }
+
 O2, optimized (hasher use):
 
 /usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 94% cpu 0,189 total
