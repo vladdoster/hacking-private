@@ -46,3 +46,21 @@ O2, additional has_token optimization (more 0.18* results, 5 vs 3)
 /usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,12s user 0,05s system 94% cpu 0,184 total
 
 0.192 + 0.189 + 0.191 + 0.189 + 0.190 + 0.203 + 0.187 + 0.185 + 0.193 + 0.184 => 1.903 / 10 = 0.190
+
+Extras:
+
+O2, has_token+hasher, with Zplugin sourcing extracted (from .plugin.zsh)
+preamble, using autoload -w for extracted functions
+
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,12s user 0,05s system 94% cpu 0,186 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,12s user 0,05s system 94% cpu 0,188 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 94% cpu 0,191 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,06s system 94% cpu 0,194 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 95% cpu 0,190 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 95% cpu 0,195 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,12s user 0,05s system 95% cpu 0,183 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 94% cpu 0,188 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 95% cpu 0,188 total
+/usr/local/bin/zsh-5.3.1-dev-0 -i -c exit  0,13s user 0,05s system 94% cpu 0,190 total
+
+0.186 + 0.188 + 0.191 + 0.194 + 0.190 + 0.195 + 0.183 + 0.188 + 0.188 + 0.190 => 1.893
