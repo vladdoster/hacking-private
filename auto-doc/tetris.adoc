@@ -1,0 +1,320 @@
+tetris(1)
+=========
+:compat-mode!:
+
+NAME
+----
+tetris - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ tetris
+ tetris-block-dropped
+ tetris-block-fits
+ tetris-drop
+ tetris-left
+ tetris-new-block
+ tetris-place-block
+ tetris-quit
+ tetris-render-screen
+ tetris-right
+ tetris-rotate
+ tetris-timed-move
+ tetris-timeout
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 67 line(s). Calls functions:
+
+ Script-Body
+ `-- tetris
+     |-- tetris-new-block
+     |   |-- tetris-block-fits
+     |   |-- tetris-place-block
+     |   |-- tetris-quit
+     |   |-- tetris-render-screen
+     |   `-- tetris-timed-move
+     |       `-- tetris-render-screen
+     `-- tetris-timeout
+         |-- tetris-block-dropped
+         |   |-- tetris-new-block
+         |   |   |-- tetris-block-fits
+         |   |   |-- tetris-place-block
+         |   |   |-- tetris-quit
+         |   |   |-- tetris-render-screen
+         |   |   `-- tetris-timed-move
+         |   |       `-- tetris-render-screen
+         |   `-- tetris-place-block
+         |-- tetris-block-fits
+         |-- tetris-place-block
+         `-- tetris-timed-move
+             `-- tetris-render-screen
+
+tetris
+~~~~~~
+
+Has 15 line(s). Calls functions:
+
+ tetris
+ |-- tetris-new-block
+ |   |-- tetris-block-fits
+ |   |-- tetris-place-block
+ |   |-- tetris-quit
+ |   |-- tetris-render-screen
+ |   `-- tetris-timed-move
+ |       `-- tetris-render-screen
+ `-- tetris-timeout
+     |-- tetris-block-dropped
+     |   |-- tetris-new-block
+     |   |   |-- tetris-block-fits
+     |   |   |-- tetris-place-block
+     |   |   |-- tetris-quit
+     |   |   |-- tetris-render-screen
+     |   |   `-- tetris-timed-move
+     |   |       `-- tetris-render-screen
+     |   `-- tetris-place-block
+     |-- tetris-block-fits
+     |-- tetris-place-block
+     `-- tetris-timed-move
+         `-- tetris-render-screen
+
+Uses feature(s): _zle_
+
+Called by:
+
+ Script-Body
+
+tetris-block-dropped
+~~~~~~~~~~~~~~~~~~~~
+
+Has 12 line(s). Calls functions:
+
+ tetris-block-dropped
+ |-- tetris-new-block
+ |   |-- tetris-block-fits
+ |   |-- tetris-place-block
+ |   |-- tetris-quit
+ |   |-- tetris-render-screen
+ |   `-- tetris-timed-move
+ |       `-- tetris-render-screen
+ `-- tetris-place-block
+
+Called by:
+
+ tetris-drop
+ tetris-timeout
+
+tetris-block-fits
+~~~~~~~~~~~~~~~~~
+
+Has 17 line(s). Doesn't call other functions.
+
+Called by:
+
+ tetris-drop
+ tetris-left
+ tetris-new-block
+ tetris-right
+ tetris-rotate
+ tetris-timeout
+
+tetris-drop
+~~~~~~~~~~~
+
+Has 8 line(s). Calls functions:
+
+ tetris-drop
+ |-- tetris-block-dropped
+ |   |-- tetris-new-block
+ |   |   |-- tetris-block-fits
+ |   |   |-- tetris-place-block
+ |   |   |-- tetris-quit
+ |   |   |-- tetris-render-screen
+ |   |   `-- tetris-timed-move
+ |   |       `-- tetris-render-screen
+ |   `-- tetris-place-block
+ |-- tetris-block-fits
+ `-- tetris-place-block
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+tetris-left
+~~~~~~~~~~~
+
+Has 6 line(s). Calls functions:
+
+ tetris-left
+ |-- tetris-block-fits
+ |-- tetris-place-block
+ `-- tetris-timeout
+     |-- tetris-block-dropped
+     |   |-- tetris-new-block
+     |   |   |-- tetris-block-fits
+     |   |   |-- tetris-place-block
+     |   |   |-- tetris-quit
+     |   |   |-- tetris-render-screen
+     |   |   `-- tetris-timed-move
+     |   |       `-- tetris-render-screen
+     |   `-- tetris-place-block
+     |-- tetris-block-fits
+     |-- tetris-place-block
+     `-- tetris-timed-move
+         `-- tetris-render-screen
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+tetris-new-block
+~~~~~~~~~~~~~~~~
+
+Has 13 line(s). Calls functions:
+
+ tetris-new-block
+ |-- tetris-block-fits
+ |-- tetris-place-block
+ |-- tetris-quit
+ |-- tetris-render-screen
+ `-- tetris-timed-move
+     `-- tetris-render-screen
+
+Called by:
+
+ tetris-block-dropped
+ tetris
+
+tetris-place-block
+~~~~~~~~~~~~~~~~~~
+
+Has 10 line(s). Doesn't call other functions.
+
+Called by:
+
+ tetris-block-dropped
+ tetris-drop
+ tetris-left
+ tetris-new-block
+ tetris-right
+ tetris-rotate
+ tetris-timeout
+
+tetris-quit
+~~~~~~~~~~~
+
+Has 9 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_, _zle_
+
+Called by:
+
+ tetris-new-block
+
+tetris-render-screen
+~~~~~~~~~~~~~~~~~~~~
+
+Has 20 line(s). Doesn't call other functions.
+
+Called by:
+
+ tetris-new-block
+ tetris-timed-move
+
+tetris-right
+~~~~~~~~~~~~
+
+Has 6 line(s). Calls functions:
+
+ tetris-right
+ |-- tetris-block-fits
+ |-- tetris-place-block
+ `-- tetris-timeout
+     |-- tetris-block-dropped
+     |   |-- tetris-new-block
+     |   |   |-- tetris-block-fits
+     |   |   |-- tetris-place-block
+     |   |   |-- tetris-quit
+     |   |   |-- tetris-render-screen
+     |   |   `-- tetris-timed-move
+     |   |       `-- tetris-render-screen
+     |   `-- tetris-place-block
+     |-- tetris-block-fits
+     |-- tetris-place-block
+     `-- tetris-timed-move
+         `-- tetris-render-screen
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+tetris-rotate
+~~~~~~~~~~~~~
+
+Has 7 line(s). Calls functions:
+
+ tetris-rotate
+ |-- tetris-block-fits
+ |-- tetris-place-block
+ `-- tetris-timeout
+     |-- tetris-block-dropped
+     |   |-- tetris-new-block
+     |   |   |-- tetris-block-fits
+     |   |   |-- tetris-place-block
+     |   |   |-- tetris-quit
+     |   |   |-- tetris-render-screen
+     |   |   `-- tetris-timed-move
+     |   |       `-- tetris-render-screen
+     |   `-- tetris-place-block
+     |-- tetris-block-fits
+     |-- tetris-place-block
+     `-- tetris-timed-move
+         `-- tetris-render-screen
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+tetris-timed-move
+~~~~~~~~~~~~~~~~~
+
+Has 6 line(s). Calls functions:
+
+ tetris-timed-move
+ `-- tetris-render-screen
+
+Uses feature(s): _zle_
+
+Called by:
+
+ tetris-new-block
+ tetris-timeout
+
+tetris-timeout
+~~~~~~~~~~~~~~
+
+Has 10 line(s). Calls functions:
+
+ tetris-timeout
+ |-- tetris-block-dropped
+ |   |-- tetris-new-block
+ |   |   |-- tetris-block-fits
+ |   |   |-- tetris-place-block
+ |   |   |-- tetris-quit
+ |   |   |-- tetris-render-screen
+ |   |   `-- tetris-timed-move
+ |   |       `-- tetris-render-screen
+ |   `-- tetris-place-block
+ |-- tetris-block-fits
+ |-- tetris-place-block
+ `-- tetris-timed-move
+     `-- tetris-render-screen
+
+Called by:
+
+ tetris-left
+ tetris-right
+ tetris-rotate
+ tetris
+

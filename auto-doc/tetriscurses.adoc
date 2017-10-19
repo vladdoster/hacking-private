@@ -1,0 +1,326 @@
+tetriscurses(1)
+===============
+:compat-mode!:
+
+NAME
+----
+tetriscurses - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ __tetris-block-dropped
+ __tetris-block-fits
+ __tetris-debug
+ __tetris-draw-next-block
+ __tetris-drop
+ __tetris-game-over
+ __tetris-game-over-screen
+ __tetris-help
+ __tetris-left
+ __tetris-new-block
+ __tetris-new-game
+ __tetris-next-block
+ __tetris-place-block
+ __tetris-remove-wins
+ __tetris-render-screen
+ __tetris-right
+ __tetris-rotate
+ __tetris-timeout
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 124 line(s). Calls functions:
+
+ Script-Body
+ |-- __tetris-debug
+ |-- __tetris-game-over-screen
+ |   |-- __tetris-debug
+ |   `-- __tetris-new-game
+ |       |-- __tetris-new-block
+ |       |   |-- __tetris-block-fits
+ |       |   |-- __tetris-draw-next-block
+ |       |   |-- __tetris-game-over
+ |       |   |-- __tetris-next-block
+ |       |   `-- __tetris-place-block
+ |       |-- __tetris-next-block
+ |       `-- __tetris-render-screen
+ |-- __tetris-new-game
+ |   |-- __tetris-new-block
+ |   |   |-- __tetris-block-fits
+ |   |   |-- __tetris-draw-next-block
+ |   |   |-- __tetris-game-over
+ |   |   |-- __tetris-next-block
+ |   |   `-- __tetris-place-block
+ |   |-- __tetris-next-block
+ |   `-- __tetris-render-screen
+ |-- __tetris-remove-wins
+ |-- __tetris-render-screen
+ `-- __tetris-timeout
+     |-- __tetris-block-dropped
+     |   |-- __tetris-new-block
+     |   |   |-- __tetris-block-fits
+     |   |   |-- __tetris-draw-next-block
+     |   |   |-- __tetris-game-over
+     |   |   |-- __tetris-next-block
+     |   |   `-- __tetris-place-block
+     |   |-- __tetris-place-block
+     |   `-- __tetris-render-screen
+     |-- __tetris-block-fits
+     `-- __tetris-place-block
+
+__tetris-block-dropped
+~~~~~~~~~~~~~~~~~~~~~~
+
+Has 22 line(s). Calls functions:
+
+ __tetris-block-dropped
+ |-- __tetris-new-block
+ |   |-- __tetris-block-fits
+ |   |-- __tetris-draw-next-block
+ |   |-- __tetris-game-over
+ |   |-- __tetris-next-block
+ |   `-- __tetris-place-block
+ |-- __tetris-place-block
+ `-- __tetris-render-screen
+
+Called by:
+
+ __tetris-drop
+ __tetris-timeout
+
+__tetris-block-fits
+~~~~~~~~~~~~~~~~~~~
+
+Has 16 line(s). Doesn't call other functions.
+
+Called by:
+
+ __tetris-drop
+ __tetris-left
+ __tetris-new-block
+ __tetris-right
+ __tetris-rotate
+ __tetris-timeout
+
+__tetris-debug
+~~~~~~~~~~~~~~
+
+Has 6 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
+ __tetris-game-over-screen
+
+__tetris-draw-next-block
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 13 line(s). Doesn't call other functions.
+
+Called by:
+
+ __tetris-new-block
+
+__tetris-drop
+~~~~~~~~~~~~~
+
+Has 8 line(s). Calls functions:
+
+ __tetris-drop
+ |-- __tetris-block-dropped
+ |   |-- __tetris-new-block
+ |   |   |-- __tetris-block-fits
+ |   |   |-- __tetris-draw-next-block
+ |   |   |-- __tetris-game-over
+ |   |   |-- __tetris-next-block
+ |   |   `-- __tetris-place-block
+ |   |-- __tetris-place-block
+ |   `-- __tetris-render-screen
+ |-- __tetris-block-fits
+ `-- __tetris-place-block
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+__tetris-game-over
+~~~~~~~~~~~~~~~~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Called by:
+
+ __tetris-new-block
+
+__tetris-game-over-screen
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 21 line(s). Calls functions:
+
+ __tetris-game-over-screen
+ |-- __tetris-debug
+ `-- __tetris-new-game
+     |-- __tetris-new-block
+     |   |-- __tetris-block-fits
+     |   |-- __tetris-draw-next-block
+     |   |-- __tetris-game-over
+     |   |-- __tetris-next-block
+     |   `-- __tetris-place-block
+     |-- __tetris-next-block
+     `-- __tetris-render-screen
+
+Called by:
+
+ Script-Body
+
+__tetris-help
+~~~~~~~~~~~~~
+
+Has 22 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+__tetris-left
+~~~~~~~~~~~~~
+
+Has 4 line(s). Calls functions:
+
+ __tetris-left
+ |-- __tetris-block-fits
+ `-- __tetris-place-block
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+__tetris-new-block
+~~~~~~~~~~~~~~~~~~
+
+Has 9 line(s). Calls functions:
+
+ __tetris-new-block
+ |-- __tetris-block-fits
+ |-- __tetris-draw-next-block
+ |-- __tetris-game-over
+ |-- __tetris-next-block
+ `-- __tetris-place-block
+
+Called by:
+
+ __tetris-block-dropped
+ __tetris-new-game
+
+__tetris-new-game
+~~~~~~~~~~~~~~~~~
+
+Has 7 line(s). Calls functions:
+
+ __tetris-new-game
+ |-- __tetris-new-block
+ |   |-- __tetris-block-fits
+ |   |-- __tetris-draw-next-block
+ |   |-- __tetris-game-over
+ |   |-- __tetris-next-block
+ |   `-- __tetris-place-block
+ |-- __tetris-next-block
+ `-- __tetris-render-screen
+
+Called by:
+
+ Script-Body
+ __tetris-game-over-screen
+
+__tetris-next-block
+~~~~~~~~~~~~~~~~~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Called by:
+
+ __tetris-new-block
+ __tetris-new-game
+
+__tetris-place-block
+~~~~~~~~~~~~~~~~~~~~
+
+Has 9 line(s). Doesn't call other functions.
+
+Called by:
+
+ __tetris-block-dropped
+ __tetris-drop
+ __tetris-left
+ __tetris-new-block
+ __tetris-right
+ __tetris-rotate
+ __tetris-timeout
+
+__tetris-remove-wins
+~~~~~~~~~~~~~~~~~~~~
+
+Has 6 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
+
+__tetris-render-screen
+~~~~~~~~~~~~~~~~~~~~~~
+
+Has 20 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
+ __tetris-block-dropped
+ __tetris-new-game
+
+__tetris-right
+~~~~~~~~~~~~~~
+
+Has 4 line(s). Calls functions:
+
+ __tetris-right
+ |-- __tetris-block-fits
+ `-- __tetris-place-block
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+__tetris-rotate
+~~~~~~~~~~~~~~~
+
+Has 5 line(s). Calls functions:
+
+ __tetris-rotate
+ |-- __tetris-block-fits
+ `-- __tetris-place-block
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+__tetris-timeout
+~~~~~~~~~~~~~~~~
+
+Has 8 line(s). Calls functions:
+
+ __tetris-timeout
+ |-- __tetris-block-dropped
+ |   |-- __tetris-new-block
+ |   |   |-- __tetris-block-fits
+ |   |   |-- __tetris-draw-next-block
+ |   |   |-- __tetris-game-over
+ |   |   |-- __tetris-next-block
+ |   |   `-- __tetris-place-block
+ |   |-- __tetris-place-block
+ |   `-- __tetris-render-screen
+ |-- __tetris-block-fits
+ `-- __tetris-place-block
+
+Called by:
+
+ Script-Body
+
