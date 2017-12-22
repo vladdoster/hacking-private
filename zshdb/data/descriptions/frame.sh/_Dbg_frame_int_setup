@@ -1,0 +1,2 @@
+# Tests for a signed integer parameter and set global retval
+# if everything is okay. Retval is set to 1 on error

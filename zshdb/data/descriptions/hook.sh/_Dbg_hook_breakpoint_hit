@@ -1,0 +1,2 @@
+# Return 0 if we are at a breakpoint position or 1 if not.
+# Sets _Dbg_brkpt_num to the breakpoint number found.

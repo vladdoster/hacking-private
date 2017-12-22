@@ -1,0 +1,7 @@
+# Parse linespec in $1 which should be one of
+#   int
+#   file:line
+#   function-num
+# Return triple (line,  is-function?, filename,) stored in array
+# "word" which the caller should have declared.
+# We return the filename last since that can have embedded blanks.

@@ -1,0 +1,30 @@
+   typeset -i _Dbg_debugged_exit_code=$?
+   _Dbg_old_set_opts=$-
+   (( !_Dbg_debug_debugger )) && set +x +v +u
+   typeset -r -i _Dbg_signum=$1   
+
+   if [[ ${_Dbg_sig_print[$_Dbg_signum]} == "print" ]] || \
+       [[ ${_Dbg_sig_stop[$_Dbg_signum]} == "stop" ]] ; then
+       typeset -r name=$(_Dbg_signum2name $_Dbg_signum)
+       _Dbg_msg "Program received signal $name ($_Dbg_signum)..."
+       if [[ ${_Dbg_sig_show_stack[$_Dbg_signum]} == "showstack" ]] ; then 
+           _Dbg_stack_pos=0
+           ((_Dbg_stack_size = ${#FUNCNAME[@]}))
+           _Dbg_do_backtrace 
+       fi
+   fi
+   if [[ ${_Dbg_sig_stop[$_Dbg_signum]} == "stop" ]] ; then
+   
+       shift
+
+_Dbg_arg=($@) 
+
+       _Dbg_set_debugger_entry
+       _Dbg_hook_enter_debugger 'on receiving a signal' 'noprint'
+return $?
+
+   elif (( _Dbg_sig_old_handler[_Dbg_signum] )) ; then
+       eval ${_Dbg_sig_old_handler[$_Dbg_signum]}
+   fi
+   _Dbg_set_to_return_from_debugger 1
+   return $_Dbg_debugged_exit_code

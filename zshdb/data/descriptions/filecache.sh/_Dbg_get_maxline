@@ -1,0 +1,2 @@
+# Return the maximum line of filename $1. $1 is expected to be
+# read in already and therefore stored in _Dbg_file2canonic.

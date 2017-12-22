@@ -1,0 +1,46 @@
+hist.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+hist.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_history_read
+ _Dbg_history_write
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 10 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_history_read
+~~~~~~~~~~~~~~~~~
+
+Has 3 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_history_write
+~~~~~~~~~~~~~~~~~~
+
+____
+ # Save history file
+____
+
+Has 17 line(s). Doesn't call other functions.
+
+Called by:
+
+ hook.sh/_Dbg_cleanup
+

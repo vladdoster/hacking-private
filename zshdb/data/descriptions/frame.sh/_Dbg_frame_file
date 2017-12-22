@@ -1,0 +1,5 @@
+# Set $_Dbg_frame_filename to be frame file for the call stack at
+# given position $1 or _Dbg_stack_pos if $1 is omitted. If $2 is
+# given, it indicates if we want the basename only. Otherwise the
+# $_Dbg_set_basename setting is used.  0 is returned if no error,
+# nonzero means some sort of error.

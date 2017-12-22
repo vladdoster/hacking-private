@@ -1,0 +1,4 @@
+# Common routine for setup of commands that take a single
+# linespec argument. We assume the following variables 
+# which we store into:
+#  filename, line_number, full_filename

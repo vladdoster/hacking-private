@@ -1,0 +1,63 @@
+columnize.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+columnize.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ columnize
+ print_columns
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 55 line(s). Calls functions:
+
+ Script-Body
+ `-- print_columns
+     `-- columnize
+
+columnize
+~~~~~~~~~
+
+____
+ # columnize a blank-delmited string global "list" with maximum column
+ # width $1, separate columns with $2. The column width defaults to 80
+ # and the column separator is two spaces.  
+____
+
+Has 74 line(s). Doesn't call other functions.
+
+Called by:
+
+ print_columns
+ list.sh/_Dbg_list_columns
+
+print_columns
+~~~~~~~~~~~~~
+
+____
+ #if : ; then
+     
+____
+
+Has 11 line(s). Calls functions:
+
+ print_columns
+ `-- columnize
+
+Called by:
+
+ Script-Body
+

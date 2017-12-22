@@ -1,0 +1,4 @@
+   if ((_Dbg_set_annotate)) ; then
+_Dbg_annotation 'breakpoints' _Dbg_do_info breakpoints
+_Dbg_annotation 'stack'       _Dbg_do_backtrace 3
+   fi

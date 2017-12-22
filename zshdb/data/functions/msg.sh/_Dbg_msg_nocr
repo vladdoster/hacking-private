@@ -1,0 +1,5 @@
+   if [[ -n $_Dbg_fdi ]] && [[ -t $_Dbg_fdi ]] ; then
+builtin echo -n "$@" >&${_Dbg_fdi}
+   else
+builtin echo -n "$@"
+   fi

@@ -1,0 +1,21 @@
+_Dbg_trap_handler
+|-- _Dbg_hook_action_hit
+|   |-- fns.sh/_Dbg_split
+|   `-- save-restore.sh/_Dbg_set_debugger_internal
+|-- _Dbg_hook_breakpoint_hit
+|   `-- fns.sh/_Dbg_split
+|-- _Dbg_hook_enter_debugger
+|   |-- gdb.sh/_Dbg_print_location_and_command
+|   |-- processor.sh/_Dbg_process_commands
+|   `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+|-- break.sh/_Dbg_delete_brkpt_entry
+|-- fns.sh/_Dbg_split
+|-- frame.sh/_Dbg_frame_save_frames
+|-- gdb.sh/_Dbg_print_location_and_command
+|-- journal.sh/_Dbg_source_journal
+|-- journal.sh/_Dbg_write_journal
+|-- msg.sh/_Dbg_msg
+|-- save-restore.sh/_Dbg_set_debugger_entry
+`-- save-restore.sh/_Dbg_set_to_return_from_debugger
+
+18 directories, 0 files

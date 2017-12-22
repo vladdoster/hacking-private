@@ -1,0 +1,8 @@
+typeset -i i; i=$1
+if (( _Dbg_brkpt_counts[i] != 0 )) ; then
+  if (( _Dbg_brkpt_counts[i] == 1 )) ; then
+    _Dbg_printf '    breakpoint already hit 1 time'
+  else
+    _Dbg_printf "    breakpoint already hit %d times" ${_Dbg_brkpt_counts[$i]}
+  fi
+fi

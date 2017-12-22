@@ -1,0 +1,72 @@
+file.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+file.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_adjust_filename
+ _Dbg_resolve_expand_filename
+ _Dbg_tilde_expand_filename
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 6 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_adjust_filename
+~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Either fill out or strip filename as determined by "basename_only"
+ # and annotate settings
+____
+
+Has 8 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_resolve_expand_filename
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #
+ # Resolve $1 to a full file name which exists. First see if filename has been
+ # mentioned in a debugger "file" command. If not and the file name
+ # is a relative name use _Dbg_dir to substitute a relative directory name.
+____
+
+Has 43 line(s). Calls functions:
+
+ _Dbg_resolve_expand_filename
+ `-- msg.sh/_Dbg_errmsg
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_tilde_expand_filename
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # $1 contains the name you want to glob. return 0 if exists and is
+ # readable or 1 if not.
+ # The result will be in variable $filename which is assumed to be
+ # local'd by the caller
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

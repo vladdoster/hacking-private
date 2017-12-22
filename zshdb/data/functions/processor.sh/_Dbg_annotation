@@ -1,0 +1,5 @@
+typeset label="$1"
+shift
+_Dbg_do_print "$label"
+$*
+_Dbg_do_print  ''

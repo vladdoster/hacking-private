@@ -1,0 +1,2 @@
+# Return $2 copies of $1. If successful, $? is 0 and the return value
+# is in result.  Otherwise $? is 1 and result ''

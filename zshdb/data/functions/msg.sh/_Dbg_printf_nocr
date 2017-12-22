@@ -1,0 +1,13 @@
+   typeset format
+   format=$1
+   shift
+   if (( _Dbg_logging )) ; then
+builtin printf "$format" "$@" >>$_Dbg_logfid
+   fi
+   if (( ! _Dbg_logging_redirect )) ; then
+if [[ -n $_Dbg_fdi ]] && [[ -t $_Dbg_fdi ]] ; then
+    builtin printf "$format" "$@" >&${_Dbg_fdi}
+else
+    builtin printf "$format" "$@"
+fi
+   fi

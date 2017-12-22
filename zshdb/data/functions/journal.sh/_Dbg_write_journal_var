@@ -1,0 +1,5 @@
+typeset var_name="$1"
+typeset val
+typeset val_cmd="$val=\${$var_name}"
+eval $val_cmd
+_Dbg_write_journal "${var_name}=${val}"

@@ -1,0 +1,6 @@
+   typeset -r prefix='**'
+   if [[ -n $_Dbg_set_highlight ]] ; then
+_Dbg_msg "$prefix ${_Dbg_ansi_term_underline}$@${_Dbg_ansi_term_normal}"
+   else
+_Dbg_msg "$prefix $@"
+   fi

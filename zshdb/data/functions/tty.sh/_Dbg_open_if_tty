@@ -1,0 +1,16 @@
+   _Dbg_new_fd=-1
+   (( $# != 1 )) && return 1
+   [[ ! -r $1 ]] || [[ ! -w $1 ]] && return 1
+   typeset -i r=1
+   { 
+if exec {_Dbg_new_fd} <> $1 ; then
+    if [[ -t $_Dbg_new_fd  ]] ; then 
+	r=0
+    else
+	exec {_Dbg_new_fd}<&- 
+	_Dbg_new_fd=-1
+    fi
+fi
+   } 2> /dev/null
+
+   return $r

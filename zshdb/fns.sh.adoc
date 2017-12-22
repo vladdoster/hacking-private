@@ -1,0 +1,193 @@
+fns.sh(1)
+=========
+:compat-mode!:
+
+NAME
+----
+fns.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_copies
+ _Dbg_defined
+ _Dbg_esc_dq
+ _Dbg_eval_extract_condition
+ _Dbg_get_typeset_attr
+ _Dbg_linespec_setup
+ _Dbg_onoff
+ _Dbg_parse_linespec
+ _Dbg_set_dol_q
+ _Dbg_split
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 10 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_copies
+~~~~~~~~~~~
+
+____
+ # Return $2 copies of $1. If successful, $? is 0 and the return value
+ # is in result.  Otherwise $? is 1 and result ''
+____
+
+Has 10 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_
+
+Called by:
+
+ processor.sh/_Dbg_process_commands
+
+_Dbg_defined
+~~~~~~~~~~~~
+
+____
+ # _Dbg_defined returns 0 if $1 is a defined variable or nonzero otherwise. 
+____
+
+Has 2 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_esc_dq
+~~~~~~~~~~~
+
+____
+ # Add escapes to a string $1 so that when it is read back using
+ # eval echo "$1" it is the same as echo $1.
+____
+
+Has 1 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_eval_extract_condition
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Removes "[el]if" .. "; then" or "while" .. "; do" or "return .."
+ # leaving resumably the expression part.  This function is called by
+ # the eval?  command where we want to evaluate the expression part in
+ # a source line of code
+____
+
+Has 12 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_get_typeset_attr
+~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # _Dbg_get_typeset_attr echoes a list of all of the functions matching
+ # optional pattern if $1 is nonzero, include debugger functions,
+ # i.e. those whose name starts with an underscore (_Dbg), are included in
+ # the search.  
+ # A grep pattern can be specified to filter function names. If the 
+ # pattern starts with ! we report patterns that don't match.
+____
+
+Has 16 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_linespec_setup
+~~~~~~~~~~~~~~~~~~~
+
+____
+ # Common routine for setup of commands that take a single
+ # linespec argument. We assume the following variables 
+ # which we store into:
+ #  filename, line_number, full_filename
+____
+
+Has 14 line(s). Calls functions:
+
+ _Dbg_linespec_setup
+ |-- _Dbg_parse_linespec
+ |   `-- validate.sh/_Dbg_is_function
+ `-- msg.sh/_Dbg_errmsg
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_onoff
+~~~~~~~~~~
+
+____
+ # Print "on" or "off" depending on whether $1 is true (0) or false
+ # (nonzero).
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_parse_linespec
+~~~~~~~~~~~~~~~~~~~
+
+____
+ # Parse linespec in $1 which should be one of
+ #   int
+ #   file:line
+ #   function-num
+ # Return triple (line,  is-function?, filename,) stored in array
+ # "word" which the caller should have declared.
+ # We return the filename last since that can have embedded blanks.
+____
+
+Has 21 line(s). Calls functions:
+
+ _Dbg_parse_linespec
+ `-- validate.sh/_Dbg_is_function
+
+Called by:
+
+ _Dbg_linespec_setup
+
+_Dbg_set_dol_q
+~~~~~~~~~~~~~~
+
+____
+ # Set $? to $1 if supplied or the saved entry value of $?. 
+____
+
+Has 1 line(s). Doesn't call other functions.
+
+Called by:
+
+ set-d-vars.sh/Script-Body
+
+_Dbg_split
+~~~~~~~~~~
+
+____
+ # Split string $1 into an array using delimiter $2 to split on
+ # The result is put in variable split_result
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Called by:
+
+ frame.sh/_Dbg_frame_adjust
+ frame.sh/_Dbg_frame_file
+ frame.sh/_Dbg_frame_lineno
+ frame.sh/_Dbg_frame_save_frames
+ gdb.sh/_Dbg_print_frame
+ gdb.sh/_Dbg_print_location
+ hook.sh/_Dbg_hook_action_hit
+ hook.sh/_Dbg_hook_breakpoint_hit
+ hook.sh/_Dbg_trap_handler
+

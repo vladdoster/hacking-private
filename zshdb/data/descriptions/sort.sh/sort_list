@@ -1,0 +1,3 @@
+# We use the recursive quicksort of Tony Hoare with inline array
+# swapping to partition the array. The partition item is the middle
+# array item. String comparison is used.  The sort is not stable.

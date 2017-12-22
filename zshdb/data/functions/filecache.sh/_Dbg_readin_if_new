@@ -1,0 +1,12 @@
+   (( $# != 1 )) && return 1
+   typeset filename="$1"
+   _Dbg_set_source_array_var "$filename"
+   if [[ -z "$fullname" ]] ; then
+_Dbg_readin "$filename"
+typeset rc=$?
+set +xv
+(( $? != 0 )) && return $rc
+[[ -z $fullname ]] && return 1
+_Dbg_set_source_array_var "$filename" || return $?
+   fi
+   return 0

@@ -1,0 +1,2 @@
+# Things we do when coming back from a nested shell.
+# "shell", and "debug" create nested shells.

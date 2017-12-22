@@ -1,0 +1,2 @@
+# Return the signal number for a given signal name $1. The resulting number
+# is in _Dbg_return

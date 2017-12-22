@@ -1,0 +1,4 @@
+(($# > 1)) && return 2
+typeset -i pos=${1:-$_Dbg_stack_pos}
+_Dbg_frame_last_lineno="${BASH_LINENO[pos]}"
+return 0

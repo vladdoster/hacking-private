@@ -1,0 +1,22 @@
+   if (($# > 1)); then
+     _Dbg_errmsg "got $# parameters, but need 0 or 1."
+     return 2
+   fi
+   typeset -i pos=${1:-${_Dbg_stack_pos}}
+   typeset file_line="${_Dbg_frame_stack[$pos]}"
+
+   typeset split_result; _Dbg_split "$file_line" ':'
+   typeset filename="${split_result[0]}"
+   typeset -i line="${split_result[1]}"
+   if [[ -n $filename ]] ; then
+_Dbg_readin "${filename}"
+if ((_Dbg_set_basename)); then
+    filename=${filename##*/}
+    file_line="${filename}:${line}"
+fi
+if [[ $filename == $_Dbg_func_stack[1] ]] ; then
+    _Dbg_msg "($file_line): -- nope"
+else
+    _Dbg_msg "($file_line):"
+fi
+   fi

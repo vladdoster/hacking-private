@@ -1,0 +1,10 @@
+   (( 0 == $# )) && return 1
+   typeset needed_fn=$1
+   typeset -i include_system=${2:-0}
+   [[ ${needed_fn[0,0]} == '_' ]] && ((!include_system)) && {
+return 1
+   }
+   typeset fn
+   fn=$(declare -f $needed_fn 2>&1)
+   [[ -n "$fn" ]]
+   return $?

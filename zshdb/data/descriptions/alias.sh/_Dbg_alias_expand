@@ -1,0 +1,2 @@
+# Expand alias $1. The result is set in variable expanded_alias which
+# could be declared local in the caller.

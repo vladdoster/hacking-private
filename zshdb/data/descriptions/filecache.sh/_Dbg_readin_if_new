@@ -1,0 +1,2 @@
+# Read in file $1 unless it has already been read in.
+# 0 is returned if everything went ok.

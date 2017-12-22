@@ -1,0 +1,7 @@
+   if ((1 == CURRENT)) ; then
+compadd -- ${(ki)_Dbg_debugger_commands[@]} ${(ki)_Dbg_aliases[@]}
+   elif ((2 == CURRENT)) ; then
+_Dbg_complete_level_1 ${words[0]}
+   elif ((3 == CURRENT)) ; then
+_Dbg_complete_level_2 "${words[0]}_${words[1]}"
+   fi

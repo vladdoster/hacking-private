@@ -1,0 +1,21 @@
+   if (($# < 2)) ; then
+_Dbg_errmsg "Expecting at least two parameters. Got: ${#}."
+return 1
+   fi
+   typeset -i on=$1
+   typeset en_dis=$2
+   shift; shift
+
+   typeset to_go="$@"
+   typeset i
+   for i in $to_go ; do
+case $i in
+[0-9]* )
+	_Dbg_enable_disable_display $on $en_dis $i
+	;;
+* )
+	_Dbg_errmsg "Invalid entry number $i skipped"
+	;;
+esac
+   done
+   return 0

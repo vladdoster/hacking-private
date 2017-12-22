@@ -1,0 +1,41 @@
+info-help.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+info-help.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_info_help
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 3 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_info_help
+~~~~~~~~~~~~~~
+
+Has 65 line(s). Calls functions:
+
+ _Dbg_info_help
+ |-- list.sh/_Dbg_list_columns
+ |-- msg.sh/_Dbg_errmsg
+ `-- msg.sh/_Dbg_msg
+
+Uses feature(s): _source_
+
+Called by:
+
+ help.sh/_Dbg_help_info
+

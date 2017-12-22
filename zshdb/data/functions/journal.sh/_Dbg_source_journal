@@ -1,0 +1,4 @@
+if [ -r $_Dbg_journal ] ; then
+  . $_Dbg_journal
+  (( ZSH_SUBSHELL == 0 )) && _Dbg_erase_journals
+fi

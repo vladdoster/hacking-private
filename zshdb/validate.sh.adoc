@@ -1,0 +1,70 @@
+validate.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+validate.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_is_alias
+ _Dbg_is_function
+ _Dbg_is_int
+ _Dbg_is_signed_int
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 1 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_is_alias
+~~~~~~~~~~~~~
+
+____
+ # _Dbg_is_alias returns 0 if $1 is an alias or nonzero otherwise. 
+____
+
+Has 5 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_is_function
+~~~~~~~~~~~~~~~~
+
+Has 10 line(s). Doesn't call other functions.
+
+Called by:
+
+ fns.sh/_Dbg_parse_linespec
+
+_Dbg_is_int
+~~~~~~~~~~~
+
+____
+ # _Dbg_is_int returns 0 if $1 is an integer or nonzero otherwise. 
+____
+
+Has 6 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_is_signed_int
+~~~~~~~~~~~~~~~~~~
+
+____
+ # _Dbg_is_signed_int returns 0 if $1 is an integer or nonzero otherwise. 
+____
+
+Has 6 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

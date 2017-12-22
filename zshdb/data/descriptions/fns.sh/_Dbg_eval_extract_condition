@@ -1,0 +1,4 @@
+# Removes "[el]if" .. "; then" or "while" .. "; do" or "return .."
+# leaving resumably the expression part.  This function is called by
+# the eval?  command where we want to evaluate the expression part in
+# a source line of code

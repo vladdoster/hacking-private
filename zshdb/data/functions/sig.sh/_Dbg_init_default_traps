@@ -1,0 +1,4 @@
+_Dbg_init_trap ILL    "print" "showstack" "stop" 
+_Dbg_init_trap INT    "print" "showstack" "stop" 
+_Dbg_init_trap QUIT   "print" "showstack" "stop" 
+_Dbg_init_trap TERM   "print" "showstack" "stop"

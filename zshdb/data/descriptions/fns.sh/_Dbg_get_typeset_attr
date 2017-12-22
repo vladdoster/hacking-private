@@ -1,0 +1,6 @@
+# _Dbg_get_typeset_attr echoes a list of all of the functions matching
+# optional pattern if $1 is nonzero, include debugger functions,
+# i.e. those whose name starts with an underscore (_Dbg), are included in
+# the search.  
+# A grep pattern can be specified to filter function names. If the 
+# pattern starts with ! we report patterns that don't match.

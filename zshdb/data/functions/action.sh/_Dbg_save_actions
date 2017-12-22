@@ -1,0 +1,7 @@
+typeset -p _Dbg_action_line         >> $_Dbg_statefile
+typeset -p _Dbg_action_file         >> $_Dbg_statefile
+typeset -p _Dbg_action_enable       >> $_Dbg_statefile
+typeset -p _Dbg_action_stmt         >> $_Dbg_statefile
+typeset -p _Dbg_action_max          >> $_Dbg_statefile
+typeset -p _Dbg_action_file2linenos >> $_Dbg_statefile
+typeset -p _Dbg_action_file2action  >> $_Dbg_statefile

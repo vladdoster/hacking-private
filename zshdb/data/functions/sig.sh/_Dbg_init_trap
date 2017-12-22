@@ -1,0 +1,13 @@
+   typeset -r name=$1
+   typeset -i -r signum=$(_Dbg_name2signum $name)
+   
+   _Dbg_sig_print[$signum]=$2;
+   _Dbg_sig_show_stack[$signum]=${3:-'nostack'};
+   _Dbg_sig_stop[$signum]=${4:-'nostop'};
+
+   if (( signum == 0 )) ; then
+trap '_Dbg_exit_handler "$ZSH_DEBUG_COMMAND"' EXIT
+   else
+typeset trap_cmd="trap '_Dbg_sig_handler $signum \"\$ZSH_DEBUG_COMMAND\" \"\$@\"' $name"
+eval $trap_cmd
+   fi

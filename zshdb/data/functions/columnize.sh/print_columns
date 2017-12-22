@@ -1,0 +1,11 @@
+	setopt ksharrays sh_word_split
+	typeset -a columnized
+PS4='(%x:%I): [%?] zsh+ 
+'
+        columnize $1 "$2"
+	typeset -i i
+	echo '==============='
+	for ((i=0; i<${#columnized[@]}; i++)) ; do 
+	    print "${columnized[$i]}"
+	done
+	unsetopt shwordsplit

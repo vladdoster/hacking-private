@@ -1,0 +1,44 @@
+   typeset filename
+   if (($# != 0)) ; then
+filename="$1"
+   else
+_Dbg_frame_file
+filename="$_Dbg_frame_filename"
+   fi
+
+   typeset -i line_count=0
+
+   typeset -i next;
+   next=${#_Dbg_filenames[@]}
+   _Dbg_source_array_var="_Dbg_source_${next}"
+   if [[ -n $_Dbg_set_highlight ]] ; then
+_Dbg_highlight_array_var="_Dbg_highlight_${next}"
+   fi
+
+   if [[ -z $filename ]] || [[ $filename == "$_Dbg_bogus_file" ]] ; then
+eval "${_Dbg_source_array_var}[0]=\"$Dbg_EXECUTION_STRING\""
+   else
+fullname=$(_Dbg_resolve_expand_filename "$filename")
+if [[ -r $fullname ]] ; then
+    _Dbg_file2canonic[$filename]="$fullname"
+    _Dbg_file2canonic[$fullname]="$fullname"
+    eval "$_Dbg_source_array_var=( \"\${(f@)mapfile[$fullname]}\" )"
+    if [[ -n $_Dbg_set_highlight ]] ; then
+	opts="--bg=${_Dbg_set_highlight}"
+	if [[ -n $_Dbg_set_style ]] ; then
+	    opts="--style=${_Dbg_set_style}"
+	fi
+	highlight_cmd="${_Dbg_libdir}/lib/term-highlight.py $opts $fullname"
+	tempfile=$($highlight_cmd 2>/dev/null)
+	if (( 0  == $? )) ; then
+	    eval "$_Dbg_highlight_array_var=( \"\${(f@)mapfile[$tempfile]}\" )"
+	fi
+	[[ -r $tempfile ]] && rm $tempfile
+
+    fi
+else
+    return 1
+fi
+   fi
+   _Dbg_filenames[$fullname]=$_Dbg_source_array_var;
+   return 0

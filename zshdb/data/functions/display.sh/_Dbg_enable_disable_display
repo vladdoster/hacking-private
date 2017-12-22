@@ -1,0 +1,13 @@
+typeset -i on=$1
+typeset en_dis=$2
+typeset -i i=$3
+if [ -n "${_Dbg_disp_exp[$i]}" ] ; then
+  if [[ ${_Dbg_disp_enable[$i]} == $on ]] ; then
+    _Dbg_errmsg "Display entry $i already ${en_dis}, so nothing done."
+  else
+    _Dbg_write_journal_eval "_Dbg_disp_enable[$i]=$on"
+    _Dbg_msg "Display entry $i $en_dis."
+  fi
+else
+  _Dbg_errmsg "Display entry $i doesn't exist, so nothing done."
+fi

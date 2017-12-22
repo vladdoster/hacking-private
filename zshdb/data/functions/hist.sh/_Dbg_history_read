@@ -1,0 +1,3 @@
+   if ((_Dbg_history_save)) && [[ -r $_Dbg_histfile ]] ; then
+builtin fc -R $_Dbg_histfile
+   fi

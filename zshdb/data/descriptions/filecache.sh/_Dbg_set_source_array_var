@@ -1,0 +1,3 @@
+# Set _Dbg_source_array_var to the variable that contains file lines
+# for $1. Variable "fullname" will contain the expanded full filename for $1.
+# 0 is returned if everything went ok.

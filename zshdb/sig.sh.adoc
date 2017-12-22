@@ -1,0 +1,175 @@
+sig.sh(1)
+=========
+:compat-mode!:
+
+NAME
+----
+sig.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_err_handler
+ _Dbg_exit_handler
+ _Dbg_init_default_traps
+ _Dbg_init_trap
+ _Dbg_name2signum
+ _Dbg_save_handler
+ _Dbg_sig_handler
+ _Dbg_signum2name
+ _Dbg_subexit_handler
+ _Dbg_subst_handler_var
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 12 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_err_handler
+~~~~~~~~~~~~~~~~
+
+Has 5 line(s). Calls functions:
+
+ _Dbg_err_handler
+ |-- msg.sh/_Dbg_msg
+ `-- processor.sh/_Dbg_process_commands
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_exit_handler
+~~~~~~~~~~~~~~~~~
+
+____
+ # Debugger exit handler. Don't really exit - but go back the debugger 
+ # command loop
+____
+
+Has 33 line(s). Calls functions:
+
+ _Dbg_exit_handler
+ |-- msg.sh/_Dbg_msg
+ `-- processor.sh/_Dbg_process_commands
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_init_default_traps
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 4 line(s). Calls functions:
+
+ _Dbg_init_default_traps
+ `-- _Dbg_init_trap
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_init_trap
+~~~~~~~~~~~~~~
+
+____
+ # Set up generic trap handler. Arguments are: 
+ # NAME print showstack stop passthrough
+____
+
+Has 13 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_, _trap_
+
+Called by:
+
+ _Dbg_init_default_traps
+
+_Dbg_name2signum
+~~~~~~~~~~~~~~~~
+
+____
+ # Return the signal number for a given signal name $1. The resulting number
+ # is in _Dbg_return
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Uses feature(s): _kill_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_save_handler
+~~~~~~~~~~~~~~~~~
+
+____
+ # Save value of handler variable _Dbg_old_$sig
+____
+
+Has 10 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_sig_handler
+~~~~~~~~~~~~~~~~
+
+____
+ # Since the command loop may be called we need to be careful about
+ # using variable names that would be exposed to the user. 
+____
+
+Has 30 line(s). Calls functions:
+
+ _Dbg_sig_handler
+ |-- hook.sh/_Dbg_hook_enter_debugger
+ |-- msg.sh/_Dbg_msg
+ |-- save-restore.sh/_Dbg_set_debugger_entry
+ `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_signum2name
+~~~~~~~~~~~~~~~~
+
+____
+ # Echo the name for a given signal number $1. The resulting name
+ # is in _Dbg_return
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Uses feature(s): _kill_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_subexit_handler
+~~~~~~~~~~~~~~~~~~~~
+
+Has 7 line(s). Calls functions:
+
+ _Dbg_subexit_handler
+ `-- journal.sh/_Dbg_source_journal
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_subst_handler_var
+~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Adjust handler variables to take into account the fact that when we
+ # call the handler we will have added another call before the user's
+ # handler.
+____
+
+Has 10 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

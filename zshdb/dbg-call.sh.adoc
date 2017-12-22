@@ -1,0 +1,42 @@
+dbg-call.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+dbg-call.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_debugger
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 1 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_debugger
+~~~~~~~~~~~~~
+
+____
+ # Any parameters after the first one are exec'd. In this way you can
+ # force specific options to get set.
+____
+
+Has 24 line(s). Calls functions:
+
+ _Dbg_debugger
+ `-- journal.sh/_Dbg_write_journal
+
+Uses feature(s): _eval_, _trap_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

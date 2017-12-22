@@ -1,0 +1,110 @@
+action.sh(1)
+============
+:compat-mode!:
+
+NAME
+----
+action.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_list_action
+ _Dbg_save_actions
+ _Dbg_set_action
+ _Dbg_unset_action
+ _Dbg_unset_action_arrays
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 9 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_list_action
+~~~~~~~~~~~~~~~~
+
+____
+ # list actions
+____
+
+Has 17 line(s). Calls functions:
+
+ _Dbg_list_action
+ |-- msg.sh/_Dbg_msg
+ |-- msg.sh/_Dbg_printf
+ `-- msg.sh/_Dbg_section
+
+Called by:
+
+ processor.sh/_Dbg_onecmd
+
+_Dbg_save_actions
+~~~~~~~~~~~~~~~~~
+
+____
+ #========================= FUNCTIONS   ============================#
+____
+
+Has 7 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_set_action
+~~~~~~~~~~~~~~~
+
+____
+ # Internal routine to a set action unconditonally.
+____
+
+Has 30 line(s). Calls functions:
+
+ _Dbg_set_action
+ |-- journal.sh/_Dbg_write_journal
+ `-- msg.sh/_Dbg_msg
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_unset_action
+~~~~~~~~~~~~~~~~~
+
+____
+ # Internal routine to delete an action by file/line.
+ # 0 is returned if we were able to unset the action.
+ # Nonzero is returned otherwize.
+____
+
+Has 24 line(s). Calls functions:
+
+ _Dbg_unset_action
+ |-- _Dbg_unset_action_arrays
+ |   `-- journal.sh/_Dbg_write_journal_eval
+ `-- msg.sh/_Dbg_errmsg
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_unset_action_arrays
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Internal routine to unset the actual action arrays
+ # 0 is returned if successful
+____
+
+Has 8 line(s). Calls functions:
+
+ _Dbg_unset_action_arrays
+ `-- journal.sh/_Dbg_write_journal_eval
+
+Called by:
+
+ _Dbg_unset_action
+

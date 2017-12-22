@@ -1,0 +1,22 @@
+   typeset -i lineno
+   if (( $# == 0 )); then
+_Dbg_frame_lineno
+lineno=$_Dbg_frame_last_lineno
+   else
+lineno=$1
+shift
+   fi
+   typeset filename
+   _Dbg_frame_file
+   if (( $# == 0 )) ; then
+filename="$_Dbg_frame_filename"
+   else
+filename="$_Dbg_frame_filename"
+filename="$1"
+   fi
+ _Dbg_readin_if_new "$filename"
+ if [[ -n $_Dbg_set_highlight ]] ; then
+     eval "source_line=\${$_Dbg_highlight_array_var[lineno-1]}"
+ else
+     eval "source_line=\${$_Dbg_source_array_var[$lineno-1]}"
+ fi

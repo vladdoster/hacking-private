@@ -1,0 +1,5 @@
+   if (( $# == 2 )) ; then
+_Dbg_errmsg "Undefined $1 subcommand \"$2\". Try \"help $1\"."
+   else
+_Dbg_errmsg "Undefined command \"$1\". Try \"help\"."
+   fi

@@ -1,0 +1,17 @@
+   typeset ignore=${1:-0}
+   typeset -i i
+   typeset -i j=$ignore
+   typeset -i n=${#funcfiletrace[@]}
+   _Dbg_frame_stack=()
+   _Dbg_func_stack=()
+   for ((i=0; j < n; i++, j++)) ; do
+_Dbg_func_stack[i]=${funcstack[j]}
+_Dbg_frame_stack[i]=${funcfiletrace[j]}
+   done
+   (( ${#_Dbg_func_stack[@]} > 1 )) && shift _Dbg_func_stack
+   _Dbg_stack_pos=0
+   typeset file_line="${_Dbg_frame_stack[0]}"
+   typeset -a split_result; _Dbg_split "$file_line" ':'
+   _Dbg_frame_last_filename=${split_result[0]}
+   _Dbg_frame_last_lineno=${split_result[1]}
+   _Dbg_listline=-1

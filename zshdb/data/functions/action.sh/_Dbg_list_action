@@ -1,0 +1,17 @@
+ if [ ${#_Dbg_action_line[@]} != 0 ]; then
+   _Dbg_msg "Actions at following places:"
+   typeset -i i
+
+   _Dbg_section "Num Enb Stmt               file:line"
+   for (( i=1; (( i <= _Dbg_action_max )) ; i++ )) ; do
+     if [[ -n ${_Dbg_action_line[$i]} ]] ; then
+typeset source_file=${_Dbg_action_file[$i]}
+source_file=$(_Dbg_adjust_filename "$source_file")
+_Dbg_printf "%-3d %3d %-18s %s:%s" $i ${_Dbg_action_enable[$i]} \
+  "${_Dbg_action_stmt[$i]}" \
+  $source_file ${_Dbg_action_line[$i]}
+     fi
+   done
+ else
+   _Dbg_msg "No actions have been set."
+ fi

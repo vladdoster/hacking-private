@@ -1,0 +1,10 @@
+result=''
+(( $# < 2 )) && return 1
+typeset -r string="$1"
+typeset -i count=$2 || return 2
+(( count > 0 )) || return 3
+result=$(builtin printf "%${count}s" ' ')
+typeset cmd
+cmd="result=\${result// /$string}"
+eval $cmd
+return 0

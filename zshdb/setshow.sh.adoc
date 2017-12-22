@@ -1,0 +1,66 @@
+setshow.sh(1)
+=============
+:compat-mode!:
+
+NAME
+----
+setshow.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_help_set_onoff
+ _Dbg_set_onoff
+ _Dbg_show_onoff
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 1 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_help_set_onoff
+~~~~~~~~~~~~~~~~~~~
+
+Has 12 line(s). Calls functions:
+
+ _Dbg_help_set_onoff
+ `-- msg.sh/_Dbg_msg
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_set_onoff
+~~~~~~~~~~~~~~
+
+____
+ # Sets variable _Dbg_$2 to value $1 and then runs _Dbg_do_show $2.
+____
+
+Has 15 line(s). Calls functions:
+
+ _Dbg_set_onoff
+ |-- journal.sh/_Dbg_write_journal_eval
+ `-- msg.sh/_Dbg_msg
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_show_onoff
+~~~~~~~~~~~~~~~
+
+Has 11 line(s). Calls functions:
+
+ _Dbg_show_onoff
+ `-- msg.sh/_Dbg_msg
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

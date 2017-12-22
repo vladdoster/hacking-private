@@ -1,0 +1,162 @@
+hook.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+hook.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_cleanup
+ _Dbg_cleanup2
+ _Dbg_hook_action_hit
+ _Dbg_hook_breakpoint_hit
+ _Dbg_hook_enter_debugger
+ _Dbg_hook_error_handler
+ _Dbg_trap_handler
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 8 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_cleanup
+~~~~~~~~~~~~
+
+____
+ # Cleanup routine: erase temp files before exiting.
+____
+
+Has 8 line(s). Calls functions:
+
+ _Dbg_cleanup
+ |-- hist.sh/_Dbg_history_write
+ |-- journal.sh/_Dbg_erase_journals
+ `-- save-restore.sh/_Dbg_restore_user_vars
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_cleanup2
+~~~~~~~~~~~~~
+
+____
+ # Follows bashdb which reports:
+ # Somehow we can't put this in _Dbg_cleanup and have it work.
+ # I am not sure why.
+____
+
+Has 4 line(s). Calls functions:
+
+ _Dbg_cleanup2
+ `-- journal.sh/_Dbg_erase_journals
+
+Uses feature(s): _trap_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_hook_action_hit
+~~~~~~~~~~~~~~~~~~~~
+
+Has 25 line(s). Calls functions:
+
+ _Dbg_hook_action_hit
+ |-- fns.sh/_Dbg_split
+ `-- save-restore.sh/_Dbg_set_debugger_internal
+
+Uses feature(s): _eval_
+
+Called by:
+
+ _Dbg_trap_handler
+
+_Dbg_hook_breakpoint_hit
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Return 0 if we are at a breakpoint position or 1 if not.
+ # Sets _Dbg_brkpt_num to the breakpoint number found.
+____
+
+Has 21 line(s). Calls functions:
+
+ _Dbg_hook_breakpoint_hit
+ `-- fns.sh/_Dbg_split
+
+Uses feature(s): _eval_
+
+Called by:
+
+ _Dbg_trap_handler
+
+_Dbg_hook_enter_debugger
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Go into the command loop
+____
+
+Has 5 line(s). Calls functions:
+
+ _Dbg_hook_enter_debugger
+ |-- gdb.sh/_Dbg_print_location_and_command
+ |-- processor.sh/_Dbg_process_commands
+ `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+
+Called by:
+
+ _Dbg_trap_handler
+ sig.sh/_Dbg_sig_handler
+
+_Dbg_hook_error_handler
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 2 line(s). Calls functions:
+
+ _Dbg_hook_error_handler
+ `-- journal.sh/_Dbg_write_journal_eval
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_trap_handler
+~~~~~~~~~~~~~~~~~
+
+____
+ # This is the main hook routine that gets called before every statement.
+ # It's the function called via trap DEBUG.
+____
+
+Has 100 line(s). Calls functions:
+
+ _Dbg_trap_handler
+ |-- _Dbg_hook_action_hit
+ |   |-- fns.sh/_Dbg_split
+ |   `-- save-restore.sh/_Dbg_set_debugger_internal
+ |-- _Dbg_hook_breakpoint_hit
+ |   `-- fns.sh/_Dbg_split
+ |-- _Dbg_hook_enter_debugger
+ |   |-- gdb.sh/_Dbg_print_location_and_command
+ |   |-- processor.sh/_Dbg_process_commands
+ |   `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+ |-- break.sh/_Dbg_delete_brkpt_entry
+ |-- fns.sh/_Dbg_split
+ |-- frame.sh/_Dbg_frame_save_frames
+ |-- gdb.sh/_Dbg_print_location_and_command
+ |-- journal.sh/_Dbg_source_journal
+ |-- journal.sh/_Dbg_write_journal
+ |-- msg.sh/_Dbg_msg
+ |-- save-restore.sh/_Dbg_set_debugger_entry
+ `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+
+Uses feature(s): _trap_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

@@ -1,0 +1,13 @@
+subcmd=$1
+text=$2
+_Dbg_matches=()
+typeset list=''
+cmd="list=\${(k)_Dbg_debugger_${subcmd}_commands[@]}"
+eval $cmd
+local -i last=0
+for word in $list ; do
+    if [[ ${word#$text} != $word ]] ; then
+        _Dbg_matches[$last]="$subcmd $word"
+        ((last++))
+    fi
+done

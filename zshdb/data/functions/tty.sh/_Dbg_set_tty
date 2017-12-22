@@ -1,0 +1,11 @@
+if (( $# != 1 )) ; then
+  _Dbg_errmsg "Need a single tty parameter; got $# args instead."
+  return 1
+fi
+typeset -i _Dbg_new_fd
+if _Dbg_open_if_tty $1 ; then
+    _Dbg_fdi=$_Dbg_new_fd
+    _Dbg_fd[-1]=$_Dbg_fdi
+else
+    _Dbg_errmsg "$1 is not reputed to be a tty."
+fi

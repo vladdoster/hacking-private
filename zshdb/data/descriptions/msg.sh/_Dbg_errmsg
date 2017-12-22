@@ -1,0 +1,2 @@
+# Add escapes to a string $1 so that when it is read back using
+# eval echo "$1" it is the same as echo $1.

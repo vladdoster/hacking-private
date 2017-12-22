@@ -1,0 +1,5 @@
+# Read $1 into _Dbg_source_*n* array where *n* is an entry in
+# _Dbg_filenames.  Variable _Dbg_source_array_var will be set to
+# _Dbg_source_*n* and filename will be saved in array
+# _Dbg_filenames. fullname is set to the expanded filename
+# 0 is returned if everything went ok.

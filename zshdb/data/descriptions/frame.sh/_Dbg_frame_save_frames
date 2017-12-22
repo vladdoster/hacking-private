@@ -1,0 +1,3 @@
+# Save stack frames in array _Dbg_frame_stack ignoring the
+# first (most recent) $1 of these. We assume "setopt ksharrarrys"
+# (origin 0) has beeen set previously.

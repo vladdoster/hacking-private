@@ -1,0 +1,8 @@
+(( $# != 1 )) && return 1
+typeset -i del=$1
+_Dbg_write_journal_eval "_Dbg_action_enable[$del]=''"
+_Dbg_write_journal_eval "_Dbg_action_file[$del]=''"
+_Dbg_write_journal_eval "_Dbg_action_line[$del]=''"
+_Dbg_write_journal_eval "_Dbg_action_stmt[$del]=''"
+((_Dbg_action_count--))
+return 0

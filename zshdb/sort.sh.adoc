@@ -1,0 +1,48 @@
+sort.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+sort.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ sort_list
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 19 line(s). Calls functions:
+
+ Script-Body
+ `-- sort_list
+
+sort_list
+~~~~~~~~~
+
+____
+ # We use the recursive quicksort of Tony Hoare with inline array
+ # swapping to partition the array. The partition item is the middle
+ # array item. String comparison is used.  The sort is not stable.
+____
+
+Has 26 line(s). Calls functions:
+
+ sort_list
+
+Called by:
+
+ Script-Body
+ help.sh/_Dbg_help_info
+ help.sh/_Dbg_help_set
+ help.sh/_Dbg_help_show
+

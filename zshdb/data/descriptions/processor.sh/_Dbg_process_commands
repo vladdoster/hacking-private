@@ -1,0 +1,6 @@
+# The main debugger command reading loop.
+#
+# Note: We have to be careful here in naming "local" variables. In contrast
+# to other places in the debugger, because of the read/eval loop, they are
+# in fact seen by those using the debugger. So in contrast to other "local"s
+# in the debugger, we prefer to preface these with _Dbg_.

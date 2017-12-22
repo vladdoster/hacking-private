@@ -1,0 +1,54 @@
+ if (($# == 0)) ; then
+   _Dbg_errmsg 'Expecting a list of breakpoint/watchpoint numbers. Got none.'
+   return 1
+ fi
+ typeset -i on=$1
+ typeset en_dis=$2
+ shift; shift
+
+ if [[ $1 == 'display' ]] ; then
+   shift
+   typeset to_go="$@"
+   typeset i
+   for i in $to_go ; do
+     if [[ $i == [0-9]* ]] ; then
+  _Dbg_enable_disable_display $on $en_dis $i
+     else
+  _Dbg_errmsg "Invalid entry number skipped: $i"
+     fi
+   done
+   return 0
+ elif [[ $1 == 'action' ]] ; then
+   shift
+   to_go="$@"
+   typeset i
+   for i in $to_go ; do
+     if [[ $i == [0-9]* ]] ; then
+  _Dbg_enable_disable_action $on $en_dis $i
+     else
+  _Dbg_errmsg "Invalid entry number skipped: $i"
+     fi
+   done
+   return 0
+ elif [[ $1 == 'breakpoints' ]] ; then
+   shift
+   to_go="$@"
+   if (( 0 == $# )) ; then
+to_go=$(_Dbg_breakpoint_list)
+   fi
+ else
+   to_go="$@"
+   if (( 0 == $# )) ; then
+to_go=$(_Dbg_breakpoint_list)
+   fi
+ fi
+
+ typeset i
+ for i in $to_go ; do
+     if [[ $i == [0-9]* ]] ; then
+         _Dbg_enable_disable_brkpt $on $en_dis $i
+     else
+  _Dbg_errmsg "Invalid entry number skipped: $i"
+     fi
+ done
+ return 0

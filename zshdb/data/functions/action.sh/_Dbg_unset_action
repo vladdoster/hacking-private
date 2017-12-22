@@ -1,0 +1,24 @@
+   (( $# == 2 )) || return 1
+   typeset -r  filename="$1"
+   $(_Dbg_is_int "$2") || return 1
+   typeset -i  lineno=$2
+   typeset     fullname
+   fullname=$(_Dbg_expand_filename "$filename")
+   typeset -a linenos
+   eval "linenos=(${_Dbg_action_file2linenos[$fullname]})"
+   typeset -a action_nos
+   eval "action_nos=(${_Dbg_action_file2action[$fullname]})"
+
+   typeset -i i
+   for ((i=0; i < ${#linenos[@]}; i++)); do
+if (( linenos[i] == lineno )) ; then
+    typeset -i action_num
+    (( action_num = action_nos[i] ))
+    _Dbg_unset_action_arrays $action_num
+    linenos[i]=()
+    _Dbg_action_file2linenos[$fullname]=${linenos[@]}
+    return 0
+fi
+   done
+   _Dbg_errmsg "No action found in file ${filename}, line $lineno."
+   return 1

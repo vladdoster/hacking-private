@@ -1,0 +1,3 @@
+# Redirect input and output to tty $1
+# Stéphane Chazelas also suggests considering
+## clone $tty

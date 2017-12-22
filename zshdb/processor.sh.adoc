@@ -1,0 +1,124 @@
+processor.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+processor.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_annotation
+ _Dbg_onecmd
+ _Dbg_postcmd
+ _Dbg_preloop
+ _Dbg_process_commands
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 18 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_annotation
+~~~~~~~~~~~~~~~
+
+____
+ # Run a debugger command "annotating" the output
+____
+
+Has 5 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_postcmd
+ _Dbg_preloop
+
+_Dbg_onecmd
+~~~~~~~~~~~
+
+____
+ # Run a single command
+ # Parameters: _Dbg_cmd and args
+____
+
+Has 69 line(s). Calls functions:
+
+ _Dbg_onecmd
+ |-- action.sh/_Dbg_list_action
+ |-- alias.sh/_Dbg_alias_expand
+ |-- msg.sh/_Dbg_msg
+ `-- msg.sh/_Dbg_undefined_cmd
+
+Called by:
+
+ _Dbg_process_commands
+
+_Dbg_postcmd
+~~~~~~~~~~~~
+
+Has 11 line(s). Calls functions:
+
+ _Dbg_postcmd
+ `-- _Dbg_annotation
+
+Called by:
+
+ _Dbg_process_commands
+
+_Dbg_preloop
+~~~~~~~~~~~~
+
+Has 4 line(s). Calls functions:
+
+ _Dbg_preloop
+ `-- _Dbg_annotation
+
+Called by:
+
+ _Dbg_process_commands
+
+_Dbg_process_commands
+~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # The main debugger command reading loop.
+ #
+ # Note: We have to be careful here in naming "local" variables. In contrast
+ # to other places in the debugger, because of the read/eval loop, they are
+ # in fact seen by those using the debugger. So in contrast to other "local"s
+ # in the debugger, we prefer to preface these with _Dbg_.
+____
+
+Has 75 line(s). Calls functions:
+
+ _Dbg_process_commands
+ |-- _Dbg_onecmd
+ |   |-- action.sh/_Dbg_list_action
+ |   |-- alias.sh/_Dbg_alias_expand
+ |   |-- msg.sh/_Dbg_msg
+ |   `-- msg.sh/_Dbg_undefined_cmd
+ |-- _Dbg_postcmd
+ |   `-- _Dbg_annotation
+ |-- _Dbg_preloop
+ |   `-- _Dbg_annotation
+ |-- fns.sh/_Dbg_copies
+ |-- journal.sh/_Dbg_write_journal
+ |-- journal.sh/_Dbg_write_journal_eval
+ `-- msg.sh/_Dbg_msg
+
+Uses feature(s): _eval_, _read_, _vared_
+
+Called by:
+
+ hook.sh/_Dbg_hook_enter_debugger
+ sig.sh/_Dbg_err_handler
+ sig.sh/_Dbg_exit_handler
+

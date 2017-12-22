@@ -1,0 +1,43 @@
+ if (( $# == 0 )) ; then
+   _Dbg_errmsg "Internal debug error _Dbg_is_file(): null file to find"
+   echo ''
+   return 1
+ fi
+ typeset find_file="$1"
+
+ if [[ -z $find_file ]] ; then
+   _Dbg_errmsg "Internal debug error _Dbg_is_file(): file argument null"
+   echo ''
+   return 1
+ fi
+
+ if [[ ${find_file[0]} == '/' ]] ; then
+     if [[ -n ${_Dbg_filenames[$find_file]} ]] ; then
+  print -- "$find_file"
+  return 0
+     fi
+ elif [[ ${find_file[0]} == '.' ]] ; then
+     try_find_file=$(_Dbg_expand_filename "${_Dbg_init_cwd}/$find_file")
+     if [[ -n ${_Dbg_filenames[$try_find_file]} ]] ; then
+  print -- "$try_find_file"
+  return 0
+     fi
+ else
+   typeset -i n=${#_Dbg_dir[@]}
+   typeset -i i
+   for (( i=0 ; i < n; i++ )) ; do
+     typeset basename="${_Dbg_dir[i]}"
+     if [[  $basename == '\$cdir' ]] ; then
+basename=$_Dbg_cdir
+     elif [[ $basename == '\$cwd' ]] ; then
+basename=$(pwd)
+     fi
+     try_find_file="$basename/$find_file"
+     if [[ -f "$try_find_file" ]] ; then
+  print -- "$try_find_file"
+  return 0
+     fi
+   done
+ fi
+ echo ''
+ return 1

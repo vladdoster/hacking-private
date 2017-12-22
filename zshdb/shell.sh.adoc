@@ -1,0 +1,80 @@
+shell.sh(1)
+===========
+:compat-mode!:
+
+NAME
+----
+shell.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_shell_append_fn_typesets
+ _Dbg_shell_append_typesets
+ _Dbg_shell_new_shell_profile
+ _Dbg_shell_variable_names
+ _Dbg_shell_variable_typeset
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 5 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_shell_append_fn_typesets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 8 line(s). Doesn't call other functions.
+
+Uses feature(s): _read_
+
+Called by:
+
+ _Dbg_shell_new_shell_profile
+
+_Dbg_shell_append_typesets
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 25 line(s). Calls functions:
+
+ _Dbg_shell_append_typesets
+ `-- _Dbg_shell_variable_typeset
+
+Called by:
+
+ _Dbg_shell_new_shell_profile
+
+_Dbg_shell_new_shell_profile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 10 line(s). Calls functions:
+
+ _Dbg_shell_new_shell_profile
+ |-- _Dbg_shell_append_fn_typesets
+ `-- _Dbg_shell_append_typesets
+     `-- _Dbg_shell_variable_typeset
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_shell_variable_names
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_shell_variable_typeset
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 16 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_shell_append_typesets
+

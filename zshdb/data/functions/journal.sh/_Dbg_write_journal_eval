@@ -1,0 +1,2 @@
+_Dbg_write_journal "$@"
+eval "$@"

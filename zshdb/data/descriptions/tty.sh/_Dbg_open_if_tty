@@ -1,0 +1,10 @@
+#
+# Return 0 if $1 is a tty and open it. Otherwise return
+# 0. _Dbg_new_fdi will be set to the file descriptor of the open tty
+# or set to -1 if none could be opened.  
+#
+# We write the interface this way because intead of say a routine to
+# test a name refers to a terminal, because it's easy to tell if a
+# file descriptor is a tty but not so easy using just the name. And we
+# want to avoid opening and closing file descriptors unnecessarily.
+#

@@ -1,0 +1,27 @@
+   if (($# > 1)); then
+     _Dbg_errmsg "got $# parameters, but need 0 or 1."
+     return -1
+   fi
+   typeset -i pos; pos=${1:-$_Dbg_stack_pos}
+
+   typeset prefix='##'
+   (( pos == _Dbg_stack_pos)) && prefix='->'
+
+   prefix+="$pos "
+   if ((pos!=0)) ; then
+typeset fn_or_file; fn_or_file="${_Dbg_func_stack[$pos-1]}"
+(( _Dbg_set_basename )) && fn_or_file=${fn_or_file##*/}
+       prefix+="$fn_or_file called from"
+   else
+       prefix+='in'
+   fi
+
+   typeset file_line
+   file_line="${_Dbg_frame_stack[$pos]}"
+
+   typeset -a split_result; _Dbg_split "$file_line" ':'
+   typeset filename
+   filename="${split_result[0]}"
+   typeset -i line="${split_result[1]}"
+   (( _Dbg_set_basename )) && filename=${filename##*/}
+   _Dbg_msg "$prefix file \`$filename' at line $line"

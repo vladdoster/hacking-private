@@ -1,0 +1,12 @@
+   typeset unset_opts=''
+   typeset set_opts=''
+   eval "set -- $*"
+   for opt ; do
+if _Dbg_is_unsetopt $opt ; then
+    unset_opts="$unset_opts $opt"
+else
+    set_opts="$set_opts $opt"
+fi
+   done
+   _Dbg_restore_unsetopt=$unset_opts
+   _Dbg_restore_setopt=$set_opts

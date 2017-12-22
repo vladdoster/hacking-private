@@ -1,0 +1,3 @@
+# Internal routine to delete an action by file/line.
+# 0 is returned if we were able to unset the action.
+# Nonzero is returned otherwize.

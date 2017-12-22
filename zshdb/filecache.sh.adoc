@@ -1,0 +1,189 @@
+filecache.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+filecache.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_check_line
+ _Dbg_file_not_read_in
+ _Dbg_filecache_reset
+ _Dbg_get_maxline
+ _Dbg_get_source_line
+ _Dbg_is_file
+ _Dbg_readin
+ _Dbg_readin_if_new
+ _Dbg_set_source_array_var
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 9 line(s). Calls functions:
+
+ Script-Body
+ `-- _Dbg_filecache_reset
+
+_Dbg_check_line
+~~~~~~~~~~~~~~~
+
+____
+ # Check that line $2 is not greater than the number of lines in
+ # file $1
+____
+
+Has 17 line(s). Calls functions:
+
+ _Dbg_check_line
+ `-- msg.sh/_Dbg_errmsg
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_file_not_read_in
+~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Error message for file not read in
+____
+
+Has 4 line(s). Calls functions:
+
+ _Dbg_file_not_read_in
+ `-- msg.sh/_Dbg_errmsg
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_filecache_reset
+~~~~~~~~~~~~~~~~~~~~
+
+Has 3 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
+
+_Dbg_get_maxline
+~~~~~~~~~~~~~~~~
+
+____
+ # Return the maximum line of filename $1. $1 is expected to be
+ # read in already and therefore stored in _Dbg_file2canonic.
+____
+
+Has 7 line(s). Calls functions:
+
+ _Dbg_get_maxline
+ `-- _Dbg_set_source_array_var
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_get_source_line
+~~~~~~~~~~~~~~~~~~~~
+
+____
+ # If $2 is omitted, use _Dbg_frame_file(), if $1 is omitted use
+ # _Dbg_frame_lineno. The return value is put in source_line.
+____
+
+Has 22 line(s). Calls functions:
+
+ _Dbg_get_source_line
+ |-- _Dbg_readin_if_new
+ |   |-- _Dbg_readin
+ |   |   `-- frame.sh/_Dbg_frame_file
+ |   `-- _Dbg_set_source_array_var
+ |-- frame.sh/_Dbg_frame_file
+ `-- frame.sh/_Dbg_frame_lineno
+
+Uses feature(s): _eval_
+
+Called by:
+
+ list.sh/_Dbg_list
+
+_Dbg_is_file
+~~~~~~~~~~~~
+
+____
+ # _Dbg_is_file echoes the full filename if $1 is a filename found in files
+ # '' is echo'd if no file found. Return 0 if found, 1 if not.
+____
+
+Has 43 line(s). Calls functions:
+
+ _Dbg_is_file
+ `-- msg.sh/_Dbg_errmsg
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_readin
+~~~~~~~~~~~
+
+____
+ # Read $1 into _Dbg_source_*n* array where *n* is an entry in
+ # _Dbg_filenames.  Variable _Dbg_source_array_var will be set to
+ # _Dbg_source_*n* and filename will be saved in array
+ # _Dbg_filenames. fullname is set to the expanded filename
+ # 0 is returned if everything went ok.
+____
+
+Has 44 line(s). Calls functions:
+
+ _Dbg_readin
+ `-- frame.sh/_Dbg_frame_file
+
+Uses feature(s): _eval_
+
+Called by:
+
+ _Dbg_readin_if_new
+ gdb.sh/_Dbg_print_location
+
+_Dbg_readin_if_new
+~~~~~~~~~~~~~~~~~~
+
+____
+ # Read in file $1 unless it has already been read in.
+ # 0 is returned if everything went ok.
+____
+
+Has 12 line(s). Calls functions:
+
+ _Dbg_readin_if_new
+ |-- _Dbg_readin
+ |   `-- frame.sh/_Dbg_frame_file
+ `-- _Dbg_set_source_array_var
+
+Called by:
+
+ _Dbg_get_source_line
+ list.sh/_Dbg_list
+
+_Dbg_set_source_array_var
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Set _Dbg_source_array_var to the variable that contains file lines
+ # for $1. Variable "fullname" will contain the expanded full filename for $1.
+ # 0 is returned if everything went ok.
+____
+
+Has 7 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_get_maxline
+ _Dbg_readin_if_new
+

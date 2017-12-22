@@ -1,0 +1,24 @@
+typeset subcmd
+if (( $# == 0 )) ; then
+    typeset -a list
+    list=(${(ki)_Dbg_command_help_info[@]})
+    sort_list 0 ${#list[@]}-1
+    for subcmd in ${list[@]}; do
+        _Dbg_help_info $subcmd 1
+    done
+    return 0
+fi
+
+subcmd="$1"
+typeset label="$2"
+
+if [[ -n "${_Dbg_command_help_info[$subcmd]}" ]] ; then
+    if [[ -z $label ]] ; then
+        _Dbg_msg_rst "${_Dbg_command_help_info[$subcmd]}"
+        return 0
+    else
+        label=$(builtin printf "info %-12s-- " $subcmd)
+    fi
+fi
+
+_Dbg_info_help $subcmd $label

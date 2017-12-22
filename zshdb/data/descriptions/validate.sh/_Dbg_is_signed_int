@@ -1,0 +1,1 @@
+# _Dbg_is_signed_int returns 0 if $1 is an integer or nonzero otherwise. 

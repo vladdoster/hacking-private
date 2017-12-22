@@ -1,0 +1,3 @@
+typeset -r signame=$1;
+builtin kill -l $signame 2>/dev/null
+return $?

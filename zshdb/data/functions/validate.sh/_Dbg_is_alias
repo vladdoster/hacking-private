@@ -1,0 +1,5 @@
+(( 0 == $# )) && return 1
+typeset needed_alias=$1
+typeset al
+al=$(alias $needed_alias 2>&1)
+return $?

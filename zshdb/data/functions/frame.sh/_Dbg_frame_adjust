@@ -1,0 +1,35 @@
+(($# != 2)) && return -1
+
+typeset -i count="$1"
+typeset -i signum="$2"
+
+typeset -i retval
+_Dbg_frame_int_setup $count || return 2
+
+typeset -i pos
+if (( signum==0 )) ; then
+  if (( count < 0 )) ; then
+    ((pos=${#_Dbg_frame_stack[@]}+count))
+  else
+    ((pos=count))
+  fi
+else
+  ((pos=_Dbg_stack_pos+(count*signum)))
+fi
+
+if (( pos < 0 )) ; then
+  _Dbg_errmsg 'Would be beyond bottom-most (most recent) entry.'
+  return 1
+elif (( pos >= ${#_Dbg_frame_stack[@]} )) ; then
+  _Dbg_errmsg 'Would be beyond top-most (least recent) entry.'
+  return 1
+fi
+
+typeset file_line="${_Dbg_frame_stack[$pos]}"
+typeset -a split_result; _Dbg_split "$file_line" ':'
+_Dbg_frame_last_filename=${split_result[0]}
+_Dbg_frame_last_lineno=${split_result[1]}
+_Dbg_listline=$_Dbg_frame_last_lineno
+((_Dbg_stack_pos = pos))
+_Dbg_print_frame $pos
+_Dbg_print_location

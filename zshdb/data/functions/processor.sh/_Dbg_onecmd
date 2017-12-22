@@ -1,0 +1,69 @@
+   typeset full_cmd
+   full_cmd=$@
+   typeset args
+   set -- $*
+   if (( $# == 0 )) ; then
+_Dbg_cmd=$_Dbg_last_next_step_cmd
+args=$_Dbg_last_next_step_args
+   else
+_Dbg_cmd=$1
+shift
+args="$@"
+   fi
+   typeset _Dbg_orig_cmd;
+   _Dbg_orig_cmd=$_Dbg_cmd
+   typeset expanded_alias; _Dbg_alias_expand $_Dbg_cmd
+   if [[  $_Dbg_set_trace_commands == 'on' ]]  ; then
+     _Dbg_msg "+$_Dbg_cmd $args"
+   fi
+
+   if [[ -n ${_Dbg_debugger_commands[$expanded_alias]} ]] ; then
+${_Dbg_debugger_commands[$expanded_alias]} $args
+return $?
+   fi
+   case $_Dbg_cmd in
+[#]* )
+  _Dbg_last_cmd="#"
+  return -1
+  ;;
+'next+' | 'next-' )
+  _Dbg_do_next $@
+  return $?
+  ;;
+'step+' | 'step-' )
+  _Dbg_do_step $@
+  return $?
+  ;;
+
+'' )
+  if [[ -n $_Dbg_last_cmd ]] ; then
+      _Dbg_cmd=$_Dbg_last_cmd
+      _Dbg_redo=1
+  fi
+  ;;
+L )
+  _Dbg_do_info_breakpoints
+  _Dbg_list_action
+  ;;
+A )
+  _Dbg_do_clear_all_actions $args
+  ;;
+
+* )
+   if (( _Dbg_set_autoeval )) ; then
+       if [[ -t $_Dbg_fdi ]] ; then
+	   if ! _Dbg_do_eval $_Dbg_cmd $args >&${_Dbg_fdi} 2>&1 ; then
+	       return -1
+	   fi
+       else
+	   if ! _Dbg_do_eval $_Dbg_cmd $args ; then
+	       return -1
+	   fi
+       fi
+   else
+            _Dbg_undefined_cmd $_Dbg_cmd
+     return -1
+   fi
+  ;;
+     esac
+     return 0

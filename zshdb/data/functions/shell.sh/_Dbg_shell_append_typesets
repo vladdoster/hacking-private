@@ -1,0 +1,25 @@
+   [[ -z $_Dbg_var_names ]] && _Dbg_var_names=(${(k@)parameters[@]})
+   local _Dbg_profile
+   _Dbg_profile=${1:-$_Dbg_shell_temp_profile}
+   typeset _Dbg_set_debug
+   _Dbg_set_debug=${2:-1}
+
+   typeset -A exclude_list
+   typeset var_set_cmd
+   exclude_list[exclude_list]=1
+   for var_name in ${_Dbg_var_names[@]}; do
+[[ -z $var_name ]] && continue
+((_Dbg_set_debug)) && [[ $var_name =~ ^_Dbg_ ]] && continue
+((exclude_list[var_name])) && continue
+_Dbg_shell_variable_typeset "$var_name"
+case $? in 
+    0)
+	typeset -p $var_name 2>/dev/null
+	;;
+    1)
+	print "typeset -p ${var_name} 2>/dev/null 1>&2 || $(typeset -p $var_name)" 2>/dev/null
+	;;
+    *)
+	;;
+esac
+   done >>$_Dbg_profile

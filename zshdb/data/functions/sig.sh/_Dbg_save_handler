@@ -1,0 +1,10 @@
+typeset -r sig=$1
+typeset old_handler=''
+old_handler=$(trap -p $sig)
+if [[ -n $old_handler ]] ; then
+  typeset -a old_hand_a
+  old_hand_a=($old_handler)
+  old_handler=$(_Dbg_subst_handler_var ${old_hand_a[2]})
+  typeset -r decl_cmd="typeset -r _Dbg_old_${sig}_handler='$old_handler'"
+  eval $decl_cmd
+fi

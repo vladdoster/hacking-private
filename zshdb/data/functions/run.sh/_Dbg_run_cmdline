@@ -1,0 +1,3 @@
+typeset -a cmd
+cmd=( $(COLUMNS=3000 ps h -o command -p $$) )
+SH_RUN_CMDLINE=${cmd[@]}

@@ -1,0 +1,2 @@
+(( 0 == $# )) && return 1
+typeset -p "$1" &>/dev/null

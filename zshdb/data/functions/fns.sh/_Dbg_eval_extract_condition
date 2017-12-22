@@ -1,0 +1,12 @@
+   orig="$1"
+   if [[ $orig =~ ${_Dbg_eval_re[0]} ]] ; then
+extracted=${BASH_REMATCH[2]}
+   elif [[ $orig =~ ${_Dbg_eval_re[1]} ]] ; then
+extracted="echo ${BASH_REMATCH[1]}"
+   elif [[ $orig =~ ${_Dbg_eval_re[2]} ]] ; then
+extracted=${BASH_REMATCH[1]}
+   elif [[ $orig =~ ${_Dbg_eval_re[3]} ]] ; then
+extracted="echo ${BASH_REMATCH[1]}"
+   else
+extracted=$orig
+   fi

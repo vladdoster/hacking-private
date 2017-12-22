@@ -1,0 +1,2 @@
+ typeset statefile=$1
+. $1

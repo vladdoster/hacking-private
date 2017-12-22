@@ -1,0 +1,3 @@
+# Set $_Dbg_frame_filename to be frame line for the call stack at
+# given position $1 or _Dbg_stack_pos if $1 is omitted. 0 is returned
+# if no error, nonzero means some sort of error.

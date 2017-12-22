@@ -1,0 +1,90 @@
+help.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+help.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_help_add
+ _Dbg_help_add_sub
+ _Dbg_help_info
+ _Dbg_help_set
+ _Dbg_help_show
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 7 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_help_add
+~~~~~~~~~~~~~
+
+____
+ # Add help text $2 for command $1
+____
+
+Has 5 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_help_add_sub
+~~~~~~~~~~~~~~~~~
+
+____
+ # Add help text $3 for in subcommand $1 under key $2
+____
+
+Has 7 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_help_info
+~~~~~~~~~~~~~~
+
+Has 24 line(s). Calls functions:
+
+ _Dbg_help_info
+ |-- info-help.sh/_Dbg_info_help
+ |-- msg.sh/_Dbg_msg_rst
+ `-- sort.sh/sort_list
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_help_set
+~~~~~~~~~~~~~
+
+Has 135 line(s). Calls functions:
+
+ _Dbg_help_set
+ |-- msg.sh/_Dbg_msg
+ |-- msg.sh/_Dbg_msg_nocr
+ |-- msg.sh/_Dbg_msg_rst
+ `-- sort.sh/sort_list
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_help_show
+~~~~~~~~~~~~~~
+
+Has 84 line(s). Calls functions:
+
+ _Dbg_help_show
+ |-- msg.sh/_Dbg_msg
+ |-- msg.sh/_Dbg_msg_rst
+ `-- sort.sh/sort_list
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

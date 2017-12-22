@@ -1,0 +1,21 @@
+   (($# < 2)) && return 1
+   typeset -i on=$1
+   typeset en_dis=$2
+   typeset -a brkpts=($3)
+   typeset -i rc=0
+
+   for i in "${brkpts[@]}";  do
+if [[ -n "${_Dbg_brkpt_file[$i]}" ]] ; then
+    if [[ ${_Dbg_brkpt_enable[$i]} == $on ]] ; then
+	_Dbg_errmsg "Breakpoint entry $i already ${en_dis}, so nothing done."
+	rc=1
+    else
+	_Dbg_write_journal_eval "_Dbg_brkpt_enable[$i]=$on"
+	_Dbg_msg "Breakpoint entry $i $en_dis."
+    fi
+else
+    _Dbg_errmsg "Breakpoint entry $i doesn't exist, so nothing done."
+    rc=1
+fi
+   done
+   return $rc

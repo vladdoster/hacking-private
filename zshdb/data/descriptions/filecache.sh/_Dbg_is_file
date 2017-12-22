@@ -1,0 +1,2 @@
+# _Dbg_is_file echoes the full filename if $1 is a filename found in files
+# '' is echo'd if no file found. Return 0 if found, 1 if not.

@@ -1,0 +1,7 @@
+_Dbg_not_running && return 1
+setopt EXTENDED_GLOB
+if [[ $1 != '' && $1 != ([-+]|)([0-9])## ]] ; then
+    _Dbg_errmsg "Bad integer parameter: $1"
+    return 1
+fi
+return 0

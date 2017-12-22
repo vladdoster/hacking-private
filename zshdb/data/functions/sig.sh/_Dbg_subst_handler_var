@@ -1,0 +1,10 @@
+   typeset -i i
+   typeset result=''
+   for arg in $* ; do
+if [[ $result == '' ]] ; then
+    result=$arg 
+else
+    result="$result $arg"
+fi
+   done
+   echo $result

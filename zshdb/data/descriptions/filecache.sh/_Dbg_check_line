@@ -1,0 +1,2 @@
+# Check that line $2 is not greater than the number of lines in
+# file $1

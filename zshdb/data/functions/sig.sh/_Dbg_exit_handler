@@ -1,0 +1,33 @@
+typeset -i _Dbg_debugged_exit_code=$?
+set +x +v +u
+
+if [[ ${_Dbg_sig_print[0]} == "print" ]] ; then
+  _Dbg_msg "Program received signal EXIT (0)..."
+  if [[ ${_Dbg_sig_show_stack[0]} == "showstack" ]] ; then 
+    _Dbg_do_backtrace 0
+  fi
+fi
+
+if [[ $_Dbg_old_EXIT_handler != '' ]] ; then
+  eval $_Dbg_old_EXIT_handler
+fi
+
+if [[ ${_Dbg_sig_stop[0]} != "stop" ]] \
+  || (( _Dbg_QUIT_LEVELS != 0 )) \
+  || (( _Dbg_QUIT_ON_QUIT )) ; then 
+  _Dbg_do_quit
+fi
+
+typeset term_msg="normally"
+if [[ $_Dbg_debugged_exit_code != 0 ]] ; then 
+  term_msg="with code $_Dbg_debugged_exit_code"
+fi 
+if (( ZSH_SUBSHELL == 0 )) ; then 
+  _Dbg_msg \
+    "Debugged program terminated $term_msg. Use q to quit or R to restart."
+
+  _Dbg_running=0
+  while : ; do
+    _Dbg_process_commands
+  done
+fi

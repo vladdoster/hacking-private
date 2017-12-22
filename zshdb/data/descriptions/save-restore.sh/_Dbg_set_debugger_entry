@@ -1,0 +1,5 @@
+# Do things for debugger entry. Set some global debugger variables
+# Remove trapping ourselves. 
+# We assume that we are nested two calls deep from the point of debug
+# or signal fault. If this isn't the constant 2, then consider adding
+# a parameter to this routine.

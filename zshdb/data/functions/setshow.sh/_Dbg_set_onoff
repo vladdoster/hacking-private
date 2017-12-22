@@ -1,0 +1,15 @@
+   typeset onoff=${1:-'off'}
+   typeset -l cmdname=$2
+   case $onoff in
+on | 1 )
+    _Dbg_write_journal_eval "_Dbg_set_${cmdname}=1"
+    ;;
+off | 0 )
+    _Dbg_write_journal_eval "_Dbg_set_${cmdname}=0"
+    ;;
+* )
+    _Dbg_msg "\"on\" or \"off\" expected."
+    return 1
+   esac
+   _Dbg_do_show_internal $cmdname
+   return 0

@@ -1,0 +1,5 @@
+# gdb style "complete" command completion.
+# Print a list of completions in global variable _Dbg_matches
+# for 'subcmd' that start with 'text'.
+# We get the list of completions from _Dbg._*subcmd*_cmds.
+# If no completion, we return the empty list.

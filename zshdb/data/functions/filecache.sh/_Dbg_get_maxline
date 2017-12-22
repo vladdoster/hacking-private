@@ -1,0 +1,7 @@
+(( $# != 1 )) && return -1
+_Dbg_set_source_array_var "$1" || return $?
+eval "typeset last_line; last_line=\${${_Dbg_source_array_var}[-1]}"
+typeset -i last_not_null
+[[ -z $last_line ]] && last_line_is_null=1 || last_line_is_null=0
+eval "print \$((\${#${_Dbg_source_array_var}[@]}-$last_line_is_null))"
+return $?

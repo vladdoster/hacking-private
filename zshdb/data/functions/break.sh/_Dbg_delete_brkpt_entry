@@ -1,0 +1,43 @@
+   (( $# == 0 )) && return 0
+   typeset -r  del="$1"
+   typeset -i  i
+   typeset -i  found=0
+
+   if [[ -z ${_Dbg_brkpt_file[$del]} ]] ; then
+_Dbg_errmsg "No breakpoint number $del."
+return 1
+   fi
+   typeset    source_file=${_Dbg_brkpt_file[$del]}
+   typeset -i lineno=${_Dbg_brkpt_line[$del]}
+   typeset -i try
+   typeset new_lineno_val
+   typeset new_brkpt_nos
+   typeset -i i=-1
+   typeset -a brkpt_nos
+   brkpt_nos=(${_Dbg_brkpt_file2brkpt[$source_file]})
+   for try in ${_Dbg_brkpt_file2linenos[$source_file]} ; do
+((i++))
+if (( brkpt_nos[i] == del )) ; then
+    if (( try != lineno )) ; then
+	_Dbg_errmsg 'internal brkpt structure inconsistency'
+	return 1
+    fi
+    _Dbg_unset_brkpt_arrays $del
+    ((found++))
+else
+    new_lineno_val+=" $try"
+    new_brkpt_nos+=" ${brkpt_nos[$i]}"
+fi
+   done
+   if (( found > 0 )) ; then
+if (( ${#new_lineno_val[@]} == 0 )) ; then
+    _Dbg_write_journal_eval "unset '_Dbg_brkpt_file2linenos[$source_file]'"
+    _Dbg_write_journal_eval "unset '_Dbg_brkpt_file2brkpt[$source_file]'"
+else
+    _Dbg_write_journal_eval "_Dbg_brkpt_file2linenos[$source_file]=\"${new_lineno_val}\""
+    _Dbg_write_journal_eval "_Dbg_brkpt_file2brkpt[$source_file]=\"${new_brkpt_nos}\""
+fi
+return 0
+   fi
+
+   return 1

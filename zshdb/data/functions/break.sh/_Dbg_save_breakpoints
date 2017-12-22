@@ -1,0 +1,9 @@
+typeset -p _Dbg_brkpt_line         >> $_Dbg_statefile
+typeset -p _Dbg_brkpt_file         >> $_Dbg_statefile
+typeset -p _Dbg_brkpt_cond         >> $_Dbg_statefile
+typeset -p _Dbg_brkpt_counts       >> $_Dbg_statefile
+typeset -p _Dbg_brkpt_enable       >> $_Dbg_statefile
+typeset -p _Dbg_brkpt_onetime      >> $_Dbg_statefile
+typeset -p _Dbg_brkpt_max          >> $_Dbg_statefile
+typeset -p _Dbg_brkpt_file2linenos >> $_Dbg_statefile
+typeset -p _Dbg_brkpt_file2brkpt   >> $_Dbg_statefile

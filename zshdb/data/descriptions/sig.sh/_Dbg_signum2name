@@ -1,0 +1,2 @@
+# Echo the name for a given signal number $1. The resulting name
+# is in _Dbg_return

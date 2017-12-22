@@ -1,0 +1,76 @@
+alias.sh(1)
+===========
+:compat-mode!:
+
+NAME
+----
+alias.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_alias_add
+ _Dbg_alias_expand
+ _Dbg_alias_find_aliased
+ _Dbg_alias_remove
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 2 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_alias_add
+~~~~~~~~~~~~~~
+
+____
+ # Add an new alias in the alias table
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_alias_expand
+~~~~~~~~~~~~~~~~~
+
+____
+ # Expand alias $1. The result is set in variable expanded_alias which
+ # could be declared local in the caller.
+____
+
+Has 5 line(s). Doesn't call other functions.
+
+Called by:
+
+ processor.sh/_Dbg_onecmd
+
+_Dbg_alias_find_aliased
+~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Return in help_aliases an array of strings that are aliases
+ # of $1
+____
+
+Has 14 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_alias_remove
+~~~~~~~~~~~~~~~~~
+
+____
+ # Remove alias $1 from our list of command aliases.
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

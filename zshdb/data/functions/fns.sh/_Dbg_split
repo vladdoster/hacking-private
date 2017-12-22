@@ -1,0 +1,3 @@
+local string="$1"
+local separator="$2"
+IFS="$separator" read -A split_result <<< $string

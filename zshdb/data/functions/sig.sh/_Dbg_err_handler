@@ -1,0 +1,5 @@
+   if [[ $_Dbg_old_ERR_handler != '' ]] ; then
+eval $_Dbg_old_ERR_handler
+   fi
+   _Dbg_msg "Error occured at ${funcfiletrace[1]}"
+   _Dbg_process_commands

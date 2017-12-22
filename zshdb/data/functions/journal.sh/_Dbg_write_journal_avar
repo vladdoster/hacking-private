@@ -1,0 +1,7 @@
+   if (( ZSH_SUBSHELL != 0 )) ; then
+if is-at-least 5.4.1 ; then
+    typeset -p $1 >> ${_Dbg_journal} 2>/dev/null
+else
+    typeset -p $1 | grep -v ^typeset >> ${_Dbg_journal} 2>/dev/null
+fi
+   fi

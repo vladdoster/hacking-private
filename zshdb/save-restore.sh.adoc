@@ -1,0 +1,156 @@
+save-restore.sh(1)
+==================
+:compat-mode!:
+
+NAME
+----
+save-restore.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_create_unsetopt
+ _Dbg_is_unsetopt
+ _Dbg_restore_from_nested_shell
+ _Dbg_restore_state
+ _Dbg_restore_user_vars
+ _Dbg_save_state
+ _Dbg_set_debugger_entry
+ _Dbg_set_debugger_internal
+ _Dbg_set_to_return_from_debugger
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 7 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_create_unsetopt
+~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Set string unset_opts to be those zsh options in $* that are not set.
+____
+
+Has 12 line(s). Calls functions:
+
+ _Dbg_create_unsetopt
+ `-- _Dbg_is_unsetopt
+
+Uses feature(s): _eval_
+
+Called by:
+
+ _Dbg_set_debugger_entry
+
+_Dbg_is_unsetopt
+~~~~~~~~~~~~~~~~
+
+____
+ # Return 0 if $1 is not a zsh option set
+____
+
+Has 2 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_create_unsetopt
+
+_Dbg_restore_from_nested_shell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Things we do when coming back from a nested shell.
+ # "shell", and "debug" create nested shells.
+____
+
+Has 5 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_restore_state
+~~~~~~~~~~~~~~~~~~
+
+Has 2 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_restore_user_vars
+~~~~~~~~~~~~~~~~~~~~~~
+
+Has 5 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_
+
+Called by:
+
+ _Dbg_set_to_return_from_debugger
+ hook.sh/_Dbg_cleanup
+ set-d-vars.sh/Script-Body
+
+_Dbg_save_state
+~~~~~~~~~~~~~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_set_debugger_entry
+~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Do things for debugger entry. Set some global debugger variables
+ # Remove trapping ourselves. 
+ # We assume that we are nested two calls deep from the point of debug
+ # or signal fault. If this isn't the constant 2, then consider adding
+ # a parameter to this routine.
+____
+
+Has 12 line(s). Calls functions:
+
+ _Dbg_set_debugger_entry
+ |-- _Dbg_create_unsetopt
+ |   `-- _Dbg_is_unsetopt
+ |-- _Dbg_set_debugger_internal
+ `-- journal.sh/_Dbg_source_journal
+
+Called by:
+
+ hook.sh/_Dbg_trap_handler
+ sig.sh/_Dbg_sig_handler
+
+_Dbg_set_debugger_internal
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Does things to after on entry of after an eval to set some debugger
+ # internal settings  
+____
+
+Has 5 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_set_debugger_entry
+ hook.sh/_Dbg_hook_action_hit
+
+_Dbg_set_to_return_from_debugger
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 5 line(s). Calls functions:
+
+ _Dbg_set_to_return_from_debugger
+ `-- _Dbg_restore_user_vars
+
+Called by:
+
+ hook.sh/_Dbg_hook_enter_debugger
+ hook.sh/_Dbg_trap_handler
+ sig.sh/_Dbg_sig_handler
+

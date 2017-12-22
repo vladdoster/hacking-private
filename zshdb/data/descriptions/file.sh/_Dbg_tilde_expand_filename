@@ -1,0 +1,4 @@
+# $1 contains the name you want to glob. return 0 if exists and is
+# readable or 1 if not.
+# The result will be in variable $filename which is assumed to be
+# local'd by the caller

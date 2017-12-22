@@ -1,0 +1,7 @@
+(($# != 3)) && (($# != 4))  && return 1
+typeset -i add_command; add_command=${4:-1}
+eval "_Dbg_command_help_$1[$2]=\"$3\""
+if (( add_command )) ; then
+    eval "_Dbg_debugger_$1_commands[$2]=\"_Dbg_do_${1}_${2}\""
+fi
+return 0

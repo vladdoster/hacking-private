@@ -1,0 +1,2 @@
+typeset -r prefix='**'
+_Dbg_msg_nocr "$prefix $@"

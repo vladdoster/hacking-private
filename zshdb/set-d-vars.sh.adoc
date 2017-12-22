@@ -1,0 +1,28 @@
+set-d-vars.sh(1)
+================
+:compat-mode!:
+
+NAME
+----
+set-d-vars.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 12 line(s). Calls functions:
+
+ Script-Body
+ |-- fns.sh/_Dbg_set_dol_q
+ `-- save-restore.sh/_Dbg_restore_user_vars
+

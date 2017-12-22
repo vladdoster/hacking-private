@@ -1,0 +1,4 @@
+if (( ZSH_SUBSHELL != 0 )) ; then
+  echo "$@" >> ${_Dbg_journal} 2>/dev/null
+fi
+return $?

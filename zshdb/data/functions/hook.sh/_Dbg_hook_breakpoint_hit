@@ -1,0 +1,21 @@
+   typeset full_filename="$1"
+   typeset lineno=$_Dbg_frame_last_lineno
+   typeset file_line
+   file_line=${funcfiletrace[1]}
+   typeset -a split_result; _Dbg_split "$file_line" ':'
+   filename=${split_result[0]}
+   lineno=${split_result[1]}
+   typeset -a linenos
+   eval "linenos=(${_Dbg_brkpt_file2linenos[$full_filename]})"
+   typeset -a brkpt_nos
+   eval "brkpt_nos=(${_Dbg_brkpt_file2brkpt[$full_filename]})"
+   typeset -i i
+   for ((i=0; i < ${#linenos[@]}; i++)); do
+if (( linenos[i] == lineno )) ; then
+    (( _Dbg_brkpt_num = brkpt_nos[i] ))
+    if ((_Dbg_brkpt_enable[_Dbg_brkpt_num] )) ; then
+	return 0
+    fi
+fi
+   done
+   return 1

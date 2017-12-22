@@ -1,0 +1,3 @@
+# Adjust handler variables to take into account the fact that when we
+# call the handler we will have added another call before the user's
+# handler.

@@ -1,0 +1,24 @@
+   typeset -i direction=${1:-1}
+   typeset -i stack_size; stack_size=${#Dbg_frame_stack[@]}
+   if (( direction == 0 )) ; then
+       ((low=-stack_size))
+       ((high=stack_size-1))
+   elif (( direction < 0 )) ; then
+((low=-stack_size + 1 + Dbg_stack_pos))
+((high=Dbg_stack_pos))
+   else
+((low=Dbg_stack_pos))
+((high=stack_size -1 - Dbg_stack_pos))
+   fi
+   typeset -i direction=${1:-1}
+   typeset -i stack_size; stack_size=${#_Dbg_frame_stack[@]}
+   if (( direction == 0 )) ; then
+       ((low=-stack_size))
+       ((high=stack_size-1))
+   elif (( direction < 0 )) ; then
+((low=-stack_size + 1 + _Dbg_stack_pos))
+((high=_Dbg_stack_pos))
+   else
+((low=_Dbg_stack_pos))
+((high=stack_size -1 - _Dbg_stack_pos))
+   fi

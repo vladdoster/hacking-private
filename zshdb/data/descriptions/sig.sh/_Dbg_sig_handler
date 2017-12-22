@@ -1,0 +1,2 @@
+# Since the command loop may be called we need to be careful about
+# using variable names that would be exposed to the user. 

@@ -1,0 +1,220 @@
+msg.sh(1)
+=========
+:compat-mode!:
+
+NAME
+----
+msg.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_confirm
+ _Dbg_errmsg
+ _Dbg_errmsg_no_cr
+ _Dbg_msg
+ _Dbg_msg_nocr
+ _Dbg_msg_rst
+ _Dbg_printf
+ _Dbg_printf_nocr
+ _Dbg_section
+ _Dbg_undefined_cmd
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 10 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_confirm
+~~~~~~~~~~~~
+
+Has 35 line(s). Calls functions:
+
+ _Dbg_confirm
+ `-- _Dbg_msg
+
+Uses feature(s): _read_, _vared_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_errmsg
+~~~~~~~~~~~
+
+____
+ # Add escapes to a string $1 so that when it is read back using
+ # eval echo "$1" it is the same as echo $1.
+____
+
+Has 6 line(s). Calls functions:
+
+ _Dbg_errmsg
+ `-- _Dbg_msg
+
+Called by:
+
+ _Dbg_undefined_cmd
+ action.sh/_Dbg_unset_action
+ break.sh/_Dbg_delete_brkpt_entry
+ break.sh/_Dbg_enable_disable
+ break.sh/_Dbg_enable_disable_brkpt
+ display.sh/_Dbg_disp_enable_disable
+ display.sh/_Dbg_enable_disable_display
+ file.sh/_Dbg_resolve_expand_filename
+ filecache.sh/_Dbg_check_line
+ filecache.sh/_Dbg_file_not_read_in
+ filecache.sh/_Dbg_is_file
+ fns.sh/_Dbg_linespec_setup
+ frame.sh/_Dbg_frame_adjust
+ frame.sh/_Dbg_frame_int_setup
+ gdb.sh/_Dbg_print_frame
+ gdb.sh/_Dbg_print_location
+ info-help.sh/_Dbg_info_help
+ list.sh/_Dbg_list
+ run.sh/_Dbg_not_running
+ tty.sh/_Dbg_set_tty
+
+_Dbg_errmsg_no_cr
+~~~~~~~~~~~~~~~~~
+
+____
+ # Print an error message without the ending carriage return
+____
+
+Has 2 line(s). Calls functions:
+
+ _Dbg_errmsg_no_cr
+ `-- _Dbg_msg_nocr
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_msg
+~~~~~~~~
+
+Has 5 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_confirm
+ _Dbg_errmsg
+ _Dbg_msg_rst
+ _Dbg_printf
+ _Dbg_section
+ action.sh/_Dbg_list_action
+ action.sh/_Dbg_set_action
+ break.sh/_Dbg_enable_disable_brkpt
+ break.sh/_Dbg_set_brkpt
+ break.sh/_Dbg_unset_brkpt
+ display.sh/_Dbg_enable_disable_display
+ gdb.sh/_Dbg_print_command
+ gdb.sh/_Dbg_print_frame
+ gdb.sh/_Dbg_print_location
+ help.sh/_Dbg_help_set
+ help.sh/_Dbg_help_show
+ hook.sh/_Dbg_trap_handler
+ info-help.sh/_Dbg_info_help
+ processor.sh/_Dbg_onecmd
+ processor.sh/_Dbg_process_commands
+ setshow.sh/_Dbg_help_set_onoff
+ setshow.sh/_Dbg_set_onoff
+ setshow.sh/_Dbg_show_onoff
+ sig.sh/_Dbg_err_handler
+ sig.sh/_Dbg_exit_handler
+ sig.sh/_Dbg_sig_handler
+
+_Dbg_msg_nocr
+~~~~~~~~~~~~~
+
+Has 5 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_errmsg_no_cr
+ help.sh/_Dbg_help_set
+
+_Dbg_msg_rst
+~~~~~~~~~~~~
+
+Has 12 line(s). Calls functions:
+
+ _Dbg_msg_rst
+ `-- _Dbg_msg
+
+Called by:
+
+ help.sh/_Dbg_help_info
+ help.sh/_Dbg_help_set
+ help.sh/_Dbg_help_show
+
+_Dbg_printf
+~~~~~~~~~~~
+
+____
+ # print message to output device
+____
+
+Has 2 line(s). Calls functions:
+
+ _Dbg_printf
+ |-- _Dbg_msg
+ `-- _Dbg_printf_nocr
+
+Called by:
+
+ action.sh/_Dbg_list_action
+ break.sh/_Dbg_print_brkpt_count
+ list.sh/_Dbg_list
+
+_Dbg_printf_nocr
+~~~~~~~~~~~~~~~~
+
+____
+ # print message to output device
+____
+
+Has 13 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_printf
+ display.sh/_Dbg_eval_all_display
+
+_Dbg_section
+~~~~~~~~~~~~
+
+____
+ # print message to output device
+____
+
+Has 6 line(s). Calls functions:
+
+ _Dbg_section
+ `-- _Dbg_msg
+
+Called by:
+
+ action.sh/_Dbg_list_action
+
+_Dbg_undefined_cmd
+~~~~~~~~~~~~~~~~~~
+
+____
+ # Common funnel for "Undefined command" message
+____
+
+Has 5 line(s). Calls functions:
+
+ _Dbg_undefined_cmd
+ `-- _Dbg_errmsg
+     `-- _Dbg_msg
+
+Called by:
+
+ processor.sh/_Dbg_onecmd
+

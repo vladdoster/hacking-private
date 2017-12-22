@@ -1,0 +1,16 @@
+   (( $# == 0 )) && return 1
+   typeset attr="$1"; shift
+   typeset pat=''
+   (( $# > 0 )) && { pat=$1 ; shift; }
+   (( $# != 0 )) && return 1
+
+   typeset cmd="typeset $attr"
+   if [[ -n $pat ]] ; then
+if [[ ${pat[0]} == '!' ]] ; then
+    cmd+=" | grep -v ${pat[1,-1]}"
+else
+    cmd+=" | grep $pat"
+fi
+   fi
+   ((!_Dbg_set_debug)) && cmd+=' | grep -v ^_Dbg_'
+   eval $cmd

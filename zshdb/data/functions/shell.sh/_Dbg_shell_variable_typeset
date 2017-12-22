@@ -1,0 +1,16 @@
+   typeset var=$1
+   case ${parameters[$var]} in
+*export* )
+    return 2
+    ;;
+*special* )
+    return 3
+    ;;
+*readonly*) 
+    return 1
+    ;;
+*local* | *)
+    return 0
+    ;;
+   esac
+   return 3

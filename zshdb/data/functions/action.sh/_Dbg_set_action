@@ -1,0 +1,30 @@
+(( $# != 3 )) && return 1
+typeset source_file
+source_file=$(_Dbg_expand_filename "$1")
+
+$(_Dbg_is_int $2) || return 1
+typeset -ri lineno=$2
+typeset -r stmt=$3
+((_Dbg_action_max++))
+((_Dbg_action_count++))
+
+_Dbg_action_line[$_Dbg_action_max]=$lineno
+_Dbg_action_file[$_Dbg_action_max]="$source_file"
+_Dbg_action_stmt[$_Dbg_action_max]="$stmt"
+_Dbg_action_enable[$_Dbg_action_max]=1
+
+typeset dq_source_file
+typeset dq_source_file=$(_Dbg_esc_dq "$source_file")
+typeset dq_stmt=$(_Dbg_esc_dq "$stmt")
+
+_Dbg_write_journal "_Dbg_action_line[$_Dbg_action_max]=$lineno"
+_Dbg_write_journal "_Dbg_action_file[$_Dbg_action_max]=\"$dq_source_file\""
+_Dbg_write_journal "_Dbg_action_stmt[$_Dbg_action_max]=\"$dq_stmt\""
+_Dbg_write_journal "_Dbg_action_enable[$_Dbg_action_max]=1"
+_Dbg_action_file2linenos[$source_file]+=" $lineno "
+_Dbg_action_file2action[$source_file]+=" $_Dbg_action_max "
+
+source_file=$(_Dbg_adjust_filename "$source_file")
+_Dbg_msg "Action $_Dbg_action_max set in file ${source_file}, line $lineno."
+_Dbg_write_journal "_Dbg_action_max=$_Dbg_action_max"
+return 0

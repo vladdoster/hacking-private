@@ -1,0 +1,1 @@
+# _Dbg_defined returns 0 if $1 is a defined variable or nonzero otherwise. 

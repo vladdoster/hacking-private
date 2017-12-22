@@ -1,0 +1,3 @@
+# columnize a blank-delmited string global "list" with maximum column
+# width $1, separate columns with $2. The column width defaults to 80
+# and the column separator is two spaces.  

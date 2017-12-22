@@ -1,0 +1,2 @@
+# Append a command into journal file. But we only need to do
+# if we are in a subshell.

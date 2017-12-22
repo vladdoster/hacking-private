@@ -1,0 +1,4 @@
+typeset -r filename=$(_Dbg_adjust_filename "$1")
+_Dbg_errmsg "File \"$filename\" not found in read-in files."
+_Dbg_errmsg "See 'info files' for a list of known files and"
+_Dbg_errmsg "'load' to read in a file."

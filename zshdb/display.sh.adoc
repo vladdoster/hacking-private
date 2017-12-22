@@ -1,0 +1,86 @@
+display.sh(1)
+=============
+:compat-mode!:
+
+NAME
+----
+display.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_disp_enable_disable
+ _Dbg_enable_disable_display
+ _Dbg_eval_all_display
+ _Dbg_save_display
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 4 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_disp_enable_disable
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Enable/disable display by entry numbers.
+____
+
+Has 21 line(s). Calls functions:
+
+ _Dbg_disp_enable_disable
+ |-- _Dbg_enable_disable_display
+ |   |-- journal.sh/_Dbg_write_journal_eval
+ |   |-- msg.sh/_Dbg_errmsg
+ |   `-- msg.sh/_Dbg_msg
+ `-- msg.sh/_Dbg_errmsg
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_enable_disable_display
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Enable/disable display(s) by entry numbers.
+____
+
+Has 13 line(s). Calls functions:
+
+ _Dbg_enable_disable_display
+ |-- journal.sh/_Dbg_write_journal_eval
+ |-- msg.sh/_Dbg_errmsg
+ `-- msg.sh/_Dbg_msg
+
+Called by:
+
+ _Dbg_disp_enable_disable
+ break.sh/_Dbg_enable_disable
+
+_Dbg_eval_all_display
+~~~~~~~~~~~~~~~~~~~~~
+
+Has 9 line(s). Calls functions:
+
+ _Dbg_eval_all_display
+ `-- msg.sh/_Dbg_printf_nocr
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_save_display
+~~~~~~~~~~~~~~~~~
+
+____
+ #========================= FUNCTIONS   ============================#
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

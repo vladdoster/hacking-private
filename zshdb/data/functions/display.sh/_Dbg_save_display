@@ -1,0 +1,3 @@
+typeset -p _Dbg_disp_exp >> $_Dbg_statefile
+typeset -p _Dbg_disp_enable >> $_Dbg_statefile
+typeset -p _Dbg_disp_max >> $_Dbg_statefile

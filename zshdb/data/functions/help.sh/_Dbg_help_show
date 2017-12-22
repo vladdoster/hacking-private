@@ -1,0 +1,84 @@
+if (( $# == 0 )) ; then
+    typeset -a list
+    list=("${!_Dbg_command_help_show[@]}")
+    sort_list 0 ${#list[@]}-1
+    typeset subcmd
+    for subcmd in ${list[@]}; do
+        [[ $subcmd != 'version' ]] && _Dbg_help_show $subcmd 1
+    done
+    return 0
+fi
+
+typeset subcmd=$1
+typeset label="$2"
+
+if [[ -n "${_Dbg_command_help_show[$subcmd]}" ]] ; then
+    if [[ -z $label ]] ; then
+        _Dbg_msg_rst "${_Dbg_command_help_show[$subcmd]}"
+        return 0
+    else
+        label=$(builtin printf "show %-12s-- " $subcmd)
+    fi
+fi
+
+case $subcmd in
+    ar | arg | args )
+        _Dbg_msg \
+            'show args        -- Show argument list to give program being debugged when it
+                is started.'
+        return 0
+        ;;
+    an | ann | anno | annot | annota | annotat | annotate )
+        _Dbg_msg \
+            "show annotate    -- Show annotation_level"
+        return 0
+        ;;
+    autoe | autoev | autoeva | autoeval )
+        _Dbg_msg \
+            'show autoeval    -- Show if we evaluate unrecognized commands.'
+        return 0
+        ;;
+    autol | autoli | autolis | autolist )
+        _Dbg_msg \
+            "show autolist    -- Run list before command loop?"
+        return 0
+        ;;
+    different | force)
+        _Dbg_msg \
+            'show different   -- Show if setting forces a different line.'
+        ;;
+    dir|dire|direc|direct|directo|director|directori|directorie|directories)
+        _Dbg_msg \
+            "show directories -- Show file directories searched for listing source."
+        ;;
+    lin | line | linet | linetr | linetra | linetrac | linetrace )
+        _Dbg_msg \
+            'show linetrace   -- Show whether to trace lines before execution.'
+        ;;
+    lis | list | lists | listsi | listsiz | listsize )
+        _Dbg_msg \
+            'show listsize    -- Show number of source lines debugger will list by default.'
+        ;;
+    p | pr | pro | prom | promp | prompt )
+        _Dbg_msg \
+            "show prompt      -- Show debugger's prompt."
+        return 0
+        ;;
+    sty | style )
+        _Dbg_msg \
+            "show style       -- Show pygments style in source-code listings."
+        ;;
+    t|tr|tra|trac|trace|trace-|trace-c|trace-co|trace-com|trace-comm|trace-comma|trace-comman|trace-command|trace-commands )
+        _Dbg_msg \
+            'show trace-commands -- Show if we are echoing debugger commands'
+        return 0
+        ;;
+    w | wa | war | warr | warra | warran | warrant | warranty )
+        _Dbg_msg \
+            'show warranty    -- Various kinds of warranty you do not have.'
+        return 0
+        ;;
+    * )
+        _Dbg_msg \
+            "Undefined show command: \"$subcmd\".  Try \"help show\"."
+esac

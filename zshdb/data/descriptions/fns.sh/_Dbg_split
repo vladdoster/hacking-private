@@ -1,0 +1,2 @@
+# Split string $1 into an array using delimiter $2 to split on
+# The result is put in variable split_result

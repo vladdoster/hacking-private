@@ -1,0 +1,2 @@
+# Print "on" or "off" depending on whether $1 is true (0) or false
+# (nonzero).

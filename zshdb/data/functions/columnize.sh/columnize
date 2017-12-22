@@ -1,0 +1,74 @@
+   typeset -i displaywidth=${1:-80}
+   (($# < 2)) && typeset colsep='  ' || typeset colsep="$2"
+   typeset -i list_size=${#list[@]}
+   if ((list_size == 0)) ; then
+     columnized=('<empty>')
+     return
+   fi
+   if ((1 == list_size)); then
+columnized=("${list[0]}")
+return 
+   fi
+   typeset -i nrows=0 
+   typeset -i ncols=0
+   typeset -i i=0
+   for (( i=0; i<list_size; i++ )) ; do 
+     typeset -a colwidths
+     colwidths=()
+     ((nrows++))
+     
+     ((ncols=(list_size + nrows-1) / nrows))
+     typeset -i totwidth=-${#colsep}
+     typeset -i col
+     for (( col=0; col<=(ncols-1); col++ )); do
+         colwidth=0
+  typeset -i row
+         for (( row=0; row<=(nrows-1); row++ )); do
+      typeset -i j
+             ((j=row + nrows*col))
+             if ((j >= list_size)); then
+	  break
+      fi
+      typeset item="${list[j]}"
+      ((colwidth < ${#item})) && colwidth=${#item}
+         done
+         colwidths+=($colwidth)
+         ((totwidth+=colwidth + ${#colsep}))
+         if ((totwidth > displaywidth)); then
+             break
+         fi
+     done
+     if ((totwidth <= displaywidth)); then
+         break
+     fi
+   done
+   columnized=()
+   for (( row=0; row<nrows; row++ )); do
+typeset -i text_size=0
+typeset -a texts
+texts=()
+for ((col=0; col<ncols; col++)); do
+    ((i=row + nrows*col))
+           if ((i >= list_size)); then
+	item=''
+           else
+	item=${list[i]}
+    fi
+    
+    texts[$text_size]="$item"
+    ((text_size++))
+done
+while (( text_size > 0 )) && [[ ${texts[$text_size-1]} == '' ]] ; do 
+    ((text_size--))
+    ((text_size == ${#texts[@]})) &&  unset texts[$text_size]
+done
+text_row=''
+text_cell=''
+for (( col=0; col<text_size; col++ )); do
+    fmt="%-${colwidths[col]}s"
+    text_cell=$(printf $fmt "${texts[col]}")
+    text_row+="${text_cell}"
+    ((col != text_size-1)) && text_row+="${colsep}"
+done
+columnized[$row]="$text_row"
+   done

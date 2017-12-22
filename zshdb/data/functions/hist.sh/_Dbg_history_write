@@ -1,0 +1,17 @@
+   if (( _Dbg_history_size > 0 && _Dbg_set_history)) ; then
+cat /dev/null >$_Dbg_histfile
+typeset line
+typeset -a buffer
+typeset -a history
+typeset saveIFS
+saveIFS=$IFS; IFS=$'\n'; history=($(builtin fc -l)); IFS=$saveIFS
+typeset -i last=${#history[@]}
+typeset -i start=0
+typeset -i i
+((_Dbg_history_size < last+1)) && ((start=last+1-_Dbg_history_size))
+for ((i=start; i<=last; i++)); do
+    buffer=(${history[i]})
+    buffer[0]=()
+    print -- "${buffer[@]}" >> $_Dbg_histfile;
+done
+   fi

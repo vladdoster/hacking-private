@@ -1,0 +1,5 @@
+IFS="$_Dbg_old_IFS"
+PS4="$_Dbg_old_PS4"
+[[ -n $_Dbg_restore_unsetopt ]] && eval "unsetopt $_Dbg_restore_unsetopt"
+[[ -n $_Dbg_restore_setopt ]] && eval "setopt $_Dbg_restore_setopt"
+set -$_Dbg_old_set_opts

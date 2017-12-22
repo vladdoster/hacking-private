@@ -1,0 +1,2 @@
+print ERROR AT: ${funcfiletrace[@]}
+_Dbg_write_journal_eval "_Dbg_step_ignore=1"

@@ -1,0 +1,134 @@
+journal.sh(1)
+=============
+:compat-mode!:
+
+NAME
+----
+journal.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_erase_journals
+ _Dbg_source_journal
+ _Dbg_write_journal
+ _Dbg_write_journal_avar
+ _Dbg_write_journal_eval
+ _Dbg_write_journal_var
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 4 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_erase_journals
+~~~~~~~~~~~~~~~~~~~
+
+____
+ # Remove all journal files.
+____
+
+Has 2 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_source_journal
+ hook.sh/_Dbg_cleanup
+ hook.sh/_Dbg_cleanup2
+
+_Dbg_source_journal
+~~~~~~~~~~~~~~~~~~~
+
+____
+ # read in or "source" in journal file which will set variables.
+____
+
+Has 4 line(s). Calls functions:
+
+ _Dbg_source_journal
+ `-- _Dbg_erase_journals
+
+Called by:
+
+ hook.sh/_Dbg_trap_handler
+ save-restore.sh/_Dbg_set_debugger_entry
+ sig.sh/_Dbg_subexit_handler
+
+_Dbg_write_journal
+~~~~~~~~~~~~~~~~~~
+
+____
+ # Append a command into journal file. But we only need to do
+ # if we are in a subshell.
+____
+
+Has 4 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_write_journal_eval
+ _Dbg_write_journal_var
+ action.sh/_Dbg_set_action
+ break.sh/_Dbg_set_brkpt
+ dbg-call.sh/_Dbg_debugger
+ hook.sh/_Dbg_trap_handler
+ processor.sh/_Dbg_process_commands
+
+_Dbg_write_journal_avar
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 7 line(s). Doesn't call other functions.
+
+Called by:
+
+ break.sh/_Dbg_set_brkpt
+
+_Dbg_write_journal_eval
+~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # append a command into journal file and then run the command.
+____
+
+Has 2 line(s). Calls functions:
+
+ _Dbg_write_journal_eval
+ `-- _Dbg_write_journal
+
+Uses feature(s): _eval_
+
+Called by:
+
+ action.sh/_Dbg_unset_action_arrays
+ break.sh/_Dbg_clear_all_brkpt
+ break.sh/_Dbg_delete_brkpt_entry
+ break.sh/_Dbg_enable_disable_brkpt
+ break.sh/_Dbg_unset_brkpt_arrays
+ display.sh/_Dbg_enable_disable_display
+ hook.sh/_Dbg_hook_error_handler
+ processor.sh/_Dbg_process_commands
+ setshow.sh/_Dbg_set_onoff
+
+_Dbg_write_journal_var
+~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # append a command into journal file and then run the command.
+____
+
+Has 5 line(s). Calls functions:
+
+ _Dbg_write_journal_var
+ `-- _Dbg_write_journal
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

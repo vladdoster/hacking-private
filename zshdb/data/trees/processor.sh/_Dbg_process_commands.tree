@@ -1,0 +1,16 @@
+_Dbg_process_commands
+|-- _Dbg_onecmd
+|   |-- action.sh/_Dbg_list_action
+|   |-- alias.sh/_Dbg_alias_expand
+|   |-- msg.sh/_Dbg_msg
+|   `-- msg.sh/_Dbg_undefined_cmd
+|-- _Dbg_postcmd
+|   `-- _Dbg_annotation
+|-- _Dbg_preloop
+|   `-- _Dbg_annotation
+|-- fns.sh/_Dbg_copies
+|-- journal.sh/_Dbg_write_journal
+|-- journal.sh/_Dbg_write_journal_eval
+`-- msg.sh/_Dbg_msg
+
+13 directories, 0 files

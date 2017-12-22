@@ -1,0 +1,43 @@
+ if (( $# == 0 )) ; then
+   _Dbg_errmsg \
+"Internal debug error _Dbg_resolve_expand_filename(): null file to find"
+   echo ''
+   return 1
+ fi
+ typeset find_file="$1"
+ typeset found_file
+ found_file="${_Dbg_file2canonic[$find_file]}"
+ if [[ -n  $found_file ]] ; then
+   print -- "$found_file"
+   return 0
+ fi
+
+ if [[ ${find_file[0]} == '/' ]] ; then
+   full_find_file=$(_Dbg_expand_filename "$find_file")
+   print -- "$full_find_file"
+   return 0
+ elif [[ ${find_file[0]} == '.' ]] ; then
+   full_find_file=$(_Dbg_expand_filename "${_Dbg_init_cwd}/$find_file")
+   if [[ -z "$full_find_file" ]] || [[ ! -r $full_find_file ]]; then
+     full_find_file=$(_Dbg_expand_filename "$find_file")
+   fi
+   print -- "$full_find_file"
+   return 0
+ else
+   typeset -i n=${#_Dbg_dir[@]}
+   typeset -i i
+   for (( i=0 ; i < n; i++ )) ; do
+     typeset basename="${_Dbg_dir[i]}"
+     if [[  $basename == '\$cdir' ]] ; then
+basename=$_Dbg_cdir
+     elif [[ $basename == '\$cwd' ]] ; then
+basename=$(pwd)
+     fi
+     if [[ -f "$basename/$find_file" ]] ; then
+print -- "$basename/$find_file"
+return 0
+     fi
+   done
+ fi
+ echo ''
+ return 1

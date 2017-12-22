@@ -1,0 +1,5 @@
+  IFS="$_Dbg_space_IFS"
+  PS4='(%x:%I): %? $_Dbg_debugger_name
+'
+  setopt ksharrays shwordsplit norcs bashrematch
+  unsetopt $_Dbg_debugger_unset_opts

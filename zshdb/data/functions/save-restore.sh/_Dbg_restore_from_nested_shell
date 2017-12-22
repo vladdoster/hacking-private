@@ -1,0 +1,5 @@
+   rm -f $_Dbg_shell_temp_profile 2>&1 >/dev/null
+   if [[ -r $_Dbg_restore_info ]] ; then
+. $_Dbg_restore_info
+rm $_Dbg_restore_info
+   fi

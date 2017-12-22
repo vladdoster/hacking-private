@@ -1,0 +1,81 @@
+complete.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+complete.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_complete_level_0
+ _Dbg_complete_level_1
+ _Dbg_complete_level_2
+ _Dbg_subcmd_complete
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 8 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+_Dbg_complete_level_0
+~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Interactive completion. level_0 is top-level matching which for the
+ # the debugger are commands and aliases. The below routine also splits
+ # out subcommands and sub-sub commands and calls the appropriate
+ # completion routines
+____
+
+Has 7 line(s). Calls functions:
+
+ _Dbg_complete_level_0
+ |-- _Dbg_complete_level_1
+ `-- _Dbg_complete_level_2
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_Dbg_complete_level_1
+~~~~~~~~~~~~~~~~~~~~~
+
+Has 23 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_complete_level_0
+
+_Dbg_complete_level_2
+~~~~~~~~~~~~~~~~~~~~~
+
+Has 15 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_complete_level_0
+
+_Dbg_subcmd_complete
+~~~~~~~~~~~~~~~~~~~~
+
+____
+ # gdb style "complete" command completion.
+ # Print a list of completions in global variable _Dbg_matches
+ # for 'subcmd' that start with 'text'.
+ # We get the list of completions from _Dbg._*subcmd*_cmds.
+ # If no completion, we return the empty list.
+____
+
+Has 13 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+

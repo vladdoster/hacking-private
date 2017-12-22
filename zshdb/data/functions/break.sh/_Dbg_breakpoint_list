@@ -1,0 +1,6 @@
+   typeset -i i
+   list=''
+   for ((i=0; i<=${#_Dbg_brkpt_file[@]}; i++)) ; do
+[[ -n ${_Dbg_brkpt_file[i]} ]] && list="${list}${i} "
+   done
+   echo $list

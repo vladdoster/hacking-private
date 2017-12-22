@@ -1,0 +1,7 @@
+(( $# != 1 )) && return 1
+typeset filename="$1"
+fullname=${_Dbg_file2canonic[$filename]}
+[[ -z $fullname ]] && return 2
+_Dbg_source_array_var=${_Dbg_filenames[$fullname]}
+[[ -z $_Dbg_source_array_var ]] && return 2
+return 0

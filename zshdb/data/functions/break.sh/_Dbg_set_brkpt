@@ -1,0 +1,41 @@
+   (( $# < 3 || $# > 4 )) && return 1
+   typeset source_file
+   source_file=$(_Dbg_expand_filename "$1")
+   $(_Dbg_is_int "$2") || return 1
+   typeset -ri lineno=$2
+   typeset -ri is_temp=$3
+   typeset -r  condition=${4:-1}
+   ((_Dbg_brkpt_max++))
+   ((_Dbg_brkpt_count++))
+
+   _Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno
+   _Dbg_brkpt_file[$_Dbg_brkpt_max]="$source_file"
+   _Dbg_brkpt_cond[$_Dbg_brkpt_max]="$condition"
+   _Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp
+   _Dbg_brkpt_counts[$_Dbg_brkpt_max]=0
+   _Dbg_brkpt_enable[$_Dbg_brkpt_max]=1
+
+   typeset dq_source_file
+   dq_source_file=$(_Dbg_esc_dq "$source_file")
+   typeset dq_condition=$(_Dbg_esc_dq "$condition")
+   _Dbg_write_journal "_Dbg_brkpt_line[$_Dbg_brkpt_max]=$lineno"
+   _Dbg_write_journal "_Dbg_brkpt_file[$_Dbg_brkpt_max]=\"$dq_source_file\""
+   _Dbg_write_journal "_Dbg_brkpt_cond[$_Dbg_brkpt_max]=\"$dq_condition\""
+   _Dbg_write_journal "_Dbg_brkpt_onetime[$_Dbg_brkpt_max]=$is_temp"
+   _Dbg_write_journal "_Dbg_brkpt_counts[$_Dbg_brkpt_max]=0"
+   _Dbg_write_journal "_Dbg_brkpt_enable[$_Dbg_brkpt_max]=1"
+   _Dbg_write_journal "_Dbg_brkpt_count=${_Dbg_brkpt_count}"
+   _Dbg_brkpt_file2linenos[$source_file]+=" $lineno "
+   _Dbg_brkpt_file2brkpt[$source_file]+=" $_Dbg_brkpt_max "
+
+   _Dbg_write_journal_avar _Dbg_brkpt_file2linenos
+   _Dbg_write_journal_avar _Dbg_brkpt_file2brkpt
+
+   source_file=$(_Dbg_adjust_filename "$source_file")
+   if (( is_temp == 0 )) ; then
+_Dbg_msg "Breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $lineno."
+   else
+_Dbg_msg "One-time breakpoint $_Dbg_brkpt_max set in file ${source_file}, line $lineno."
+   fi
+   _Dbg_write_journal "_Dbg_brkpt_max=$_Dbg_brkpt_max"
+   return 0
