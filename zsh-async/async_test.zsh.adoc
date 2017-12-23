@@ -1,0 +1,352 @@
+async_test.zsh(1)
+=================
+:compat-mode!:
+
+NAME
+----
+async_test.zsh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ setopt_helper
+ test__async_job_multiple_commands
+ test__async_job_print_hi
+ test__async_job_stderr
+ test__async_job_wait_for_token
+ test_all_options
+ test_async_flush_jobs
+ test_async_job_error_and_nonzero_exit
+ test_async_job_git_status
+ test_async_job_keeps_nulls
+ test_async_job_multiple_arguments_and_spaces
+ test_async_job_multiple_commands_in_multiline_string
+ test_async_job_print_matches_input_exactly
+ test_async_job_unique_worker
+ test_async_job_with_rc_expand_param
+ test_async_process_results
+ test_async_process_results_stress
+ test_async_start_stop_worker
+ test_async_worker_notify_sigwinch
+ test_async_worker_survives_termination_of_other_worker
+ test_main
+ test_zle_watcher
+ zpty_deinit
+ zpty_init
+ zpty_run
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 1 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+
+setopt_helper
+~~~~~~~~~~~~~
+
+Has 16 line(s). Calls functions:
+
+ setopt_helper
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Called by:
+
+ test_all_options
+
+test__async_job_multiple_commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 11 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test__async_job_print_hi
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #!/usr/bin/env zsh
+____
+
+Has 14 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test__async_job_stderr
+~~~~~~~~~~~~~~~~~~~~~~
+
+Has 14 line(s). Doesn't call other functions.
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test__async_job_wait_for_token
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 17 line(s). Calls functions:
+
+ test__async_job_wait_for_token
+ `-- async.zsh/_async_job
+
+Uses feature(s): _wait_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_all_options
+~~~~~~~~~~~~~~~~
+
+Has 25 line(s). Calls functions:
+
+ test_all_options
+ `-- setopt_helper
+     |-- async.zsh/async_job
+     |-- async.zsh/async_process_results
+     |-- async.zsh/async_start_worker
+     `-- async.zsh/async_stop_worker
+
+Uses feature(s): _kill_, _zle_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_flush_jobs
+~~~~~~~~~~~~~~~~~~~~~
+
+Has 27 line(s). Calls functions:
+
+ test_async_flush_jobs
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_job_error_and_nonzero_exit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 23 line(s). Calls functions:
+
+ test_async_job_error_and_nonzero_exit
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ `-- async.zsh/async_start_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_job_git_status
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 14 line(s). Calls functions:
+
+ test_async_job_git_status
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_job_keeps_nulls
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 20 line(s). Calls functions:
+
+ test_async_job_keeps_nulls
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_job_multiple_arguments_and_spaces
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 14 line(s). Calls functions:
+
+ test_async_job_multiple_arguments_and_spaces
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_job_multiple_commands_in_multiline_string
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 11 line(s). Calls functions:
+
+ test_async_job_multiple_commands_in_multiline_string
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_job_print_matches_input_exactly
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 17 line(s). Calls functions:
+
+ test_async_job_print_matches_input_exactly
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ `-- async.zsh/async_start_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_job_unique_worker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 18 line(s). Calls functions:
+
+ test_async_job_unique_worker
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_job_with_rc_expand_param
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 15 line(s). Calls functions:
+
+ test_async_job_with_rc_expand_param
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_process_results
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 13 line(s). Calls functions:
+
+ test_async_process_results
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ `-- async.zsh/async_start_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_process_results_stress
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 64 line(s). Calls functions:
+
+ test_async_process_results_stress
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ `-- async.zsh/async_start_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_start_stop_worker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 11 line(s). Calls functions:
+
+ test_async_start_stop_worker
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_worker_notify_sigwinch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 15 line(s). Calls functions:
+
+ test_async_worker_notify_sigwinch
+ |-- async.zsh/async_job
+ |-- async.zsh/async_register_callback
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_async_worker_survives_termination_of_other_worker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 16 line(s). Calls functions:
+
+ test_async_worker_survives_termination_of_other_worker
+ |-- async.zsh/async_job
+ |-- async.zsh/async_process_results
+ |-- async.zsh/async_start_worker
+ `-- async.zsh/async_stop_worker
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_main
+~~~~~~~~~
+
+Has 3 line(s). Calls functions:
+
+ test_main
+ `-- async.zsh/async_init
+
+Uses feature(s): _zmodload_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+test_zle_watcher
+~~~~~~~~~~~~~~~~
+
+Has 29 line(s). Calls functions:
+
+ test_zle_watcher
+ |-- zpty_deinit
+ |-- zpty_init
+ `-- zpty_run
+
+Uses feature(s): _zpty_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+zpty_deinit
+~~~~~~~~~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Uses feature(s): _zpty_
+
+Called by:
+
+ test_zle_watcher
+
+zpty_init
+~~~~~~~~~
+
+Has 14 line(s). Doesn't call other functions.
+
+Uses feature(s): _export_, _zmodload_, _zpty_
+
+Called by:
+
+ test_zle_watcher
+
+zpty_run
+~~~~~~~~
+
+Has 5 line(s). Doesn't call other functions.
+
+Uses feature(s): _zpty_
+
+Called by:
+
+ test_zle_watcher
+

@@ -1,0 +1,344 @@
+async.zsh(1)
+============
+:compat-mode!:
+
+NAME
+----
+async.zsh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _async_job
+ _async_notify_trap
+ _async_worker
+ _async_zle_watcher
+ async
+ async_flush_jobs
+ async_init
+ async_job
+ async_process_results
+ async_register_callback
+ async_start_worker
+ async_stop_worker
+ async_unregister_callback
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 4 line(s). Calls functions:
+
+ Script-Body
+ `-- async
+     `-- async_init
+
+_async_job
+~~~~~~~~~~
+
+____
+ # Wrapper for jobs executed by the async worker, gives output in parseable format with execution time
+____
+
+Has 11 line(s). Doesn't call other functions.
+
+Uses feature(s): _read_
+
+Called by:
+
+ _async_worker
+ async_test.zsh/test__async_job_wait_for_token
+
+_async_notify_trap
+~~~~~~~~~~~~~~~~~~
+
+____
+ # This function traps notification signals and calls all registered callbacks
+____
+
+Has 6 line(s). Calls functions:
+
+ _async_notify_trap
+ `-- async_process_results
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_async_worker
+~~~~~~~~~~~~~
+
+____
+ # The background worker manages all tasks and runs them without interfering with other processes
+____
+
+Has 85 line(s). Calls functions:
+
+ _async_worker
+ `-- _async_job
+
+Uses feature(s): _kill_, _read_, _trap_, _unfunction_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+_async_zle_watcher
+~~~~~~~~~~~~~~~~~~
+
+____
+ # Watch worker for output
+____
+
+Has 8 line(s). Calls functions:
+
+ _async_zle_watcher
+ `-- async_process_results
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+async
+~~~~~
+
+Has 1 line(s). Calls functions:
+
+ async
+ `-- async_init
+
+Called by:
+
+ Script-Body
+
+async_flush_jobs
+~~~~~~~~~~~~~~~~
+
+____
+ #
+ # Flush all current jobs running on a worker. This will terminate any and all running processes under the worker, use
+ # with caution.
+ #
+ # usage:
+ # 	async_flush_jobs <worker_name>
+____
+
+Has 15 line(s). Calls functions:
+
+ async_flush_jobs
+ `-- async_job
+
+Uses feature(s): _zpty_
+
+Not called by script or any function, may be a hook or Zle widget, etc.
+
+async_init
+~~~~~~~~~~
+
+____
+ #
+ # Initialize the required modules for zsh-async. To be called before using the zsh-async library.
+ #
+ # usage:
+ # 	async_init
+____
+
+Has 12 line(s). Doesn't call other functions.
+
+Uses feature(s): _zmodload_, _zpty_
+
+Called by:
+
+ async
+ async_test.zsh/test_main
+
+async_job
+~~~~~~~~~
+
+____
+ #
+ # Start a new asynchronous job on specified worker, assumes the worker is running.
+ #
+ # usage:
+ # 	async_job <worker_name> <my_function> [<function_params>]
+____
+
+Has 10 line(s). Doesn't call other functions.
+
+Uses feature(s): _zpty_
+
+Called by:
+
+ async_flush_jobs
+ async_start_worker
+ async_test.zsh/setopt_helper
+ async_test.zsh/test_async_flush_jobs
+ async_test.zsh/test_async_job_error_and_nonzero_exit
+ async_test.zsh/test_async_job_git_status
+ async_test.zsh/test_async_job_keeps_nulls
+ async_test.zsh/test_async_job_multiple_arguments_and_spaces
+ async_test.zsh/test_async_job_multiple_commands_in_multiline_string
+ async_test.zsh/test_async_job_print_matches_input_exactly
+ async_test.zsh/test_async_job_unique_worker
+ async_test.zsh/test_async_job_with_rc_expand_param
+ async_test.zsh/test_async_process_results
+ async_test.zsh/test_async_process_results_stress
+ async_test.zsh/test_async_worker_notify_sigwinch
+ async_test.zsh/test_async_worker_survives_termination_of_other_worker
+
+async_process_results
+~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #
+ #  Get results from finnished jobs and pass it to the to callback function. This is the only way to reliably return the
+ #  job name, return code, output and execution time and with minimal effort.
+ #
+ # usage:
+ # 	async_process_results <worker_name> <callback_function>
+ #
+ # callback_function is called with the following parameters:
+ # 	$1 = job name, e.g. the function passed to async_job
+ # 	$2 = return code
+ # 	$3 = resulting stdout from execution
+ # 	$4 = execution time, floating point e.g. 2.05 seconds
+ # 	$5 = resulting stderr from execution
+ #	$6 = has next result in buffer (0 = buffer empty, 1 = yes)
+____
+
+Has 41 line(s). Doesn't call other functions.
+
+Uses feature(s): _zpty_
+
+Called by:
+
+ _async_notify_trap
+ _async_zle_watcher
+ async_test.zsh/setopt_helper
+ async_test.zsh/test_async_flush_jobs
+ async_test.zsh/test_async_job_error_and_nonzero_exit
+ async_test.zsh/test_async_job_git_status
+ async_test.zsh/test_async_job_keeps_nulls
+ async_test.zsh/test_async_job_multiple_arguments_and_spaces
+ async_test.zsh/test_async_job_multiple_commands_in_multiline_string
+ async_test.zsh/test_async_job_print_matches_input_exactly
+ async_test.zsh/test_async_job_unique_worker
+ async_test.zsh/test_async_job_with_rc_expand_param
+ async_test.zsh/test_async_process_results
+ async_test.zsh/test_async_process_results_stress
+ async_test.zsh/test_async_worker_survives_termination_of_other_worker
+
+async_register_callback
+~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #
+ # Register a callback for completed jobs. As soon as a job is finnished, async_process_results will be called with the
+ # specified callback function. This requires that a worker is initialized with the -n (notify) option.
+ #
+ # usage:
+ # 	async_register_callback <worker_name> <callback_function>
+____
+
+Has 9 line(s). Doesn't call other functions.
+
+Uses feature(s): _trap_
+
+Called by:
+
+ async_test.zsh/test_async_worker_notify_sigwinch
+
+async_start_worker
+~~~~~~~~~~~~~~~~~~
+
+____
+ #
+ # Start a new async worker with optional parameters, a worker can be told to only run unique tasks and to notify a
+ # process when tasks are complete.
+ #
+ # usage:
+ # 	async_start_worker <worker_name> [-u] [-n] [-p <pid>]
+ #
+ # opts:
+ # 	-u unique (only unique job names can run)
+ # 	-n notify through SIGWINCH signal
+ # 	-p pid to notify (defaults to current pid)
+____
+
+Has 38 line(s). Calls functions:
+
+ async_start_worker
+ |-- async_job
+ `-- async_stop_worker
+     `-- async_unregister_callback
+
+Uses feature(s): _zle_, _zpty_
+
+Called by:
+
+ async_test.zsh/setopt_helper
+ async_test.zsh/test_async_flush_jobs
+ async_test.zsh/test_async_job_error_and_nonzero_exit
+ async_test.zsh/test_async_job_git_status
+ async_test.zsh/test_async_job_keeps_nulls
+ async_test.zsh/test_async_job_multiple_arguments_and_spaces
+ async_test.zsh/test_async_job_multiple_commands_in_multiline_string
+ async_test.zsh/test_async_job_print_matches_input_exactly
+ async_test.zsh/test_async_job_unique_worker
+ async_test.zsh/test_async_job_with_rc_expand_param
+ async_test.zsh/test_async_process_results
+ async_test.zsh/test_async_process_results_stress
+ async_test.zsh/test_async_start_stop_worker
+ async_test.zsh/test_async_worker_notify_sigwinch
+ async_test.zsh/test_async_worker_survives_termination_of_other_worker
+
+async_stop_worker
+~~~~~~~~~~~~~~~~~
+
+____
+ #
+ # Stop one or multiple workers that are running, all unfetched and incomplete work will be lost.
+ #
+ # usage:
+ # 	async_stop_worker <worker_name_1> [<worker_name_2>]
+____
+
+Has 17 line(s). Calls functions:
+
+ async_stop_worker
+ `-- async_unregister_callback
+
+Uses feature(s): _zle_, _zpty_
+
+Called by:
+
+ async_start_worker
+ async_test.zsh/setopt_helper
+ async_test.zsh/test_async_flush_jobs
+ async_test.zsh/test_async_job_git_status
+ async_test.zsh/test_async_job_keeps_nulls
+ async_test.zsh/test_async_job_multiple_arguments_and_spaces
+ async_test.zsh/test_async_job_multiple_commands_in_multiline_string
+ async_test.zsh/test_async_job_unique_worker
+ async_test.zsh/test_async_job_with_rc_expand_param
+ async_test.zsh/test_async_start_stop_worker
+ async_test.zsh/test_async_worker_notify_sigwinch
+ async_test.zsh/test_async_worker_survives_termination_of_other_worker
+
+async_unregister_callback
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #
+ # Unregister the callback for a specific worker.
+ #
+ # usage:
+ # 	async_unregister_callback <worker_name>
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Called by:
+
+ async_stop_worker
+
