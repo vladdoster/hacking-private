@@ -1,0 +1,501 @@
+--------------------------------------------------------------------------------
+Profile data file 'callgrind.out.36403' (creator: callgrind-3.13.0)
+--------------------------------------------------------------------------------
+I1 cache:
+D1 cache:
+LL cache:
+Timerange: Basic block 0 - 1157924742
+Trigger: Program termination
+Profiled target:  zsh-5.4.2-dev-0 -f ./script1_srcopt.zsh (PID 36403, part 1)
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Thresholds:       100
+Include dirs:
+User annotated:
+Auto-annotation:  off
+
+--------------------------------------------------------------------------------
+           Ir
+--------------------------------------------------------------------------------
+6,018,711,819  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+         Ir  file:function
+--------------------------------------------------------------------------------
+499,337,372  _pthread_mutex_unlock_slow
+395,103,281  ingetc
+340,894,646  _pthread_mutex_lock_slow
+270,001,086  gettokstr
+253,955,336  itype_end
+239,400,268  par_cmd
+235,501,204  zshlex
+212,451,886  szone_free_definite_size
+189,088,608  _platform_memmove
+184,805,094  zhalloc
+170,627,916  szone_size
+133,142,800  szone_malloc_should_clear
+120,600,000  addvars
+117,622,898  strlen
+112,500,000  execlist'2
+103,499,107  fgetc
+ 99,001,300  shingetline
+ 90,017,029  fetchvalue
+ 00,000,000  readoutput
+ 84,900,239  exalias
+ 81,009,495  free
+ 00,000,000  remnulargs
+ 77,400,137  ecstrcode
+ 75,600,063  inungetc
+ 71,100,076  par_sublist
+ 70,200,054  ecgetstr
+ 69,307,579  assignsparam
+ 67,695,989  tiny_malloc_from_free_list
+ 64,876,963  hasher
+ 63,000,610  has_token
+ 62,416,583  strcpy
+ 59,816,558  tiny_free_list_add_ptr
+ 59,400,000  execsimple
+ 58,506,441  assignstrvalue
+ 58,200,032  par_event'2
+ 54,900,025  set_list_code
+ 54,000,060  par_pline
+ 50,428,084  malloc_zone_malloc
+ 46,529,510  zalloc
+ 37,800,903  dupstring
+ 36,021,416  malloc
+ 35,100,094  checkalias
+ 33,609,177  flockfile
+ 33,609,177  funlockfile
+ 32,400,228  add
+ 31,500,045  setunderscore
+ 28,816,663  gethashnode2
+ 27,906,987  getparamnode
+ 27,600,092  bld_eprog
+ 25,503,477  watchlog_match
+ 25,209,450  ztrdup
+ 23,509,751  _platform_strcmp
+ 23,417,919  _platform_bzero$VARIANT$Merom
+ 23,100,203  par_event
+ 22,506,524  _platform_strchr$VARIANT$Generic
+ 22,503,600  isident
+ 22,500,640  __error
+ 21,600,221  gethashnode
+ 21,600,171  zshlex_raw_add
+ 20,700,345  hbegin
+ 20,400,078  loop'2
+ 19,801,980  strsetfn
+ 19,217,115  pthread_mutex_lock
+ 18,007,685  _os_lock_spin_lock
+ 17,400,290  freeheap
+ 16,500,281  init_parse
+ 16,202,388  strrchr
+ 16,200,012  zshlex_raw_back
+ 15,300,761  check_warn_pm
+ 14,700,000  execode'2
+ 14,418,432  pthread_mutex_unlock
+ 14,400,024  input_hasalias
+ 14,100,136  inputsetline
+ 13,800,230  hend
+ 13,500,030  hcalloc
+ 13,256,505  get_tiny_previous_free_msize
+ 12,902,575  __vsnprintf_chk
+ 12,600,036  ugetnode
+  9,005,025  szone_malloc
+  8,700,087  zrealloc
+  8,700,029  __strcpy_chk
+  8,400,656  zsfree
+  8,400,280  nohw
+  8,400,028  nohwe
+  7,800,156  signal_mask
+  7,203,274  os_lock_unlock
+  7,203,274  os_lock_lock
+  7,203,074  _os_lock_spin_unlock
+  7,200,136  parse_event
+  6,900,023  stpcpy
+  6,000,040  freeeprog
+  5,700,109  zfree
+  5,403,333  get_node_from_uniquing_table
+  5,100,032  copy_ecstr
+  4,800,032  ferror
+  4,688,220  ImageLoaderMachOCompressed::trieWalk(unsigned char const*, unsigned char const*, char const*)
+  4,200,056  __chk_overlap
+  3,900,000  arrlen
+  3,600,096  signal_block
+  3,600,072  signal_unblock
+  3,300,055  lexinit
+  3,300,022  useeprog
+  3,000,070  sigprocmask
+  2,221,567  tiny_free_list_remove_ptr
+  1,200,024  intr
+  1,046,371  get_tiny_free_size
+    748,577  ImageLoaderMachO::findExportedSymbol(char const*, bool, ImageLoader const**) const'2
+    612,055  __vsnprintf_chk'2
+    458,334  ImageLoaderMachOCompressed::libReExported(unsigned int) const
+    343,351  ImageLoaderMachOCompressed::rebase(ImageLoader::LinkContext const&)
+    284,003  ImageLoaderMachOCompressed::findExportedSymbol(char const*, ImageLoader const**) const
+    184,512  ImageLoaderMachOCompressed::eachBind(ImageLoader::LinkContext const&, unsigned long (ImageLoaderMachOCompressed::*)(ImageLoader::LinkContext const&, unsigned long, unsigned char, char const*, unsigned char, long, long, char const*, ImageLoaderMachOCompressed::LastLookup*, bool))
+    173,696  ImageLoaderMachO::findExportedSymbol(char const*, bool, ImageLoader const**) const
+    166,828  dyld_stub_binder'2
+    166,727  dyld::loadPhase5(char const*, char const*, dyld::LoadContext const&, std::__1::vector<char const*, std::__1::allocator<char const*> >*)
+    159,994  strcmp
+    137,007  ImageLoaderMachOCompressed::doBindFastLazySymbol(unsigned int, ImageLoader::LinkContext const&, void (*)(), void (*)())
+    124,502  _Read_RuneMagi
+    118,188  ImageLoaderMachOCompressed::exportedSymbolAddress(ImageLoader::LinkContext const&, ImageLoader::Symbol const*, ImageLoader const*, bool) const
+     98,479  _platform_strncmp
+     95,057  ImageLoaderMachOCompressed::resolve(ImageLoader::LinkContext const&, char const*, unsigned char, long, ImageLoader const**, ImageLoaderMachOCompressed::LastLookup*, bool)
+     92,075  ImageLoader::hash(char const*)
+     86,952  __fread
+     81,702  ImageLoaderMachOCompressed::libImage(unsigned int) const
+     71,218  getsectiondata
+     61,109  _mapStrHash(_NXMapTable*, void const*)
+     57,008  ImageLoaderMachO::bindLocation(ImageLoader::LinkContext const&, unsigned long, unsigned long, ImageLoader const*, unsigned char, char const*, long, char const*)
+     55,996  ImageLoader::recursiveLoadLibraries(ImageLoader::LinkContext const&, bool, ImageLoader::RPathChain const&)'2
+     55,356  ImageLoader::matchInstallPath() const
+     54,359  bcmp
+     48,031  ImageLoaderMachOCompressed::bindAt(ImageLoader::LinkContext const&, unsigned long, unsigned char, char const*, unsigned char, long, long, char const*, ImageLoaderMachOCompressed::LastLookup*, bool)
+     46,112  ImageLoaderMachOCompressed::resolveTwolevel(ImageLoader::LinkContext const&, ImageLoader const*, bool, char const*, bool, ImageLoader const**)
+     42,261  ImageLoaderMachO::parseLoadCmds(ImageLoader::LinkContext const&)
+     41,487  dyld_stub_binder
+     37,750  __srefill0
+     36,490  __findenv
+     33,453  fread
+     32,826  arc4_stir
+     30,304  ImageLoader::recursiveUpdateDepth(unsigned int)'2
+     30,112  strncmp
+     29,104  pthread_once
+     28,222  ImageLoaderMachO::sniffLoadCommands(macho_header const*, char const*, bool, bool*, unsigned int*, unsigned int*, ImageLoader::LinkContext const&, linkedit_data_command const**, encryption_info_command const**)
+     27,762  ImageLoader::compare(ImageLoader const*) const
+     25,004  addhashnode2
+     23,822  _qsort'2
+     23,606  dyld::loadPhase3(char const*, char const*, dyld::LoadContext const&, std::__1::vector<char const*, std::__1::allocator<char const*> >*)
+     23,339  ImageLoader::recursiveInitialization(ImageLoader::LinkContext const&, unsigned int, ImageLoader::InitializerTimingList&, ImageLoader::UninitedUpwards&)'2
+     23,318  __srefill1
+     21,504  ImageLoaderMachOCompressed::segmentCommandOffsets() const
+     21,412  ImageLoaderMachO::registerInterposing()
+     21,200  ImageLoaderMachO::getExportedSymbolAddress(ImageLoader::Symbol const*, ImageLoader::LinkContext const&, ImageLoader const*, bool) const
+     20,928  __srget
+     20,672  ImageLoaderMachO::segActualLoadAddress(unsigned int) const
+     20,524  _NXMapMember(_NXMapTable*, void const*, void**)
+     18,611  ImageLoaderMachO::doGetDependentLibraries(ImageLoader::DependentLibraryInfo*)
+     17,812  _sread
+     17,562  void std::__1::__insertion_sort<method_t::SortBySELAddress&, entsize_list_tt<method_t, method_list_t, 3u>::iterator>(entsize_list_tt<method_t, method_list_t, 3u>::iterator, entsize_list_tt<method_t, method_list_t, 3u>::iterator, method_t::SortBySELAddress&)
+     17,216  dyld::load(char const*, dyld::LoadContext const&)
+     16,980  copySwiftV1MangledName(char const*, bool)
+     16,226  _mapStrIsEqual(_NXMapTable*, void const*, void const*)
+     16,192  dyld::checkandAddImage(ImageLoader*, dyld::LoadContext const&)
+     16,133  ImageLoader::recursiveBind(ImageLoader::LinkContext const&, bool, bool)'2
+     15,844  pthread_rwlock_unlock
+     15,579  dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*))
+     15,548  _readdir_unlocked$INODE64
+     15,173  NXMapInsert
+     15,059  dyld::loadPhase0(char const*, char const*, dyld::LoadContext const&, std::__1::vector<char const*, std::__1::allocator<char const*> >*)
+     14,612  ImageLoaderMachO::getInstallPath() const
+     14,326  __srefill
+     14,313  pthread_mutex_init
+     14,196  ImageLoader::interposedAddress(ImageLoader::LinkContext const&, unsigned long, ImageLoader const*, ImageLoader const*)
+     14,184  _qsort
+     13,720  metafy
+     13,498  dyld::loadPhase1(char const*, char const*, dyld::LoadContext const&, std::__1::vector<char const*, std::__1::allocator<char const*> >*)
+     13,486  ImageLoaderMachO::setupLazyPointerHandler(ImageLoader::LinkContext const&)
+     13,431  dyld::loadPhase4(char const*, char const*, dyld::LoadContext const&, std::__1::vector<char const*, std::__1::allocator<char const*> >*)
+     13,102  ImageLoader::recursiveRebase(ImageLoader::LinkContext const&)'2
+     12,970  realizeClass(objc_class*)'2
+     12,711  ImageLoader::ImageLoader(char const*, unsigned int)
+     12,700  dyld::notifySingle(dyld_image_states, ImageLoader const*)
+     12,530  ImageLoader::recursiveGetDOFSections(ImageLoader::LinkContext const&, std::__1::vector<ImageLoader::DOFInfo, std::__1::allocator<ImageLoader::DOFInfo> >&)'2
+     12,286  _pthread_rwlock_lock
+     11,770  dyld::findLoadedImage(stat const&)
+     11,286  ImageLoader::setPathUnowned(char const*)
+     11,220  __sel_registerName(char const*, int, int)
+     11,206  ImageLoaderMachO::mapSegments(int, unsigned long long, unsigned long long, unsigned long long, ImageLoader::LinkContext const&)
+     11,205  dyld::fastBindLazySymbol(ImageLoader**, unsigned long)
+     11,179  dyld::findMappedRange(unsigned long)
+     11,078  getsegmentdata
+     10,782  dyld::imageSorter(void const*, void const*)
+     10,758  ImageLoader::statMatch(stat const&) const
+     10,410  ImageLoaderMachOCompressed::libIsUpward(unsigned int) const
+      9,516  autofeatures
+      9,098  ImageLoaderMachO::ImageLoaderMachO(macho_header const*, char const*, unsigned int, unsigned int*, unsigned int)
+      8,969  createparamtable
+      8,910  malloc_zone_calloc
+      8,900  ImageLoaderMachO::sdkVersion() const
+      8,692  realizeClass(objc_class*)
+      8,680  ImageLoaderMachO::getRPaths(ImageLoader::LinkContext const&, std::__1::vector<char const*, std::__1::allocator<char const*> >&) const
+      8,672  tzload
+      7,770  __sread
+      7,200  dyld::addMappedRange(ImageLoader*, unsigned long, unsigned long)
+      7,120  ImageLoaderMachO::segSize(unsigned int) const
+      7,108  createparam
+      6,953  NXMapInsert'2
+      6,930  ImageLoaderMachO::segActualEndAddress(unsigned int) const
+      6,910  __collate_load_tables
+      6,821  ImageLoader::recursiveSpinLock(ImageLoader::recursive_lock&)
+      6,780  remapClass(objc_class*)
+      6,709  _dyld_fast_stub_entry(void*, long)
+      6,696  malloc_zone_from_ptr
+      6,672  fixupMethodList(method_list_t*, bool, bool)
+      6,428  mkenvstr
+      6,390  ImageLoaderMachOCompressed::incrementCoalIterator(ImageLoader::CoalIterator&)
+      6,324  addhashnode
+      6,323  _platform_memchr$VARIANT$Generic
+      6,304  ImageLoaderMachO::segFileOffset(unsigned int) const
+      6,258  ImageLoaderMachO::usesTwoLevelNameSpace() const
+      6,192  ImageLoaderMachO::assignSegmentAddresses(ImageLoader::LinkContext const&)
+      6,020  NXHashInsert
+      6,004  readdir$INODE64
+      5,760  ImageLoader::getRealPath() const
+      5,740  devname_r
+      5,712  dyld::libraryLocator(char const*, bool, char const*, ImageLoader::RPathChain const*)
+      5,642  ImageLoaderMachOCompressed::instantiateFromFile(char const*, int, unsigned char const*, unsigned long, unsigned long long, unsigned long long, stat const&, unsigned int, unsigned int, linkedit_data_command const*, encryption_info_command const*, ImageLoader::LinkContext const&)
+      5,630  readClass(objc_class*, bool, bool)
+      5,590  read$NOCANCEL
+      5,586  dyld::addImage(ImageLoader*)
+      5,371  scanmatchtable
+      5,355  ImageLoaderMachO::doGetLibraryInfo()
+      5,349  mmap
+      5,044  NXHashInsert'2
+      4,998  ImageLoaderMachOCompressed::setLibImage(unsigned int, ImageLoader*, bool, bool)
+      4,882  ImageLoaderMachO::needsAddedLibSystemDepency(unsigned int, macho_header const*)
+      4,832  ImageLoaderMachO::segFileSize(unsigned int) const
+      4,742  addSubclass(objc_class*, objc_class*)
+      4,642  calloc
+      4,626  ImageLoaderMachO::segWriteable(unsigned int) const
+      4,608  NXMapGet
+      4,568  ztrdup_metafy
+      4,556  ImageLoaderMachO::segUnaccessible(unsigned int) const
+      4,314  _read_images
+      4,223  _hash_bucket
+      4,160  ImageLoaderMachO::segPreferredLoadAddress(unsigned int) const
+      4,060  ImageLoaderMachO::machHeader() const
+      4,035  OSAtomicCompareAndSwap64$VARIANT$mp
+      4,024  __part_load_locale
+      4,010  dyld::loadPhase6(int, stat const&, char const*, dyld::LoadContext const&)
+      3,822  NXMapRemove
+      3,810  szone_calloc
+      3,768  dyld::fatFindBest(fat_header const*, unsigned long long*, unsigned long long*)
+      3,726  ImageLoaderMachO::preFetchDATA(int, unsigned long long, ImageLoader::LinkContext const&)
+      3,605  ImageLoaderMachO::inSharedCache() const
+      3,597  ImageLoaderMachOCompressed::markLINKEDIT(ImageLoader::LinkContext const&, int)
+      3,575  ImageLoader::lastModified() const
+      3,552  search_method_list(method_list_t const*, objc_selector*)
+      3,552  _xpc_serializer_append
+      3,540  prepareMethodLists(objc_class*, method_list_t**, int, bool, bool)
+      3,520  ImageLoaderMachO::instantiateFromFile(char const*, int, unsigned char const*, unsigned long long, unsigned long long, stat const&, ImageLoader::LinkContext const&)
+      3,430  ImageLoaderMachO::isDylib() const
+      3,360  objc_msgSend'2
+      3,314  setemulate
+      3,306  NXNextHashState
+      3,306  RWLOCK_GETSEQ_ADDR
+      3,263  _simple_getenv
+      3,245  ImageLoaderMachO::doGetDOFSections(ImageLoader::LinkContext const&, std::__1::vector<ImageLoader::DOFInfo, std::__1::allocator<ImageLoader::DOFInfo> >&)
+      3,241  fcntl
+      3,233  ImageLoaderMachOCompressed::updateUsesCoalIterator(ImageLoader::CoalIterator&, unsigned long, ImageLoader*, ImageLoader::LinkContext const&)
+      3,188  getMethodNoSuper_nolock(objc_class*, objc_selector*)
+      3,173  small_malloc_from_free_list
+      2,990  memchr
+      2,963  ImageLoaderMachO::getUUID(unsigned char*) const
+      2,832  _pthread_cond_signal
+      2,816  list_array_tt<unsigned long, protocol_list_t>::attachLists(protocol_list_t* const*, unsigned int)
+      2,816  class_createInstance
+      2,791  slot_name
+      2,737  zshcalloc
+      2,726  allocBuckets(void*, unsigned int)
+      2,718  memcpy
+      2,640  lookUpImpOrForward
+      2,589  colonsplit
+      2,546  ImageLoader::weakBind(ImageLoader::LinkContext const&)
+      2,430  ImageLoaderMachO::usablePrebinding(ImageLoader::LinkContext const&) const
+      2,419  _nc_table_insert_type
+      2,366  _xpc_dictionary_insert
+      2,360  _nc_table_find_get_key
+      2,352  objc_destructInstance
+      2,340  ImageLoaderMachO::segExecutable(unsigned int) const
+      2,290  ImageLoaderMachO::doModInitFunctions(ImageLoader::LinkContext const&)
+      2,289  zinsertlinknode
+      2,288  objc_class::setRequiresRawIsa(bool)
+      2,230  freeBuckets(NXHashTable*, int)
+      2,214  cache_fill
+      2,210  ImageLoaderMachO::segReadable(unsigned int) const
+      2,208  ImageLoaderMachO::segName(unsigned int) const
+      2,198  ImageLoaderMachO::validateFirstPages(linkedit_data_command const*, int, unsigned char const*, unsigned long, long long, ImageLoader::LinkContext const&)
+      2,184  map_images_nolock
+      2,156  objc_object::sidetable_clearDeallocating()
+      2,150  dyld::findInSharedCacheImage(char const*, bool, stat const*, macho_header const**, char const**, long*)
+      2,118  addImagesToAllImages(unsigned int, dyld_image_info const*)
+      2,070  ImageLoaderMachOCompressed::doBind(ImageLoader::LinkContext const&, bool)
+      1,984  ImageLoaderMachOCompressed::findExportedSymbol(char const*, ImageLoader const**) const'2
+      1,940  objc_class::setHasCustomAWZ(bool)
+      1,932  rwlock_tt<false>::write()
+      1,929  __si_module_static_cache_block_invoke
+      1,920  list_array_tt<method_t, method_list_t>::attachLists(method_list_t* const*, unsigned int)
+      1,914  ImageLoaderMachO::loadCodeSignature(linkedit_data_command const*, int, unsigned long long, ImageLoader::LinkContext const&)
+      1,898  getPreoptimizedClass
+      1,889  env_unsetenv
+      1,875  objc_image_info* getDataSection<objc_image_info>(mach_header_64 const*, char const*, unsigned long*, unsigned long*)
+      1,872  inittyptab
+      1,866  strnlen
+      1,862  attachCategories(objc_class*, locstamped_category_list_t*, bool)
+      1,845  dyld::isCompatibleMachO(unsigned char const*, char const*)
+      1,702  mach_absolute_time
+      1,680  add_autoparam
+      1,670  bcopy
+      1,656  _xpc_has_prefix
+      1,649  objc_class::setHasCustomRR(bool)
+      1,616  _class_initialize'2
+      1,615  ImageLoaderMachOCompressed::isSubframeworkOf(ImageLoader::LinkContext const&, ImageLoader const*) const
+      1,615  ImageLoaderMachOCompressed::hasSubLibrary(ImageLoader::LinkContext const&, ImageLoader const*) const
+      1,608  dyld::registerImageStateSingleChangeHandler(dyld_image_states, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*))
+      1,606  addNamedClass(objc_class*, char const*, objc_class*)
+      1,600  _os_object_alloc_realized
+      1,596  _NXMapRehash(_NXMapTable*)
+      1,580  lstat$INODE64
+      1,572  cache_getImp
+      1,567  _voucher_init
+      1,548  _xpc_serializer_read
+      1,533  getClass(char const*)
+      1,529  _object_remove_assocations
+      1,503  objc_opt::objc_clsopt_t::getClassesAndHeaders(char const*, void**, void**) const'2
+      1,490  ImageLoader::recursiveInitialization(ImageLoader::LinkContext const&, unsigned int, ImageLoader::InitializerTimingList&, ImageLoader::UninitedUpwards&)
+      1,472  _pthread_mutex_check_init_slow
+      1,446  void std::__1::__stable_sort<method_t::SortBySELAddress&, entsize_list_tt<method_t, method_list_t, 3u>::iterator>(entsize_list_tt<method_t, method_list_t, 3u>::iterator, entsize_list_tt<method_t, method_list_t, 3u>::iterator, method_t::SortBySELAddress&, std::__1::iterator_traits<entsize_list_tt<method_t, method_list_t, 3u>::iterator>::difference_type, std::__1::iterator_traits<entsize_list_tt<method_t, method_list_t, 3u>::iterator>::value_type*, long)
+      1,438  emptyhashtable
+      1,435  addenv
+      1,432  ImageLoaderMachO::isPrebindable() const
+      1,419  lookUpImpOrForward'2
+      1,408  list_array_tt<property_t, property_list_t>::attachLists(property_list_t* const*, unsigned int)
+      1,407  dyld::_main(macho_header const*, unsigned long, int, char const**, char const**, char const**, unsigned long*)
+      1,393  createoptiontable
+      1,376  xmmap
+      1,346  environ_init
+      1,342  LI_ils_create
+      1,320  ImageLoaderMachO::crashIfInvalidCodeSignature()
+      1,308  _dyld_func_lookup
+      1,287  unattachedCategoriesForClass(objc_class*, bool)
+      1,276  ___ZN10objc_class17setRequiresRawIsaEb_block_invoke
+      1,274  objc::DenseMapBase<objc::DenseMap<DisguisedPtr<objc_object>, unsigned long, true, objc::DenseMapInfo<DisguisedPtr<objc_object> > >, DisguisedPtr<objc_object>, unsigned long, objc::DenseMapInfo<DisguisedPtr<objc_object> >, true>::find(DisguisedPtr<objc_object> const&)
+      1,272  dyld::findExportedSymbol(char const*, bool, ImageLoader::Symbol const**, ImageLoader const**)
+      1,262  __bzero
+      1,260  rwlock_tt<false>::unlockWrite()
+      1,260  mach_vm_allocate
+      1,260  ImageLoaderMachO::participatesInCoalescing() const
+      1,257  addbuiltins
+      1,256  set_widearray
+      1,251  _NXHashRehashToCapacity
+      1,246  addNonSharedCacheImageUUID(dyld_uuid_info const&)
+      1,219  dyld::parseColonList(char const*, char const*)
+      1,215  ImageLoaderMachO::doInitialization(ImageLoader::LinkContext const&)
+      1,212  strstr
+      1,203  zjoin
+      1,165  uname
+      1,138  _platform_memcmp
+      1,137  _xpc_dictionary_apply_node_f
+      1,127  rwlock_tt<false>::read()
+      1,114  unmeta
+      1,097  objc_class::setInitialized()
+      1,095  getClass_impl(char const*)
+      1,092  _class_initialize
+      1,090  getProtocol(char const*)
+      1,064  std::__1::__call_once(unsigned long volatile&, void*, void (*)(void*))
+      1,056  ImageLoaderMachO::reserveAnAddressRange(unsigned long, ImageLoader::LinkContext const&)
+      1,031  objc_opt::objc_clsopt_t::getClassesAndHeaders(char const*, void**, void**) const
+      1,029  bool objc::DenseMapBase<objc::DenseMap<DisguisedPtr<objc_object>, unsigned long, true, objc::DenseMapInfo<DisguisedPtr<objc_object> > >, DisguisedPtr<objc_object>, unsigned long, objc::DenseMapInfo<DisguisedPtr<objc_object> >, true>::LookupBucketFor<DisguisedPtr<objc_object> >(DisguisedPtr<objc_object> const&, std::__1::pair<DisguisedPtr<objc_object>, unsigned long> const*&) const
+      1,028  classref** getDataSection<classref*>(mach_header_64 const*, char const*, unsigned long*, unsigned long*)
+        988  add_autobin
+        986  ImageLoaderMachO::doRebase(ImageLoader::LinkContext const&)
+        985  _fetchInitializingClassList(signed char)
+        968  dyld::my_open(char const*, int, int)
+        945  ImageLoaderMachO::doImageInit(ImageLoader::LinkContext const&)
+        936  strtol_l
+        927  dyld::registerAddCallback(void (*)(mach_header const*, long))
+        925  log_and_fill_cache(objc_class*, void (*)(), objc_selector*, objc_object*, objc_class*)
+        910  ImageLoader::hasHiddenExports() const
+        905  ImageLoaderMachO::segmentCount() const
+        896  std::__1::locale::__imp::install(std::__1::locale::facet*, long)
+        891  allocate_pages
+        882  object_dispose
+        882  munmap
+        876  NXPtrHash
+        870  __mmap
+        861  mach_msg
+        840  std::__1::vector<std::__1::locale::facet*, std::__1::__sso_allocator<std::__1::locale::facet*, 28ul> >::__append(unsigned long)
+        831  dyld::checkEnvironmentVariables(char const**)
+        810  getsectbynamefromheader_64
+        804  ImageLoader::recursiveLoadLibraries(ImageLoader::LinkContext const&, bool, ImageLoader::RPathChain const&)
+        800  _os_lock_handoff_lock
+        799  _class_getNonMetaClass
+        785  arr_init
+        783  ___xpc_activity_setup_control_channel_block_invoke
+        773  _pthread_fork_child_postinit
+        752  std::__1::__vector_base<char const*, std::__1::allocator<char const*> >::~__vector_base()
+        751  loadlocale
+        748  ImageLoaderMachO::segHasPreferredLoadAddress(unsigned int) const
+        740  OSAtomicCompareAndSwap32$VARIANT$mp
+        735  rwlock_tt<false>::unlockRead()
+        735  sel_registerNameNoLock
+        729  strdup
+        714  getenv
+        704  vm_alloc
+        704  category_t** getDataSection<category_t*>(mach_header_64 const*, char const*, unsigned long*, unsigned long*)
+        704  dlopen
+        697  _objc_fetch_pthread_data
+        693  _xpc_dictionary_serialize_apply
+        691  __vfprintf
+        686  objc_addRegisteredClass
+        685  protocols()
+        683  _st_localsub
+        672  mach_vm_map
+        666  std::__1::locale::id::__get()
+        660  ImageLoaderMachO::segmentsCanSlide() const
+        660  dyld::my_stat(char const*, stat*)
+        660  vm_allocate
+        658  void std::__1::vector<dyld_uuid_info, std::__1::allocator<dyld_uuid_info> >::__push_back_slow_path<dyld_uuid_info const>(dyld_uuid_info const&)
+        639  crashlog_header_name
+        637  _os_object_dealloc
+        634  _xpc_dictionary_dispose
+        630  _xpc_dictionary_apply_wire_f
+        612  getVersionLoadCommandInfo(mach_header const*, unsigned int*, unsigned int*, unsigned int*)
+        609  xpc_dictionary_set_value
+        608  _xpc_dyld_image_callback
+        597  _finishInitializing(objc_class*, objc_class*)
+        595  _voucher_activity_heap_init
+        590  spin_lock
+        587  execcmd_exec
+        576  __sinit
+        570  setupvals
+        569  ImageLoader::setPath(char const*)
+        560  _xpc_malloc
+        549  _xpc_collect_environment
+        540  ispwd
+        537  configuration_profile_copy_property_list'2
+        536  ___extract_user_dict_block_invoke
+        534  cache_t::isConstantEmptyCache()
+        528  operator new(unsigned long)
+        528  -[OS_xpc_object _xref_dispose]'2
+        525  _xpc_serializer_apply'2
+        520  tlv_load_notification
+        511  voucher_mach_msg_set
+        508  _xpc_serializer_pack
+        500  arc4random
+        500  client_registration_create
+        496  __sfp
+        491  add_autocond
+        478  _xpc_dictionary_node_free
+        474  _malloc_initialize
+        473  _xpc_serializer_unpack
+        469  setlocale
+        467  notify_register_check
+        466  dyld::clearAllDepths()
+        454  _os_object_release
+        450  dyld::updateAllImages(dyld_image_states, unsigned int, dyld_image_info const*)
+        441  _xpc_serializer_dictionary_apply
+        440  __fcntl
+        436  assignnparam
+        430  pread
+        429  _xpc_dispose'2
+        428  add_dep
+        416  std::__1::vector<char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), std::__1::allocator<char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*)> >::insert(std::__1::__wrap_iter<char const* (* const*)(dyld_image_states, unsigned int, dyld_image_info const*)>, char const* (* const&)(dyld_image_states, unsigned int, dyld_image_info const*))
+        407  NXHashGet
+        405  ImageLoader::setMapped(ImageLoader::LinkContext const&)
+        404  protocol_t** getDataSection<protocol_t*>(mach_header_64 const*, char const*, unsigned long*, unsigned long*)
+        402  _xpc_dictionary_look_up_table
