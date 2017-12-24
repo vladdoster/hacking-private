@@ -1,0 +1,76 @@
+[0;34mcallgrind_results_1/annotate.txt[m                  [0;34mcallgrind_results_2/annotate.txt[m                 
+       1 ----------------------------------------        1 ----------------------------------------
+       2 Profile data file 'callgrind.out.36[1;33m403[m'         2 Profile data file 'callgrind.out.36[1;33m512[m' 
+(creator: callgrind-3.13.0)                       (creator: callgrind-3.13.0)                      
+       3 ----------------------------------------        3 ----------------------------------------
+       4 I1 cache:                                       4 I1 cache:                               
+       5 D1 cache:                                       5 D1 cache:                               
+       6 LL cache:                                       6 LL cache:                               
+       7 Timerange: Basic block 0 - 11[1;33m57[m9[1;33m24742[m           7 Timerange: Basic block 0 - 1[1;32m0[m1[1;33m28334[m9[1;33m3[m   
+       8 Trigger: Program termination                    8 Trigger: Program termination            
+       9 Profiled target:  zsh-5.4.2-dev-0 -f ./s        9 Profiled target:  zsh-5.4.2-dev-0 -f ./s
+cript[1;33m1[m_srcopt.zsh (PID 36[1;33m403[m, part 1)             cript[1;33m2[m_srcopt.zsh (PID 36[1;33m512[m, part 1)            
+      10 Events recorded:  Ir                           10 Events recorded:  Ir                    
+      11 Events shown:     Ir                           11 Events shown:     Ir                    
+      12 Event sort order: Ir                           12 Event sort order: Ir                    
+      13 Thresholds:       100                          13 Thresholds:       100                   
+      14 Include dirs:                                  14 Include dirs:                           
+      15 User annotated:                                15 User annotated:                         
+      16 Auto-annotation:  off                          16 Auto-annotation:  off                   
+      17                                                17                                         
+      18 ----------------------------------------       18 ----------------------------------------
+      19            Ir                                  19            Ir                           
+      20 ----------------------------------------       20 ----------------------------------------
+      21 [1;31m6,018,711,819  PROGRAM TOTALS[m                  21 [1;32m5,175,788,248  PROGRAM TOTALS[m           
+      22                                                22                                         
+      23 ----------------------------------------       23 ----------------------------------------
+      24          Ir  file:function                     24          Ir  file:function              
+      25 ----------------------------------------       25 ----------------------------------------
+      26 4[1;33m99[m,[1;33m3[m37,[1;31m3[m7[1;33m2[m  _pthread_mutex_unlock_slow        26 4[1;33m68[m,[1;33m1[m37,7[1;33m88[m  _pthread_mutex_unlock_slow 
+      27 [1;31m395,103,281  ingetc[m                            27 [1;32m378,604,490  ingetc[m                     
+      28 3[1;33m40[m,[1;33m8[m94,[1;33m646[m  _pthread_mutex_lock_slow          28 3[1;33m19[m,[1;33m5[m94,[1;33m930[m  _pthread_mutex_lock_slow   
+      29 270,001,086  gettokstr                         29 270,001,086  gettokstr                  
+      30 253,955,336  itype_end                         30 253,955,336  itype_end                  
+      31 239,40[1;33m0,26[m8  par_cmd                           31 239,4[1;32m46,[m0[1;33m4[m8  par_cmd                    
+      32 235,[1;33m5[m01,[1;33m204[m  zshlex                            32 235,[1;33m2[m01,[1;33m386[m  zshlex                     
+      33 [1;33m212,45[m1,[1;33m88[m6  szone_free_definite_size          33 [1;33m 7[m1,[1;33m973,[m6[1;32m33[m  szone_free_definite_size   
+      34 [1;31m189,088,608  _platform_memmove[m                 34 [1;32m124,536,168  _platform_memmove[m          
+      35 [1;31m184,805,094  zhalloc[m                           35 [1;32m167,496,197  zhalloc[m                    
+      36 [1;31m170,627,916  szone_size[m                        36 [1;32m 87,551,154  szone_size[m                 
+      37 [1;33m13[m3,1[1;33m42[m,[1;31m8[m0[1;33m0[m  szone_malloc_should_clear         37 [1;33m 6[m3,1[1;33m58[m,0[1;33m63[m  szone_malloc_should_clear  
+      38 120,600,000  addvars                           38 120,600,000  addvars                    
+      39 [1;31m117,622,898  strlen[m                            39 [1;32m103,972,946  strlen[m                     
+      40 [1;31m112,500,000  execlist'2[m                        40 [1;32m 84,600,094  execlist'2[m                 
+      41 103,499,1[1;33m07[m  fgetc                             41 103,499,1[1;33m99[m  fgetc                      
+      42  [1;33m99,00[m1,30[1;33m0[m  shingetline                       42  [7;33m     [m1,30[1;33m7[m  shingetline                
+      43  90,017,029  fetchvalue                        43  90,017,029  fetchvalue                 
+      44 [1;31m 00,000,000  readoutput[m                        44 [1;32m 85,500,255  readoutput[m                 
+      45  84,900,2[1;33m39[m  exalias                           45  84,900,[1;32m6[m2[1;33m5[m  exalias                    
+      46 [1;31m 81,009,495  free[m                              46 [1;32m 40,509,585  free[m                       
+      47  [1;33m00[m,000,0[1;33m00[m  remnulargs                        47  [1;33m81[m,000,[1;32m2[m0[1;33m6[m  remnulargs                 
+      48  77,400,[1;33m13[m7  ecstrcode                         48  77,400,[1;33m25[m7  ecstrcode                  
+      49  75,600,[1;33m06[m3  inungetc                          49  75,600,[1;33m21[m3  inungetc                   
+      50  71,100,0[1;33m76[m  par_sublist                       50  71,100,[1;32m2[m0[1;33m4[m  par_sublist                
+      51  70,200,054  ecgetstr                          51  70,200,054  ecgetstr                   
+      52  69,307,579  assignsparam                      52  69,307,579  assignsparam               
+      53  6[1;33m7,695[m,98[1;33m9[m  tiny_malloc_from_free_list        53  [1;32m   8[m6[1;33m0[m,98[1;33m4[m  tiny_malloc_from_free_list 
+      54  64,876,963  hasher                            54  64,876,963  hasher                     
+      55  63,000,610  has_token                         55  63,000,610  has_token                  
+      56  [1;33m62[m,[1;33m4[m16,58[1;33m3[m  strcpy                            56  [1;33m58[m,[1;33m5[m16,58[1;33m1[m  strcpy                     
+      57  [1;33m5[m9[1;31m,[m81[1;31m6[m,[1;33m55[m8  tiny_free_list_add_ptr            57  [7;33m   [m981,[1;33m47[m8  tiny_free_list_add_ptr     
+      58  59,400,000  execsimple                        58  59,400,000  execsimple                 
+      59  58,506,441  assignstrvalue                    59  58,506,441  assignstrvalue             
+      60 [1;31m 58,200,032  par_event'2[m                       60 [1;32m 58,500,121  hasbraces[m                  
+      61  54,900,0[1;33m2[m5  set_list_code                     61  54,900,0[1;33m7[m5  set_list_code              
+      62  54,0[1;33m00[m,[1;33m060[m  par_pline                         62  54,0[1;33m19[m,[1;33m424[m  par_pline                  
+      63 [1;31m 50,428,084  malloc_zone_malloc[m                63 [1;32m 40,500,165  haswilds[m                   
+      64 [1;31m 46,529,510  zalloc[m                            64 [1;32m 39,600,103  par_list[m                   
+      65  37,800,9[1;33m03[m  dupstring                         65  37,800,9[1;33m24[m  dupstring                  
+      66 [1;31m 36,021,416  malloc[m                                                                       
+      67  35,100,[1;33m094[m  checkalias                        66  35,100,[1;33m321[m  checkalias                 
+      68 [1;31m 33,609,177  flockfile[m                                                                    
+      69 [1;31m 33,609,177  funlockfile[m                                                                  
+      70  32,400,2[1;33m28[m  add                               67  32,400,[1;32m4[m2[1;33m0[m  add                        
+                                                        68 [1;32m 31,509,205  funlockfile[m                
+                                                        69 [1;32m 31,509,205  flockfile[m                  
+                                                        70 [1;32m 31,501,272  zjoin[m                      

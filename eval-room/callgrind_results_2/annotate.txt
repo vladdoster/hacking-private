@@ -39,6 +39,7 @@ Auto-annotation:  off
 103,972,946  strlen
  84,600,094  execlist'2
 103,499,199  fgetc
+      1,307  shingetline
  90,017,029  fetchvalue
  85,500,255  readoutput
  84,900,625  exalias
@@ -49,10 +50,12 @@ Auto-annotation:  off
  71,100,204  par_sublist
  70,200,054  ecgetstr
  69,307,579  assignsparam
+    860,984  tiny_malloc_from_free_list
  64,876,963  hasher
  63,000,610  has_token
- 59,400,000  execsimple
  58,516,581  strcpy
+    981,478  tiny_free_list_add_ptr
+ 59,400,000  execsimple
  58,506,441  assignstrvalue
  58,500,121  hasbraces
  54,900,075  set_list_code
@@ -100,8 +103,6 @@ Auto-annotation:  off
   3,645,314  os_lock_unlock
   3,645,114  _os_lock_spin_unlock
   2,750,686  get_node_from_uniquing_table
-    981,478  tiny_free_list_add_ptr
-    860,984  tiny_malloc_from_free_list
     754,596  ImageLoaderMachO::findExportedSymbol(char const*, bool, ImageLoader const**) const'2
     577,706  large_entry_for_pointer_no_lock
     551,413  szone_realloc
@@ -364,7 +365,6 @@ Auto-annotation:  off
       1,342  LI_ils_create
       1,320  ImageLoaderMachO::crashIfInvalidCodeSignature()
       1,308  _dyld_func_lookup
-      1,307  shingetline
       1,287  unattachedCategoriesForClass(objc_class*, bool)
       1,276  ___ZN10objc_class17setRequiresRawIsaEb_block_invoke
       1,274  objc::DenseMapBase<objc::DenseMap<DisguisedPtr<objc_object>, unsigned long, true, objc::DenseMapInfo<DisguisedPtr<objc_object> > >, DisguisedPtr<objc_object>, unsigned long, objc::DenseMapInfo<DisguisedPtr<objc_object> >, true>::find(DisguisedPtr<objc_object> const&)
