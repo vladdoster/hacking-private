@@ -1,5 +1,23 @@
 #!/usr/bin/env zsh
 
+# Copyright (c) 2018 Sebastian Gniazdowski <psprint@zdharma.org>
+#
+# This Zsh script is to be fed with Git progress-bar output
+# (normally occuring on stderr, so the piping "|&" is needed,
+# it redirects both stdout and stderr), induced by --progress
+# Git option (for non-terminal stderr, Git skips the progress
+# bar and it has to be asked to still generate it).
+#
+# The script shows animated progress bar instead of the text
+# progress data that Git normally shows.
+#
+# Example:
+# git clone --progress https://github.com/... |& git-process-output.zsh
+#
+# The script can be also used to mute Git's progress bar (keeping
+# the error and authentication messages) by passing an option "-q"
+# (to the script).
+
 emulate -LR zsh -o typesetsilent -o extendedglob -o warncreateglobal
 
 trap "tput cnorm" EXIT
@@ -103,6 +121,6 @@ while read -r line; do
     fi
 done
 
-print
+[[ "$1" != "-q" ]] && print
 
 tput cnorm

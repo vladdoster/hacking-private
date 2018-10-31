@@ -1,5 +1,16 @@
 #!/bin/sh
 
+# Copyright (c) 2018 Sebastian Gniazdowski <psprint@zdharma.org>
+#
+# This script downloads, parses and processes the data in the
+# unixorn/awesone-zsh-plugins README.md page. It extracts
+# plugins from the "Plugins" section of the document, clones
+# each of them, runs a few git commands to establish facts
+# about the plugin and outputs the plugin's overall score.
+#
+# It then creates a README.md_new file with the scoress visible
+# near each plugin's name.
+
 ##
 ## CONFIGURATION, RESTART TO LEAVE /bin/sh
 ##
@@ -86,6 +97,10 @@ input_file_lines=( "${(@f)INPUT_FILE_CONTENTS}" )
 
 print -r -- "The input file has ${#input_file_lines} lines"
 
+#
+# Extract plugins
+#
+
 typeset -g LINE IN_PLUGINS_SECTION=0
 for LINE in "${input_file_lines[@]}"; do
     (( ++ CURRENT_LINE ))
@@ -109,6 +124,10 @@ for LINE in "${input_file_lines[@]}"; do
     fi
 done
 
+#
+# Prepare working directory (in XDG_CACHE_HOME or ~/.config)
+#
+
 typeset -g WORK_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh-plugin-assessor/clones"
 
 print -r -- "== Removing clones from previous ZPA run... =="
@@ -119,8 +138,11 @@ command mkdir -p -- "$WORK_DIR"
 builtin cd -q -- "$WORK_DIR"
 
 print -r -- "== Working in $WORK_DIR =="
+print
 
-command sleep 1
+#
+# Clone each plugin, establish its score
+#
 
 typeset -g PLUGIN
 for PLUGIN in "${gathered_plugins[@]}"; do
@@ -164,10 +186,15 @@ for PLUGIN in "${gathered_plugins[@]}"; do
 
     integer score=score_activity*1000+score_commit_count*100+score_activity_branches*10+score_commit_count_branches
 
-    print "$PLUGIN score: ${(l:4::0:)score}"
+    print "$PLUGIN: ${(l:4::0:)score}"
 
     plugin_to_score[$PLUGIN]="${(l:4::0:)score}"
 done
+
+#
+# Create new README.md with the score
+# occuring near each plugin's name
+#
 
 typeset -g OUTPUT_FILE_PATH="${INPUT_FILE_PATH}"_new
 
