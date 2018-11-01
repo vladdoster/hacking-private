@@ -279,9 +279,9 @@ for PLUGIN in "${gathered_plugins[@]}"; do
 
     # 1. Commits-medal
     if (( which_place_medal >= 2 )); then
-        emoji_string+=":2st_place_medal: "
+        emoji_string+=":2nd_place_medal: "
     elif (( which_place_medal == 1 )); then
-        emoji_string+=":1nd_place_medal: "
+        emoji_string+=":1st_place_medal: "
     fi
 
     # 2. Progress pace
