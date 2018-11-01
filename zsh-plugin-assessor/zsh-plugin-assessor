@@ -2,14 +2,13 @@
 
 # Copyright (c) 2018 Sebastian Gniazdowski <psprint@zdharma.org>
 #
-# This script downloads, parses and processes the data in the
-# unixorn/awesone-zsh-plugins README.md page. It extracts
-# plugins from the "Plugins" section of the document, clones
-# each of them, runs a few git commands to establish facts
+# This script parses and processes the data in the unixorn/awesone-zsh-plugins
+# README.md page. It extracts plugins from the "Plugins" section of the
+# document, clones each of them, runs a few git commands to establish facts
 # about the plugin and outputs the plugin's overall score.
 #
-# It then creates a README.md_new file with the scoress visible
-# near each plugin's name.
+# It then creates a README.md_new file with the scoress visible near each
+# plugin's name.
 
 ##
 ## CONFIGURATION, RESTART TO LEAVE /bin/sh
@@ -92,7 +91,7 @@ print
 typeset -g INPUT_FILE_PATH="${${(M)1:#/*}:-$PWD/$1}" INPUT_FILE_CONTENTS="$(<$1)"
 typeset -gi NUMBER_OF_PLUGINS=0 CURRENT_LINE=0 DEBUG_PLUGIN_COUNT_LIMIT=0
 typeset -ga input_file_lines gathered_plugins plugin_scores
-typeset -gA plugin_to_url plugin_to_line_num plugin_to_score
+typeset -gA plugin_to_url plugin_to_line_num plugin_to_score plugin_to_emoji_str
 input_file_lines=( "${(@f)INPUT_FILE_CONTENTS}" )
 
 print -r -- "The input file has ${#input_file_lines} lines"
@@ -132,7 +131,7 @@ typeset -g WORK_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh-plugin-assessor/clones"
 
 print -r -- "== Removing clones from previous ZPA run... =="
 
-builtin cd -q -- "${WORK_DIR:h}" 
+builtin cd -q -- "${WORK_DIR:h}"
 command rm -rf -- "$WORK_DIR"
 command mkdir -p -- "$WORK_DIR"
 builtin cd -q -- "$WORK_DIR"
@@ -146,7 +145,7 @@ print
 
 typeset -g PLUGIN
 for PLUGIN in "${gathered_plugins[@]}"; do
-    local URL="${plugin_to_url[$PLUGIN]}"
+    typeset -g URL="${plugin_to_url[$PLUGIN]}"
 
     if [[ -n "$OPT_VERBOSE" ]]; then
         print
@@ -155,40 +154,167 @@ for PLUGIN in "${gathered_plugins[@]}"; do
         command git clone --progress "$URL" "$PLUGIN" |& "${ZPA_DIR}/git-process-output.zsh" -q
     fi
 
-    # Time of last commit
-    typeset -g DATA_LAST_COMMIT_DATE=$(command git -C "$PLUGIN" log --max-count=1 --pretty=format:%ct master 2>/dev/null)
-    typeset -g DATA_LAST_COMMIT_DATE_BRANCHES=$(command git -C "$PLUGIN" log --max-count=1 --pretty=format:%ct --branches '^master' 2>/dev/null)
-    typeset -g DATA_COMMIT_COUNT=$(command git -C "$PLUGIN" rev-list --count master 2>/dev/null)
-    typeset -g DATA_COMMIT_COUNT_ALL=$(command git -C "$PLUGIN" rev-list --all --count '^master' 2>/dev/null)
+    #
+    # The basic score [ABCD]
+    #
 
-    # The score is e.g. 1112 for 1-active, 1-50-commits, 1-active, 2-100 commits
+    # Number of commits in master
+    typeset -g DATA_COMMIT_COUNT=$(command git -C "$PLUGIN" rev-list --count master 2>/dev/null)
+    # Time of last commit in master
+    typeset -g DATA_LAST_COMMIT_DATE=$(command git -C "$PLUGIN" log --max-count=1 --pretty=format:%ct master 2>/dev/null)
+    # As above, for ^master
+    typeset -g DATA_COMMIT_COUNT_ALL=$(command git -C "$PLUGIN" rev-list --all --count '^master' 2>/dev/null)
+    # As above, for ^master
+    typeset -g DATA_LAST_COMMIT_DATE_BRANCHES=$(command git -C "$PLUGIN" log --max-count=1 --pretty=format:%ct --all '^master' 2>/dev/null)
+
+    #
+    # Progress detection
+    #
+
+    integer has_walking_pace=0 has_running_pace=0
+
+    typeset -g DATA_CURRENT_MONTH_COMMIT_COUNT=$(command git -C "$PLUGIN" rev-list --after='30 days ago' --count master 2>/dev/null)
+    typeset -g DATA_CURRENT_1_MONTH_COMMIT_COUNT=$(command git -C "$PLUGIN" rev-list --after='60 days ago' --before='30 days ago' --count master 2>/dev/null)
+    typeset -g DATA_CURRENT_2_MONTH_COMMIT_COUNT=$(command git -C "$PLUGIN" rev-list --after='90 days ago' --before='60 days ago' --count master 2>/dev/null)
+    typeset -g DATA_3_LAST_MONTHS_COMMIT_COUNT=$(command git -C "$PLUGIN" rev-list --after='90 days ago' --count master 2>/dev/null)
+
+    if (( DATA_CURRENT_MONTH_COMMIT_COUNT > 0 && \
+            DATA_CURRENT_1_MONTH_COMMIT_COUNT > 0 && \
+            DATA_CURRENT_2_MONTH_COMMIT_COUNT > 0 ))
+    then
+        has_walking_pace=1
+        if (( DATA_CURRENT_MONTH_COMMIT_COUNT >= 3 && \
+                DATA_CURRENT_1_MONTH_COMMIT_COUNT >= 3 && \
+                DATA_CURRENT_2_MONTH_COMMIT_COUNT >= 3 ))
+        then
+            has_running_pace=1
+        elif (( DATA_3_LAST_MONTHS_COMMIT_COUNT >= 10 )); then
+            has_running_pace=1
+        fi
+    elif (( DATA_3_LAST_MONTHS_COMMIT_COUNT >= 5 )); then
+        has_walking_pace=1
+        if (( DATA_3_LAST_MONTHS_COMMIT_COUNT >= 10 )); then
+            has_running_pace=1
+        fi
+    fi
+
+    #
+    # Attention detection - the basic score [ABCD]
+    #
+
+    # The score is e.g. 1121 for 1-50-commits, 1-active, 2-100-commits, 1-active
     integer score_activity=0 score_commit_count=0 score_activity_branches=0 score_commit_count_branches=0
 
     # Master
+    (( DATA_COMMIT_COUNT >= 50 )) && score_commit_count=1
+    (( DATA_COMMIT_COUNT >= 100 )) && score_commit_count=2
     if (( EPOCHSECONDS - ${DATA_LAST_COMMIT_DATE:-0} <= 6*30.5*24*60*60 )); then
         score_activity=1
     fi
     if (( EPOCHSECONDS - ${DATA_LAST_COMMIT_DATE:-0} <= 3*30.5*24*60*60 )); then
         score_activity=2
     fi
-    (( DATA_COMMIT_COUNT >= 50 )) && score_commit_count=1
-    (( DATA_COMMIT_COUNT >= 100 )) && score_commit_count=2
 
     # Branches-only
-    if (( EPOCHSECONDS - ${DATA_LAST_COMMIT_DATE_BRANCHES:-0} <= 6*30.5*24*60*60 )); then
-        score_activity=1
-    fi
-    if (( EPOCHSECONDS - ${DATA_LAST_COMMIT_DATE_BRANCHES:-0} <= 3*30.5*24*60*60 )); then
-        score_activity_=2
-    fi
     (( DATA_COMMIT_COUNT_ALL >= 50 )) && score_commit_count_branches=1
     (( DATA_COMMIT_COUNT_ALL >= 100 )) && score_commit_count_branches=2
+    if (( EPOCHSECONDS - ${DATA_LAST_COMMIT_DATE_BRANCHES:-0} <= 6*30.5*24*60*60 )); then
+        score_activity_branches=1
+    fi
+    if (( EPOCHSECONDS - ${DATA_LAST_COMMIT_DATE_BRANCHES:-0} <= 3*30.5*24*60*60 )); then
+        score_activity_branches=2
+    fi
 
-    integer score=score_activity*1000+score_commit_count*100+score_activity_branches*10+score_commit_count_branches
+    integer score=score_commit_count*1000+score_activity*100+score_commit_count_branches*10+score_activity_branches
 
-    print "$PLUGIN: ${(l:4::0:)score}"
+    #
+    # Attention detection - emoji
+    #
+
+    integer attention_rank=0
+
+    # Time of last commit in master
+    if (( score_activity == 2 )); then
+        typeset -g DATA_THIS_MONTH_COMMIT_COUNT=$DATA_CURRENT_MONTH_COMMIT_COUNT
+        typeset -g DATA_PREVIOUS_MONTH_COMMIT_COUNT=$DATA_CURRENT_1_MONTH_COMMIT_COUNT
+        if (( DATA_THIS_MONTH_COMMIT_COUNT > 0 && DATA_PREVIOUS_MONTH_COMMIT_COUNT > 0 )); then
+            attention_rank=3
+        else
+            attention_rank=2
+        fi
+    else
+        attention_rank=score_activity
+    fi
+
+    #
+    # Research & development detection
+    #
+
+    integer has_r_and_d=0 r_and_d_active=0
+    if (( score_commit_count_branches > 0 )); then
+        has_r_and_d=1
+    fi
+    typeset -g DATA_LAST_4_MONTHS_COMMIT_COUNT=$(command git -C "$PLUGIN" rev-list --after='120 days ago' --all --count '^master' 2>/dev/null)
+    if (( DATA_LAST_4_MONTHS_COMMIT_COUNT >= 3 )); then
+        r_and_d_active=1
+    fi
+
+    #
+    # Time and work investment detection
+    #
+
+    integer which_place_medal=0
+    if (( DATA_COMMIT_COUNT >= 50 )); then
+        which_place_medal=2
+    fi
+    if (( DATA_COMMIT_COUNT >= 100 )); then
+        which_place_medal=1
+    fi
+
+    #
+    # Construct emoji string
+    #
+
+    local emoji_string=""
+
+    # 1. Commits-medal
+    if (( which_place_medal >= 2 )); then
+        emoji_string+=":2st_place_medal: "
+    elif (( which_place_medal == 1 )); then
+        emoji_string+=":1nd_place_medal: "
+    fi
+
+    # 2. Progress pace
+    if (( has_running_pace )); then
+        emoji_string+=":running_man: "
+    elif (( has_walking_pace )); then
+        emoji_string+=":walking_man: "
+    fi
+
+    # 3. Current attention
+    if (( attention_rank >= 3 )); then
+        emoji_string+=":alarm_clock: "
+    elif (( attention_rank == 2 )); then
+        emoji_string+=":hourglass_flowing_sand: "
+    elif (( attention_rank == 1 )); then
+        emoji_string+=":hourglass: "
+    elif (( attention_rank == 0 )); then
+        #emoji_string+=":zzz: "
+        :
+    fi
+
+    # 4. Research and development
+    if (( has_r_and_d )); then
+        emoji_string+=":briefcase: "
+        if (( r_and_d_active )); then
+            emoji_string+=":chart_with_upwards_trend: "
+        fi
+    fi
+
+    print "$PLUGIN: ${(l:4::0:)score}, emoji: $emoji_string"
 
     plugin_to_score[$PLUGIN]="${(l:4::0:)score}"
+    plugin_to_emoji_str[$PLUGIN]="${emoji_string%%[[:blank:]]##}"
 done
 
 #
@@ -210,8 +336,8 @@ for PLUGIN in "${gathered_plugins[@]}"; do
 
     # \[[^\]]##\] - plugin name
     # \([^\)]##\) - plugin URL
-    # \*\\\[[0-9]##\\\]\* - the evaluation, in markdown, i.e. *\[0000\]*
-    if [[ "$LINE" = (#b)\*[[:blank:]]##\[([^\]]##)\]\(([^\)]##)\)[[:blank:]]##(\*\\\[[0-9]##\\\]\*[[:blank:]]##)* ]]; then
+    # [a-z:_[:blank:]]## - emoji string
+    if [[ "$LINE" = (#b)\*[[:blank:]]##\[([^\]]##)\]\(([^\)]##)\)[[:blank:]]##([a-z0-9:_[:blank:]]##)-[[:blank:]]##* ]]; then
         # Remove previous e.g. *[0001]*
         LINE[${mbegin[3]},${mend[3]}]=""
         start_pos=$(( mbegin[3] -1 ))
@@ -219,7 +345,7 @@ for PLUGIN in "${gathered_plugins[@]}"; do
         start_pos=$(( mend[2] + 2 ))
     fi
 
-    LINE[start_pos]=' *\['"${plugin_to_score[$PLUGIN]}"'\]* '
+    LINE[start_pos]=" ${plugin_to_emoji_str[$PLUGIN]} "
     print -r -- "$LINE" >>! "$OUTPUT_FILE_PATH"
 
 done
