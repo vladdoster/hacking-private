@@ -398,3 +398,347 @@
 * [zsnapshot](https://github.com/psprint/zsnapshot)  - Adds command to dump the current ZSH state into a file, for later restoration by sourcing the snapshot file.
 * [Ztrace](https://github.com/psprint/ztrace)  - Catches output of commands, allows to reuse that output, glue it with history content.
 * [ZUI](https://github.com/zdharma/zui/) :1st_place_medal: - ZSH User Interface library – CGI+DHTML-like rapid TUI application development with ZSH.
+
+## Themes
+
+If you're using [Antigen](https://github.com/zsh-users/antigen), you can test these themes in a running ZSH with `antigen theme githubuser/repo`. If you're using [zgen](https://github.com/tarjoilija/zgen), add them to your `init.zsh` with `zgen load githubuser/reponame`.
+
+* [aaron](https://github.com/aaronjamesyoung/aaron-zsh-theme) - Based on the Sorin theme.
+* [abbr](https://github.com/PhilsLab/abbr-zsh-theme) :running_man: :hourglass_flowing_sand: - Displays an abbreviated version of the current directory path, shows the Python virtualenv, Rust version, `git` status, and the exit code of last command. Works well on dark backgrounds by default but colors can be easily customized.
+* [absolute](https://github.com/NelsonBrandao/absolute) - Very clean looking theme with git status, node version and the exit code from the last command.
+* [adlee](https://github.com/adlee-was-taken/oh-my-zsh-osx/blob/master/adlee.zsh-theme) - macOS theme, requires a Powerline-compatible font.
+* [af-magic-mod](https://raw.githubusercontent.com/desyncr/zshrc/master/themes/af-magic-mod.zsh-theme) - af-magic-mod theme.
+* [aflah-bhari](https://github.com/AflahB/aflah-bhari-zsh-theme) - Modified version of the [robbyrussell](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/robbyrussell.zsh-theme) theme in oh-my-zsh.
+* [aftermath](https://github.com/schanur/aftermath) :walking_man: :hourglass_flowing_sand: - Get a nice summary line after each command you run on your shell.
+* [agitnoster](https://github.com/dbestevez/agitnoster-theme) - Based on [agnoster theme](https://gist.github.com/3712874) included in [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh) and [bash-git-prompt](https://github.com/magicmonty/bash-git-prompt). Shows detailed information about `git` status.
+* [agkozak](https://github.com/agkozak/agkozak-zsh-prompt) :1st_place_medal: :running_man: :hourglass_flowing_sand: :briefcase: :chart_with_upwards_trend: - Uses two asynchronous methods to keep the ZSH prompt swift while displaying color, ASCII-only indicators of Git branch and changes, SSH connection or lack thereof, exit codes, and vi mode status, along with a customizable, abbreviated, `PROMPT_DIRTRIM`-style path.
+* [agnoster-fcamblor](https://github.com/fcamblor/oh-my-zsh-agnoster-fcamblor) :hourglass: - Solarized [Agnoster](https://gist.github.com/agnoster/3712874) variant with git information. Requires a unicode font and works best with a [solarized](https://github.com/altercation/solarized) terminal.
+* [agnoster-mod](https://github.com/fsegouin/oh-my-zsh-agnoster-mod-theme) - [Agnoster](https://gist.github.com/agnoster/3712874) variant with a right-prompt.
+* [agnoster-plus](https://github.com/jiahut/agnoster-plus.zsh-theme) - [Agnoster](https://gist.github.com/agnoster/3712874) variant optimized for use with [Solarized Dark](https://github.com/altercation/solarized/blob/master/iterm2-colors-solarized/Solarized%20Dark.itermcolors) terminal color scheme. Includes git status.
+* [agnoster-refresh](https://github.com/fusion94/Agnoster-refresh) - [Agnoster](https://gist.github.com/agnoster/3712874) variant, includes battery and online status.
+* [agnosterAfro](https://github.com/afrozalm/agnosterAfro) - Based on [Powerline](https://github.com/Lokaltog/vim-powerline) and [Agnoster Theme](https://gist.github.com/agnoster/3712874) and inspired by the [agnosterzak](https://github.com/zakaziko99/agnosterzak-ohmyzsh-theme).
+* [agnosterzak](https://github.com/zakaziko99/agnosterzak-ohmyzsh-theme) :alarm_clock: - Based on Agnoster, shows battery life, date & time, git status, current directory and user & host information.
+* [alien-minimal](https://github.com/eendroroy/alien-minimal) :1st_place_medal: :alarm_clock: - Minimalist ZSH theme with git status displayed.
+* [alien](https://github.com/eendroroy/alien) :1st_place_medal: :walking_man: :alarm_clock: - Powerline-esque ZSH theme that shows git branch and the exit code of the last command.
+* [alpharized](https://github.com/NicoSantangelo/Alpharized) - Optimized to work with [solarized dark](https://github.com/altercation/solarized) terminals. It's a modified version of the [avit theme](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/avit.zsh-theme).
+* [angry fly](https://github.com/russjohnson/angry-fly-zsh) - Shows git information in the right hand prompt.
+* [aphrodite](https://github.com/win0err/aphrodite-terminal-theme) - Minimalistic theme without visual noise. Displays only the necessary information: current user, hostname, working directory, git branch if exists. Looks great both with dark and white terminals.
+* [aplos](https://github.com/sunquan1991/aplos) - Minimal ZSH prompt with working directory, `git` local info, `git` remote info, time and exit code.
+* [asciigit](https://github.com/cemsbr/asciigit) - An ASCII-only theme for `git` users who don't want to use fonts with extra glyphs.
+* [asq](https://github.com/AugustoQueiroz/asq-theme) :hourglass: - Based on [theunraveler](https://github.com/robbyrussell/oh-my-zsh/wiki/Themes#theunraveler).
+* [astral](https://github.com/alphabetum/astral) :2nd_place_medal: :walking_man: :hourglass_flowing_sand: - Theme for dark backgrounds with zen mode.
+* [astro](https://github.com/iplaces/astro-zsh-theme/blob/master/README.md) - Based on [`ys`](http://blog.ysmood.org/my-ys-terminal-theme/) theme and `robbyrussell` (default theme) theme.
+* [aterminal](https://github.com/guiferpa/aterminal) - Displays Nodejs, NPM, Docker, Go, Python, Elixir and Ruby information in the prompt.
+* [avit-d2k](https://github.com/fdaciuk/avit-da2k) - Based on the oh-my-zsh [avit](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/avit.zsh-theme) theme, with small changes.
+* [avit-mod](https://github.com/zlsun/avit-mod) - Modified version of oh-my-zsh's [avit](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/avit.zsh-theme) theme.
+* [bandit](https://github.com/Holger-Will/zsh_bandit) - Another Powerline variant.
+* [bashi](https://github.com/eli-oat/bashi) - Optimized for Ahmet Sülek's [Flat UI Terminal Theme](https://github.com/ahmetsulek/flat-terminal) and Pasquale D'Silva's [Saturn Terminal Theme](https://github.com/psql/saturn-colors).
+* [bastard](https://github.com/jsundqvist/bastard.zsh-theme) :running_man: :hourglass_flowing_sand: - Modified version of [`gitster`](https://github.com/zimfw/zimfw/blob/master/modules/prompt/themes/gitster.zsh-theme) theme for [ZIM](https://github.com/zimfw/zimfw#installation).
+* [beer](https://github.com/tcnksm/oh-my-zsh-beer-theme) - Inspired by [cloud](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/cloud.zsh-theme), but with beer icons.
+* [bender](https://github.com/specious/bender) - Fancy two-line prompt with git integration.
+* [bgnoster](https://github.com/vvvvv/bgnoster.zsh-theme) - [Agnoster](https://gist.github.com/agnoster/3712874) variant with unicode symbols baked in.
+* [birame](https://github.com/maniat1k/birame) - Based on [bira](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/bira.zsh-theme).
+* [bklyn](https://github.com/gporrata/bklyn-zsh) :1st_place_medal: :hourglass: - Variant of [Powerlevel9k](https://github.com/bhilburn/powerlevel9k) with customizations applied.
+* [blackrain](https://github.com/ginfuru/zsh-blackrain) - Another git-aware theme.
+* [blinks-xfan](https://github.com/ixfan/blinks-xfan) - Based on the existing theme blinks.
+* [blokkzh](https://github.com/KorvinSilver/blokkzh) - Theme based on oh-my-zsh's built in [gnzh](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/gnzh.zsh-theme) theme. Requires a font with unicode support.
+* [blox](https://github.com/yardnsm/blox-zsh-theme) :2nd_place_medal: :alarm_clock: - A minimal and fast ZSH theme that shows you what you need. It consists of blocks: each block is shown inside a pair of \[square brackets\], and you can add blocks by simply creating a function.
+* [bluehigh](https://github.com/hiroppy/bluehigh.zsh-theme) - Minimal theme, displays `git` information.
+* [bluelines](https://github.com/apbarrero/bluelines) - Clear and blue theme.
+* [boom](https://github.com/the0neWhoKnocks/zsh-theme-boom) - Multiline theme, best on dark backgrounds.
+* [bronze](https://github.com/reujab/bronze) :1st_place_medal: :hourglass: - A cross-shell customizable powerline-like prompt with icons written in go. Requires [nerd-fonts](https://github.com/ryanoasis/nerd-fonts).
+* [brunty](https://github.com/Brunty/omz-brunty) - Brunty theme.
+* [bttf-color](https://github.com/yasuhiroki/bttf-color-zsh) :hourglass: - BTTF color theme.
+* [bullet-train](https://github.com/caiogondim/bullet-train.zsh) :1st_place_medal: :hourglass: - Inspired by the Powerline Vim plugin. It aims for simplicity, showing information only when it's relevant.
+* [bunnyruni.min](https://github.com/mikeumus/bunnyruni.min) :hourglass_flowing_sand: - [@jopcode's](https://github.com/jopcode) [bunnyruni](https://github.com/jopcode/oh-my-zsh-bunnyruni-theme) ZSH theme, modified to just display time and directory.
+* [bunnyruni](https://github.com/jopcode/oh-my-zsh-bunnyruni-theme) - Simple, clean, and beautiful theme.
+* [bureau](https://github.com/isqua/bureau) - A clear and informative two-lined prompt. Includes git status optimized for large repositories.
+* [candy-light](https://github.com/NicolaiRuckel/oh-my-zsh-candy-light) - Light version of the candy theme.
+* [charged](https://github.com/robwierzbowski/charged-zsh-theme) - A ZSH prompt optimized for the [solarized](https://github.com/altercation/solarized) dark terminal theme.
+* [chi](https://github.com/akinjide/chi) - A ZSH theme optimized for iTerm 2 users on macOS.
+* [ciacho](https://github.com/Ciacho/ciacho-ohmyzsh-theme) :hourglass: - Based on Agnoster.
+* [cinnabar](https://github.com/nvillapiano/zsh-theme---cinnabar) - Shows timestamp, large line breaks, git branch and status.
+* [clarity](https://github.com/nbitmage/clarity.zsh) :hourglass_flowing_sand: - Designed for for simpleness and extensibility.
+* [classyTouch](https://github.com/yarisgutierrez/classyTouch_oh-my-zsh) - Minimal, clean theme with `git` support.
+* [clean (akz92)](https://github.com/akz92/clean) - Minimalist ZSH theme.
+* [clean (BrandonRoehl)](https://github.com/BrandonRoehl/zsh-clean) :1st_place_medal: :running_man: :hourglass_flowing_sand: - A minimalist variant of [pure](https://github.com/sindresorhus/pure). Pure is not clean, clean is not pure.
+* [cloudy](https://github.com/Huvik/Cloudy) - Minimal cloudy ZSH theme.
+* [clover](https://github.com/tzing/clover.zsh-theme) - Inspired by [zeta-zsh-theme](https://github.com/skylerlee/zeta-zsh-theme) and [pure](https://github.com/sindresorhus/pure).
+* [cmder](https://github.com/potasiyam/cmder-zsh-theme) - A ZSH theme that matches the theme of Cmder, a popular terminal emulator for windows.
+* [cobalt2](https://github.com/wesbos/Cobalt2-iterm) - Wes Bos' Cobalt 2 theme for ZSH and iTerm 2.
+* [cobalt2git](https://github.com/alexeimun/cobalt2git) - Cobalt 2 theme with git extensions.
+* [codemachine](https://github.com/CodeMonkeyMike/ZshTheme-CodeMachine) - Codemachine theme.
+* [codemonkey-on-fire](https://github.com/babette-landmesser/codemonkey-on-fire.zsh-theme) :running_man: :hourglass_flowing_sand: - Inspired by [bashi](https://github.com/eli-oat/bashi), includes a monkey and `git` information in your prompt.
+* [colorbira](https://github.com/CristianCantoro/colorbira-zsh-theme) :hourglass: - Allows per-host prompt coloring, displays `rvm`, `virtualenv` and `git` information.
+* [comxtohr](https://github.com/comxtohr/comxtohr-zsh-iterm-theme) - Brightly colored theme optimized for dark backgrounds.
+* [cordial](https://github.com/stevelacy/cordial-zsh-theme) - Clean and effective ZSH theme with git and npm support.
+* [cramin](https://github.com/FelipeCRamos/craminzsh) :hourglass_flowing_sand: - Minimal interface with support for github plugins, based on [hyperzsh](https://github.com/tylerreckart/hyperzsh).
+* [cute-theme](https://github.com/dogrocker/oh-my-zsh-powerline-cute-theme) - An macOS oh-my-zsh shell theme with Cute emoji based on the Powerline Vim plugin.
+* [czsh](https://github.com/Cellophan/czsh) :2nd_place_medal: :walking_man: :hourglass_flowing_sand: - [ZSH](https://en.wikipedia.org/wiki/Z_shell) with [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh) and the [agnoster theme](https://github.com/agnoster/agnoster-zsh-theme) in a container.
+* [darkblood-modular](https://github.com/InAnimaTe/darkblood-modular) :hourglass: - This version of the popular [darkblood](https://github.com/BinaryMuse/oh-my-zsh/blob/binarymuse/themes/darkblood.zsh-theme) theme has been enhanced with a near complete rewrite enabling modularity and a few new features.
+* [darksoku](https://github.com/TooSchoolForCool/darksoku-zsh-theme) - Darksoku theme is based on the [ys](http://blog.ysmood.org/my-ys-terminal-theme/) and [astro](https://github.com/iplaces/astro-zsh-theme) themes.
+* [delta-prompt](https://github.com/cusxio/delta-prompt) - A minimal ZSH prompt.
+* [delta](https://github.com/dongri/delta-zsh-theme) :hourglass_flowing_sand: - Another minimal theme with embedded `git` status.
+* [dexter](https://github.com/shvenkat/zsh-theme-dexter) :hourglass_flowing_sand: - A theme with an emphasis on the right side (hence the name) of the terminal.
+* [dissonance](https://github.com/RyanScottLewis/theme-dissonance-zsh) - Comes with custom LSCOLORS and LS_COLORS settings files, works with both dark and light terminal themes.
+* [diy-ys](https://github.com/aprilnops/zsh-theme) :running_man: :hourglass_flowing_sand: - Variant of [ys](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/ys.zsh-theme) without hostname or time.
+* [dmx](https://github.com/domix/dmx.zsh-theme) - Optimized for dark terminal windows.
+* [dp](https://github.com/davidparsson/zsh-dp-theme) - Low contrast theme that shows current git branch, if the repository is dirty and the value of `$PYENV_VERSION`.
+* [dracula](https://github.com/dracula/zsh) :2nd_place_medal: - A dark theme for Atom, Alfred, Chrome DevTools, iTerm 2, Sublime Text, Textmate, Terminal.app, Vim, Xcode, and ZSH.
+* [dragon](https://github.com/sabertazimi/dragon-zsh-theme) - Minimalistic, includes `git` status information.
+* [droolscar](https://github.com/isuke/droolscar) :hourglass_flowing_sand: - [Powerline](https://github.com/powerline/powerline) variant.
+* [dustmod](https://github.com/bmihaila/dustmod) - Derived from the [dst](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/dst.zsh-theme) theme in oh-my-zsh.
+* [eggshausted](https://github.com/inutano/eggshausted) - A `git`-aware theme for people who are tired of getting errors.
+* [emojeer](https://github.com/lxynox/emojeer-ohmyzsh) - Emoji flavored [oh-my-zsh](robbyrussell/oh-my-zsh) theme.
+* [endless-dog](https://github.com/qwelyt/endless-dog) - OMZ theme that mimics grml-zsh-config.
+* [enormous](https://github.com/leighmcculloch/zsh-theme-enormous) - Takes up an enormous amount of space in the terminal.
+* [eubw](https://github.com/eptaccio/eubw-oh-my-zsh-theme) - A simple theme with `git` information.
+* [excess](https://github.com/davydovanton/excess.zsh-theme) - Simple ZSH color theme.
+* [fattyarrow](https://github.com/sohnryang/fattyarrow) - Minimal ZSH prompt that works better on dark backgrounds.
+* [feder](https://github.com/samfeder/mac-themes/blob/master/feder.zsh-theme) - Clean, simple, compatible and meaningful. Tested on Linux, Unix and Windows under ANSI colors.
+* [filthy](https://github.com/molovo/filthy) :2nd_place_medal: :hourglass_flowing_sand: - A disgustingly clean ZSH prompt.
+* [fishy-lite](https://github.com/sudorook/fishy-lite) :walking_man: :hourglass_flowing_sand: - Fork of the original [fishy](https://github.com/robbyrussell/oh-my-zsh/wiki/themes#fishy) theme in oh-my-zsh with much of the extraneous stuff cut out to improve load speeds. Includes a battery gauge and git display that can be enabled on the right-hand side of the prompt.
+* [fishy](https://github.com/akinjide/fishy2) - ZSH theme inspired by [original fishy](https://github.com/robbyrussell/oh-my-zsh/wiki/themes#fishy)
+* [fortuity](https://github.com/VGamezz19/oh-my-zsh-fortuity-theme) - Includes status of last command, `git` information and current directory.
+* [friendly-fiesta](https://github.com/bruino/friendly-fiesta) - Fork of terminal-party theme.
+* [frisk-arrow](https://github.com/BakeRolls/frisk-arrow) - A theme based on the [frisk](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/frisk.zsh-theme) oh-my-zsh-theme.
+* [frisk-red](https://github.com/aishsingh/zsh/tree/master/frisk-red) - Red version of the frisk theme from oh-my-zsh.
+* [frlo](https://github.com/fiorillo/frlo) - Uses your computer's hostname to come up with a (hopefully) unique three-color theme to display in your prompt, so you know at a glance which machine you're logged into.
+* [funkyberlin](https://github.com/Ottootto2010/funkyberlin-zsh-theme) :hourglass_flowing_sand: - A colorful two-line theme with support for `git` and `svn`.
+* [furio](https://github.com/hectorpalmatellez/furio-theme) - Fork of the Cloud oh-my-zsh theme. with different colors and emojis.
+* [garrett](https://github.com/chauncey-garrett/zsh-prompt-garrett) - Prezto prompt with the information you need the moment you need it.
+* [gawaine](https://github.com/nicolaracco/gawaine.zsh-theme) - Nicola Racco's theme. Requires `rvm` & `git` plugins.
+* [geometry](https://github.com/geometry-zsh/geometry) :1st_place_medal: :alarm_clock: :briefcase: :chart_with_upwards_trend: - A minimal ZSH theme based on Avit and Pure that displays a lot of `git` information and is composable and customizable.
+* [geometryHostInfo](https://github.com/Fuzen-py/GeometryHostInfo) Adds host info to the [geometry](https://github.com/geometry-zsh/geometry) theme.
+* [girazz](https://github.com/mdentremont/girazz) :hourglass: - A modification to the gnzh theme which adds `vi` mode to the right prompt.
+* [git-prompt](https://github.com/olivierverdier/zsh-git-prompt) :1st_place_medal: - Displays information about the current git repository. In particular the branch name, difference with remote branch, number of files staged, changed, etc.
+* [gitsome](https://github.com/mtully/gitsome) - Super simple prompt with `git` info, optimized for the [Flat Terminal](https://github.com/ahmetsulek/flat-terminal) color scheme.
+* [gitster](https://github.com/shashankmehta/dotfiles/blob/master/thesetup/zsh/.oh-my-zsh/custom/themes/gitster.zsh-theme) - When in a `git` repo, it shows the location from the `git` repository root folder. When not in a `git` repo, it shows the path relative to home, `~`.
+* [glimmer](https://github.com/martnu/glimmer) - Includes `git` branch, time and user@host.
+* [guri](https://github.com/victorfsf/guri) :hourglass: - A Simple and fast Oh-My-Zsh theme, based on [Pure](https://github.com/sindresorhus/pure)'s design.
+* [hackersaurus](https://github.com/bhilburn/hackersaurus) - A theme with `git` status and exit code of last command run embedded in the prompt. Related to [powerlevel9k](https://github.com/bhilburn/powerlevel9k).
+* [hanpen](https://github.com/kojole/hanpen.zsh-theme) :hourglass_flowing_sand: - Shows `git` branch and status, last command exit code, last command execution time if more than `ZSH_THEME_HANPEN_CMD_MAX_EXEC_TIME`
+* [haribo](https://github.com/haribo/omz-haribo-theme) - Simple `git` status + timestamp in prompt.
+* [hcompact](https://github.com/fusion809/zsh-theme) :running_man: :alarm_clock: - Displays time, OS (including distro if on Linux), directory and whether running as root.
+* [heart](https://github.com/gko/heart-theme) - Heart themed prompt for light backgrounds.
+* [hedgehog](https://gist.github.com/hedgehog1029/dfbb7e66511e2c399157) - Simple, no-nonsense and clean, with support for `git` and return codes.
+* [helb](https://github.com/helb/helb.zshtheme) - Loosely based on Gentoo's old bash theme. Includes `git` information, return value of last command, and uses different username color and prompt char for users (`$`) and root (`#`).
+* [hfulldate](https://github.com/fusion809/zsh-theme) :running_man: :alarm_clock: - Displays time, date, OS (including distro if on Linux), directory and whether running as root.
+* [hhktony](https://github.com/hhktony/hhktony.zsh-theme) :hourglass: - Inspired by robbyrussell theme + ssh connection status prompt.
+* [himself](https://github.com/mwamodojnr/himself) - Optimized for people using `git`, [solarized](https://github.com/altercation/solarized) terminals and unicode-compatible fonts.
+* [hipstersmoothie-p9x](https://github.com/hipstersmoothie/PowerlevelHipstersmoothie) :hourglass_flowing_sand: - A variant of [powerlevel9k](https://github.com/bhilburn/powerlevel9k).
+* [honukai-iterm-zsh](https://github.com/oskarkrawczyk/honukai-iterm-zsh) - Honukai theme and colors for oh-my-zsh and iTerm 2.
+* [horizontal](https://github.com/nuimk/horizontal) :hourglass_flowing_sand: - Two line prompt with a horizontal separator.
+* [hornix](https://github.com/fusion809/zsh-theme) :running_man: :alarm_clock: - Displays time & date, OS (including distro if on Linux), directory and whether running as root.
+* [horse-sh](https://github.com/emileswarts/horse-sh) - A very minimal brown/red ZSH theme.
+* [hub](https://gist.github.com/hub23/c226b1c77446e099f7684b0d21c6b22a) - Simple and clean, includes the return code of the last command executed.
+* [hyperzsh](https://github.com/tylerreckart/hyperzsh) :2nd_place_medal: :hourglass: - Gives you a comprehensive overview of the branch you're working on and the status of your repository without cluttering your terminal.
+* [iamskok](https://github.com/iamskok/iamskok.zsh-theme) :hourglass_flowing_sand: - Works well on a dark background.
+* [iggy](https://github.com/eugenk/zsh-prompt-iggy) - A super happy awesome Powerline-style, `git`-aware **prezto only** theme.
+* [igorsilva](https://github.com/igor9silva/zsh-theme) - Shows current directory, customizable delimiter, current branch, `git` status.
+* [imp](https://github.com/igormp/Imp) :hourglass_flowing_sand: - Based on [zork](https://github.com/Bash-it/bash-it/wiki/Themes#zork) and optimized for dark backgrounds.
+* [infernus](https://github.com/jshiell/infernus-zsh-theme) :hourglass: - Minimalist theme, better on dark backgrounds.
+* [infoline](https://github.com/hevi9/infoline-zsh-theme) :2nd_place_medal: - Clean theme that shows `git` status, background jobs, remote host, and other information.
+* [intheloop-powerline](https://github.com/zyphrus/intheloop-powerline) - An extension of the [intheloop](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/intheloop.zsh-theme) theme to use powerline fonts.
+* [itg](https://github.com/itsthatguy/itg.zsh-theme) :2nd_place_medal: :hourglass_flowing_sand: - itsthatguy's theme.
+* [jam](https://github.com/jesusangelm/Jam-Zsh-Theme) - Optimized for dark backgrounds, includes `git` status and `rvm` status.
+* [jc](https://github.com/jclementex/jc-zsh-theme) :hourglass_flowing_sand: - For dark terminal backgrounds, includes `git` status information.
+* [jcl](https://github.com/jasonlewis/jcl-zsh-theme) - Loosely based on the ys theme.
+* [jose](https://github.com/tmjoseantonio/shrug-zsh-theme) :hourglass: - Inspired by [beer-theme](https://github.com/tcnksm/oh-my-zsh-beer-theme), includes `git` status.
+* [jovial](https://github.com/zthxxx/jovial) :hourglass_flowing_sand: - Shows host, user, path, development environment, `git` branch, which python venv is active.
+* [judgedim](https://github.com/judgedim/oh-my-zsh-judgedim-theme) - Minimalist prompt.
+* [just-another](https://github.com/supertassu/another-theme) :walking_man: :hourglass_flowing_sand: - Just another theme, with hostname when you're sshed to another machine.
+* [karu](https://github.com/zaari/karu) :hourglass: - Minimalist single line ZSH prompt.
+* [keloran](https://github.com/Keloran/keloran.zsh-theme) - Theme that includes a few features from other themes.
+* [kenton](https://github.com/notnek/zsh-theme) :hourglass_flowing_sand: - Optimized for dark backgrounds, includes `git` status information.
+* [kevin](https://github.com/KevinParnell/Kevin-zsh) :hourglass_flowing_sand: - Colorful theme, includes iTerm 2 color schemes.
+* [kimwz](https://github.com/kimwz/kimwz-oh-my-zsh-theme) - Minimal theme.
+* [kinda-fishy](https://github.com/folixg/kinda-fishy-theme) - Based on Fishy theme, but shows full paths instead of abbreviated directories and only shows user@machine in `ssh` sessions and docker containers
+* [kketcham](https://github.com/prototype27/kketcham) - Theme with nifty colors on the `git` info.
+* [klendathu](https://github.com/kegonomics/klendathu) - Uses Powerline iconsolas.
+* [kraken](https://github.com/KrakenTheme/kraken-zsh) :walking_man: :hourglass_flowing_sand: - A dark theme for ZSH.
+* [kumavis](https://github.com/kumavis/kumavis-zsh-theme) - Agnoster fork optimized for solarized terminals. Requires powerline-compatible font.
+* [kw](https://github.com/Kwpolska/kw.zsh-theme) - Colorful theme with `git` and `hg` status information, ability to add host-specific colors to hostname.
+* [lagune](https://github.com/noplay/lagune) - a minimal ZSH theme.
+* [lambda-gitster](https://github.com/ergenekonyigit/lambda-gitster) - Minimalist prompt that includes `git` information.
+* [lambda-pure](https://github.com/marszall87/lambda-pure) :1st_place_medal: :hourglass_flowing_sand: - A minimal ZSH theme, based on Pure, with added NodeJS version.
+* [lambda](https://github.com/halfo/lambda-mod-zsh-theme/) - A ZSH theme optimized for `git` users who use unicode-compatible fonts and terminal applications.
+* [lambdav](https://github.com/vkaracic/lambdav-zsh-theme) - A combination of the Lambda and Fishy themes.
+* [lazyprodigy](https://github.com/drewlustro/lazyprodigy-zsh-theme) - Optimized for dark terminals, has variants for local and remote systems.
+* [leafia](https://github.com/Ghostrick/leafia-prompt) - Leafy prezto theme that shows `git` status information.
+* [lewis](https://github.com/lewisflude/oh-my-lewis) - Black, white and red theme. Shows `git` status information.
+* [lila](https://github.com/raphaelivan/lila-zsh-theme) - Minimalist theme, best on a dark terminal background.
+* [lime](https://github.com/yous/lime) - Simple standalone ZSH theme.
+* [limpide](https://github.com/shooteram/limpide) :hourglass_flowing_sand: - Modified version of [miloshadzic](https://github.com/robbyrussell/oh-my-zsh/wiki/themes#miloshadzic) theme which displays parent and current directory.
+* [linuxer](https://github.com/patrick330602/linuxer) - Inspired by Yaris Alex Gutierrez's classyTouch, Yad Smood's ys, and Bureau theme.
+* [liquidprompt](https://github.com/nojhan/liquidprompt) :1st_place_medal: :hourglass: :briefcase: :chart_with_upwards_trend: - A full-featured & carefully designed adaptive prompt for Bash & ZSH.
+* [llama](https://github.com/PsychoLlama/llama.zsh-theme) - Minimalist theme used by discerning llamas.
+* [lone-star](https://github.com/designfrontier/lonestar-zsh-theme/blob/master/lone-star.zsh-theme) - Texas-themed theme based on Sindre Sorhus' pure theme.
+* [magico](https://github.com/IOsonoTAN/magico) - IOsonoTAN's magico theme.
+* [materialshell](https://github.com/carloscuesta/materialshell) :alarm_clock: - A [material design](https://material.io/guidelines/style/color.html) theme for your shell with a good contrast and color pops at the important parts. Designed to be easy on the eyes.
+* [mau](https://github.com/vichargrave/mau) :hourglass: - A ZSH theme with a cat twist.
+* [maxulysse/myzsh](https://github.com/MaxUlysse/myzsh) :hourglass_flowing_sand: - Maxime Garcia's myzsh theme.
+* [megaprompt](https://github.com/willghatch/zsh-megaprompt) :hourglass_flowing_sand: - A maximalist prompt including keyboard mode, ownership info, and other contextual info, with λ as the prompt character. Requires the [hooks](https://github.com/willghatch/zsh-hooks) plugin.
+* [milight](https://github.com/frodoslaw/milight-zsh) - Minimal ZSH prompt with `git` status display, works best with dark terminal backgrounds.
+* [min](https://github.com/andrepolischuk/min) - A minimalistic ZSH prompt.
+* [mindful-space](https://github.com/syndbg/mindful-space-zsh-theme) - ZSH theme with space in mind.
+* [minimal2](https://github.com/PatTheMav/minimal2) :2nd_place_medal: :hourglass_flowing_sand: - A minimal and extensible ZSH theme. Forked from [subnixr's original](https://github.com/subnixr/minimal) and adapted for [Zimfw](https://github.com/zimfw/zimfw).
+* [minimal](https://github.com/subnixr/minimal) :hourglass_flowing_sand: - Minimal yet feature-rich theme.
+* [minimalx](https://github.com/lknix/zsh-theme-minimalx) - Inspired by kolo theme from oh-my-zsh.
+* [misa](https://github.com/misalabs/misa.zsh-theme) - Misalabs' ZSH theme.
+* [mixed](https://github.com/dekermendzhy/mixed-zsh-theme) - Optimized for dark backgrounds.
+* [molokai-powerline-zsh](https://github.com/prikhi/molokai-powerline-zsh) - Based on [agnoster](https://gist.github.com/agnoster/3712874).
+* [moonline](https://github.com/kagamilove0707/moonline.zsh) - Minimal but easily extensible prompt.
+* [multi-shell-repo-prompt](https://github.com/dotcode/multi-shell-repo-prompt) - Provides useful information (in your prompt) about the repository that you are in. It currently works for [Git](https://git-scm.com/) and [Mercurial](https://www.mercurial-scm.org/), under [ZSH](https://en.wikipedia.org/wiki/Zsh) as well as [bash](https://en.wikipedia.org/wiki/Bash_%28Unix_shell%29).
+* [multiline](https://github.com/jan-auer/zsh-multiline) - Powerline-esque theme based on [agnoster](https://github.com/agnoster/agnoster-zsh-theme)
+* [muslim](https://github.com/nksoff/muslim) - A simple minimal ZSH prompt theme.
+* [nanofish](https://github.com/tweekmonster/nanofish) - Adds fish-style directory prompt to nanotech theme.
+* [neat](https://github.com/andrepolischuk/neat) - Minimalistic prompt inspired by [odin](https://github.com/tylerreckart/Odin) and [pure](https://github.com/sindresorhus/pure).
+* [nerdish](https://github.com/nyarla/zsh-theme-nerdish) - A prompt theme for ZSH with Nerd Fonts.
+* [newt](https://github.com/softmoth/zsh-prompt-newt) :2nd_place_medal: :hourglass: - Fat & fast theme – beautiful inside and out, styled segments done right.
+* [nextbike](https://github.com/meierjan/nextbike-zsh-theme) - A very basic theme which just features an macOS bike icon.
+* [ningxia](https://github.com/wangyandong-ningxia/ningxia.zsh-theme) - Based on af-magic.
+* [nknu](https://github.com/aanc/oh-my-zsh-nknu-theme) - A simple OMZ theme.
+* [nmaxcom](https://github.com/nmaxcom/nmaxcom-zsh-theme) - Minimalist ZSH theme with `git` status decorations.
+* [node](https://github.com/skuridin/oh-my-zsh-node-theme) - OMZ's node theme, broken out to make it easier to use with other plugin managers.
+* [nodeys](https://github.com/marszall87/nodeys-zsh-theme) - Based on ys theme, with added NodeJS version (from NVM plugin).
+* [noon](https://github.com/silky/noon.zsh-theme) - Has light and dark variants, shows `git` information.
+* [nothing](https://github.com/eendroroy/nothing) - Lightning fast and really simple because it has almost nothing in it.
+* [nox](https://github.com/kbrsh/nox) :hourglass_flowing_sand: - Dark theme, displays the current working directory and git status.
+* [nt9](https://github.com/lenguyenthanh/nt9-oh-my-zsh-theme) - Clean, distraction free and `git` focused development theme. Shows path relative to `git` root (or ~ when outside `git` repo), time since last commit, current SHA, branch and branch state.
+* [nuqlezsh](https://github.com/Nuqlear/nuqlezsh.zsh-theme) - Simple theme for prezto and oh-my-zsh.
+* [odin](https://github.com/tylerreckart/odin) :2nd_place_medal: - Odin is a `git`-flavored ZSH theme.
+* [oh-my-git](https://github.com/arialdomartini/oh-my-git) :1st_place_medal: - An opinionated prompt for bash and ZSH.
+* [oh-my-via](https://github.com/badouralix/oh-my-via) - Theme for ZSH which mainly forks the historical theme used on VIA servers.
+* [oxide](https://github.com/dikiaap/dotfiles/blob/master/.oh-my-zsh/themes/oxide.zsh-theme) - A Minimalistic and Dark ZSH theme.
+* [ozono](https://github.com/sfabrizio/ozono-zsh-theme) 🌏 OZ0NO - Let's Breathe a clean ZSH.
+* [pad](https://github.com/eproxus/pad.zsh-theme) - A concise and colorful oh-my-zsh theme.
+* [page](https://github.com/SLIB53/page-zsh-theme) :running_man: :hourglass_flowing_sand: - A simple theme with VCS support. The prompt shows 1 level of the current working directory, branch, and a color coded curved fat arrow.
+* [pastel](https://github.com/iboyperson/pastel) :hourglass_flowing_sand: - A ZSH theme inspired by [sugar-free](https://github.com/cbrock/sugar-free).
+* [phi φ](https://github.com/LasaleFamine/phi-zsh-theme) - A clean and simple theme for ZSH inspired and forked from [Lambda (Mod) ZSH Theme](https://github.com/halfo/lambda-mod-zsh-theme).
+* [pieni](https://github.com/zaari/pieni) - Minimalist single line ZSH prompt theme.
+* [plain](https://github.com/jimeh/plain.zsh-theme) - A plain and simple theme for ZSH which shows basic `git` information.
+* [planet](https://github.com/borb/planet-zsh) - A slimmed down version of [steef](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/steeef.zsh-theme) from [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh).
+* [platypus](https://github.com/fdv/platypus) - Platypus is a simple and convenient theme for oh-my-zsh used by Frédéric de Villamil.
+* [poncho](https://github.com/RainyDayMedia/oh-my-zsh-poncho) :2nd_place_medal: - RDM's basic oh-my-zsh custom theme.
+* [poor-programmer](https://github.com/vishaltelangre/poor-programmer.zsh-theme) - Programmer's theme with `git` status, ruby version and project path.
+* [powerless](https://github.com/martinrotter/powerless) :1st_place_medal: - Tiny & simple pure ZSH prompt inspired by powerline.
+* [powerlevel9k](https://github.com/bhilburn/powerlevel9k) :1st_place_medal: :running_man: :alarm_clock: :briefcase: :chart_with_upwards_trend: - Powerlevel9k is a theme for ZSH which uses [Powerline Fonts](https://github.com/powerline/fonts). It can be used with vanilla ZSH or ZSH frameworks such as [Oh-My-Zsh](https://github.com/robbyrussell/oh-my-zsh), [Prezto](https://github.com/sorin-ionescu/prezto), [Antigen](https://github.com/zsh-users/antigen), and [many others](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions).
+* [powerlevelHipstersmoothie](https://github.com/hipstersmoothie/PowerlevelHipstersmoothie) :hourglass_flowing_sand: - Add-on for [powerlevel9k](https://github.com/bhilburn/powerlevel9k).
+* [powerline (brucehsu)](https://github.com/brucehsu/oh-my-zsh-powerline-theme) - A two-line version of powerline: one for information, one for input.
+* [powerline (jeremy)](https://github.com/jeremyFreeAgent/oh-my-zsh-powerline-theme) :2nd_place_medal: - Another take on a powerline theme. Nicely configurable, but requires at least a 256 color-capable terminal with a powerline-compatible terminal font.
+* [powerline (syui)](https://github.com/syui/powerline.zsh) - A git aware powerline theme.
+* [powerline-cute](https://github.com/dogrocker/oh-my-zsh-powerline-cute-theme) - Based on [bullet-train](https://github.com/caiogondim/bullet-train.zsh).
+* [powerline-go](https://github.com/justjanne/powerline-go) :1st_place_medal: :running_man: :alarm_clock: - A beautiful and useful low-latency prompt, written in golang.
+* [powerline-hs](https://github.com/rdnetto/powerline-hs) :1st_place_medal: :hourglass: - A [Powerline](https://github.com/powerline/powerline) clone written in Haskell. It is significantly faster than the original implementation, and makes the shell noticeably more responsive.
+* [powerline-pills](https://github.com/lucasqueiroz/powerline-pills-zsh) :hourglass_flowing_sand: - Created in Ruby, uses powerline characters to simulate pills with useful information.
+* [powerline-shell (b-ryan)](https://github.com/b-ryan/powerline-shell) :1st_place_medal: :hourglass_flowing_sand: - Beautiful and useful prompt generator for Bash, ZSH, Fish, and tcsh.
+* [powerline-shell (banga)](https://github.com/b-ryan/powerline-shell) :1st_place_medal: :hourglass_flowing_sand: - A [powerline](https://github.com/Lokaltog/vim-powerline)-like prompt for Bash, ZSH and Fish. Shows important details about git/svn/hg/fossil branch and is easy to customize/extend.
+* [powerline-train](https://github.com/sherubthakur/powerline-train) :2nd_place_medal: - A powerline variant.
+* [powerline-zsh](https://github.com/carlcarl/powerline-zsh) - A [Powerline](https://github.com/Lokaltog/vim-powerline)-like prompt, based on [powerline-bash](https://github.com/milkbikis/powerline-bash). Displays virtualenv, `git` status information and the exit code of the last command run.
+* [powerzeesh](https://github.com/sevaho/Powerzeesh) - A Powerline based ZSH theme. It aims for simplicity, showing information only when it's relevant, optimized for speed and look. Inspired by [Agnoster](https://github.com/agnoster/agnoster-zsh-theme) and [Powerline](https://github.com/jeremyFreeAgent/oh-my-zsh-powerline-theme).
+* [pre](https://github.com/leandromatos/pre-theme) - A collection of themes for Sublime Text, Terminal, iTerm 2 and ZSH.
+* [predawn-shell](https://github.com/jamiewilson/predawn-shell) - Theme for dark terminal themes.
+* [prezto-cloud-prompt](https://github.com/klaude/prezto-cloud-prompt) - Prezto port of oh-my-zsh's cloud prompt.
+* [prezto-lambda](https://github.com/nixolas1/prezto-lambda) - Lambda theme (for prezto).
+* [prezto_powerline](https://github.com/davidjrice/prezto_powerline) - Powerline for prezto. Shows git information, RVM version.
+* [prompt-powerline](https://github.com/Valodim/zsh-prompt-powerline) - A fairly heavyweight ZSH prompt, based on the powerline font from the popular eponymous vim plugin, which works well for a dark background.
+* [prompt_j2](https://github.com/malinoskj2/prompt_j2) :running_man: :hourglass_flowing_sand: - Has a dynamic exit status indicator, can change to two lines dynamically to display context.
+* [punctual](https://github.com/dannynimmo/punctual-zsh-theme) - Easily customizable, influenced by [spaceship](https://github.com/denysdovhan/spaceship-prompt).
+* [pure](https://github.com/sindresorhus/pure) :1st_place_medal: :walking_man: :hourglass_flowing_sand: - Pretty, minimal and fast ZSH prompt.
+* [purify](https://github.com/banminkyoz/purify) :hourglass: - Simple, fast & cool prompt.
+* [purity](https://github.com/petermbenjamin/purity) - Inspired by robbyrussell theme + pure prompt.
+* [qoomon](https://github.com/qoomon/zsh-theme-qoomon) :running_man: :alarm_clock: - Optimized for dark backgrounds, includes `git` information. Theme repo includes iTerm 2 and Terminal color settings.
+* [racotecnic](https://github.com/elboletaire/zsh-theme-racotecnic) - Based on af-magic and posh-git.
+* [radium](https://github.com/dimitardimitrov/radium) - Designed for dark terminals, (works best with [Solarized](https://github.com/altercation/solarized) iTerm 2 theme) (prezto).
+* [rafiki](https://github.com/akabiru/rafiki-zsh) - Adds emojis to your ZSH terminal.
+* [random-emoji-robbyrussell](https://github.com/parwat08/random-emoji-robbyrussell) :walking_man: :hourglass_flowing_sand: - Based on [random-emoji](https://gist.github.com/oshybystyi/2c30543cd48b2c9ecab0) and `robbyrussell` theme themes.
+* [random-emoji](https://gist.github.com/oshybystyi/2c30543cd48b2c9ecab0) - Random emoji.
+* [rb](https://github.com/rberenguel/rb-zsh-theme) :hourglass_flowing_sand: - Powerline-styled ZSH theme based on [Agnoster](https://gist.github.com/agnoster/3712874), optimized for `git` and solarized terminals. Requires a Powerline-compatible font.
+* [remiii](https://github.com/Remiii/remiii.zsh-theme) - Based on agnoster, optimized for [solarized](https://github.com/altercation/solarized) terminal themes.
+* [remolueoend](https://github.com/remolueoend/remolueoend.zsh-theme) - Prezto ZSH theme based on Sorin, using emojis for tracking GIT context.
+* [river](https://github.com/revir/river-zsh-config) :hourglass_flowing_sand: - Dark theme with `git` information.
+* [robbyolivier](https://github.com/YuyeQingshan/robbyolivier) :hourglass_flowing_sand: - Based on ideas from the the [robbyrussell](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/robbyrussell.zsh-theme) theme and the project [zsh-git-prompt](https://github.com/olivierverdier/zsh-git-prompt).
+* [robbyrussell-WIP](https://github.com/ecbrodie/robbyrussell-WIP-theme) :hourglass: - Decorates the `robbyrussell` theme with output to indicate a **WIP** commit.
+* [rougarou](https://github.com/RougarouTheme/rougarou-zsh) :walking_man: :hourglass_flowing_sand: - A dark theme.
+* [rufus](https://github.com/runarsf/rufus-zsh-theme) :running_man: :alarm_clock: - Optimized for dark backgrounds.
+* [rummik](https://github.com/rummik/zsh-theme) :hourglass_flowing_sand: - @rummik's theme. Supports [psmin](https://gitlab.com/zick.kim/zsh/zsh-psmin), and `git` status information in the prompt.
+* [rzh](https://github.com/patwhatev/rzh) - Theme with git states indicated by emojis.
+* [saraiva](https://github.com/ruisaraiva19/saraiva-theme) :hourglass: - Includes git status, works well on a dark terminal background.
+* [schminitz-v2](https://github.com/mashdots/schminitz-v2) :walking_man: :hourglass_flowing_sand: - Shows `git` status, user@host information, exit status of last command, and whether running as root.
+* [schminitz](https://gist.github.com/schminitz/9931af23bbb59e772eec) - Shows if Vim is running in the background when using `:sh` command.
+* [seeker](https://github.com/tonyseek/oh-my-zsh-seeker-theme) - This theme uses many special unicode characters to be fancy, but it may cause some problems without well supported fonts.
+* [seltzer](https://github.com/GrantSeltzer/seltzer.zsh-theme) - Inspired by dieter theme, uses color-coding to provide information.
+* [senpai](https://github.com/hiroru/senpai-zsh) - Clean prompt theme for Devops. Includes git information, kubernetes context, AWS profile, GCP project and Azure active cloud.
+* [sepshell](https://github.com/sepehr/sepshell) - Clean and minimal ZSH theme based on the old lost taybalt theme, with `git` bisecting/merging/rebasing modes and configurable prompt symbols.
+* [Seti_UX](https://github.com/ginfuru/iTerm-Seti_UX) - A simple omz-compatible theme with a corresponding iTerm 2 color scheme.
+* [sfz](https://github.com/mreinhardt/sfz-prompt.zsh) - An evolution of lean prompt which itself is a rewrite of pure.
+* [shayan](https://github.com/shayanh/shayan-zsh-theme) :walking_man: :hourglass_flowing_sand: - Simple.
+* [shellder](https://github.com/simnalamburt/shellder) :1st_place_medal: - Minimal theme with git branch display. Requires a powerline font.
+* [shrug](https://github.com/tmjoseantonio/shrug-zsh-theme) :hourglass: - Simple theme which displays current directory and git information.
+* [simplezsh](https://github.com/fr0zn/simplezsh) - Minimal theme with git info display.
+* [sinon](https://github.com/k-kinzal/oh-my-zsh-sinon-theme) :hourglass_flowing_sand: - k-kinzal's sinon theme.
+* [sk9](https://github.com/skeiter9/sk9-zsh) - Skeiter9's ZSH theme.
+* [skeletor-syntax](https://github.com/ramonmcros/skeletor-syntax) :1st_place_medal: :hourglass: - Theme collection for Atom, Prism and ZSH inspired by Skeletor from He-Man and the Masters of the Universe.
+* [sleeplessmind](https://github.com/godbout/sleeplessmind-zsh-theme) - ZSH theme inspired by [gitster](https://github.com/shashankmehta/dotfiles/blob/master/thesetup/zsh/.oh-my-zsh/custom/themes/gitster.zsh-theme) and [odin](https://github.com/tylerreckart/odin).
+* [slimline](https://github.com/mgee/slimline) :1st_place_medal: :hourglass: - Minimal, fast and elegant ZSH prompt. Displays the right information at the right time.
+* [smiley](https://github.com/gsamokovarov/smiley.zsh-theme) - A prompt with happy and sad faces.
+* [sobole](https://github.com/sobolevn/sobole-zsh-theme) :hourglass: - A minimalistic ZSH theme inspired by the old-fashioned hobbies. No verbose gimmicks, no emoji, no fidget spinners, and no other visual noise.
+* [solarized-powerline](https://github.com/houjunchen/solarized-powerline) - Solarized powerline-style theme for ZSH.
+* [solarizsh](https://github.com/paddykontschak/Solarizsh) - Color fix for robbyrussell's oh-my-zsh theme to work with [solarized](https://github.com/altercation/solarized) terminals.
+* [spaceship](https://github.com/denysdovhan/spaceship-prompt) :1st_place_medal: :running_man: :alarm_clock: - A ZSH theme with `git`, `nvm`, rvm/rbenv/chruby, python, `ssh` and other useful indicators.
+* [spowerline](https://mbauhardt.github.io/spowerline/) - Written in scala, inspired by agnoster, [tmux](https://tmux.github.io) powerline, vim powerline and the vim status plugin.
+* [staples](https://github.com/dersam/staples) - Based on bureau, displays user@host if connected through SSH.
+* [starboy](https://github.com/prdpx7/Starboy) - A simple ZSH theme
+* [statusline](https://github.com/el1t/statusline) :2nd_place_medal: - A responsive ZSH theme that provides informational segments when you need them.
+* [steef](https://github.com/danihodovic/steeef) - ZSH steeef theme as a standalone repository. The purpose behind this repo is avoid having a dependency on oh-my-zsh when using the steeef theme. ZSH plugin managers such as Antibody can use the theme without having to use oh-my-zsh.
+* [sugar-free](https://github.com/cbrock/sugar-free) - Based on the [Pure](https://github.com/sindresorhus/pure) and [Candy](https://github.com/BinaryMuse/oh-my-zsh/blob/binarymuse/themes/candy.zsh-theme) themes.
+* [tabaf](https://github.com/bvc3at/tabaf-zsh-theme) - Minimal ZSH theme optimized for dark backgrounds.
+* [tahuri](https://github.com/Tahuri/environment-configuration) - ZSH theme for Arch Linux.
+* [termuxer](https://github.com/patrick330602/termuxer) :hourglass_flowing_sand: - Theme inspired by agnoster and linuxer.
+* [the-time-lord](https://github.com/jhwhite/the-time-lord) - A theme based on gallifrey.
+* [theme-line](https://github.com/yw9381/oh-my-zsh_theme_line) - Colorful theme with `git` status.
+* [theraveler](https://github.com/azah/the-raveler) - Based on theunraveler.
+* [topan](https://github.com/fudyartanto/topan-theme-oh-my-zsh) - Includes `git` information; best on dark backgrounds.
+* [tq](https://github.com/kitian616/tq-zsh-theme) - Displays `git` status, time, requires a Powerline font.
+* [traffic](https://github.com/fcce/traffic-zsh-theme) :hourglass_flowing_sand: - A dark theme for ZSH.
+* [trajan](https://github.com/denisinla/trajan-zsh-theme) - A dark theme for ZSH.
+* [trinity](https://github.com/de-luca/Trinity) - A simple theme based on [geometry](https://github.com/geometry-zsh/geometry).
+* [tvline](https://github.com/thvitt/tvline) :1st_place_medal: - Derived from [agnoster's theme](https://gist.github.com/agnoster/3712874), adds powerline font enhancements.
+* [ultimate](https://github.com/b4b4r07/ultimate) - Minimalist theme with `git` indicator, vim mode indicator and shortened path.
+* [vanan](https://github.com/avano/vanan-zsh-theme) :hourglass_flowing_sand: - Minimalist theme with `git` information for dark terminals.
+* [vinhnx](https://github.com/vinhnx/vinhnx.zsh-theme) - Modified from themes/mgutz.zsh-theme.Looks great when using with a [Solarized](https://github.com/altercation/solarized) color scheme.
+* [vira](https://github.com/FernandoTorres/omz-vira) - An update of the bira theme that shows the `vim` bindkey -v status.
+* [wade](https://github.com/wadehammes/wade.zsh-theme) - Mashup of the popular ZSH themes [Agnoster](https://gist.github.com/agnoster/3712874) and [Fishy](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/fishy.zsh-theme), with some visual tweaks.
+* [wang-iterm-zsh](https://github.com/0532/wang-iterm-zsh) - Based on the 0532 theme.
+* [webicons](https://github.com/Jmclerck/webicons.zsh-theme) :hourglass: - Includes `git` status, node and yarn versions in prompt.
+* [wild-cherry](https://github.com/mashaal/wild-cherry) :1st_place_medal: - A fairy-tale inspired theme for ZSH, iTerm 2, Sublime, Atom, & Mou.
+* [work-line](https://github.com/afnizarnur/work-line) - Theme with nice emojis.
+* [wynwyn](https://github.com/thaffenden/wynwyn.zsh-theme) :running_man: :hourglass_flowing_sand: - A theme that aims to show you the information you need when you need it. `wynwyn` takes inspiration from the default theme `avit` and the excellent [Spaceship prompt](https://github.com/denysdovhan/spaceship-prompt).
+* [xremix](https://github.com/xremix/oh-my-zsh-xremix-theme) - An oh-my-zsh shell theme based on the Jreese theme plugin.
+* [xxf](https://gist.github.com/xfanwu/18fd7c24360c68bab884) - Shows the current git commit's shortened hash and message.
+* [yairshefi](https://github.com/yaireclipse/yairshefi-ohmyzsh-theme) - Minimal theme with line separated prompts. Based on [Robby Russell's theme](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/robbyrussell.zsh-theme)
+* [ykmam](https://github.com/julienvanderkluft/ykmam-zsh-theme/blob/master/ykmam.zsh-theme) - Modified from [ys](https://github.com/cristiancavalli/ys-zsh-custom-theme) theme and optimized for a dark background.
+* [ys-cluster](https://github.com/AndiH/oh-my-zsh-ys-cluster-theme) :hourglass_flowing_sand: - [ys](http://ysmood.org/my-ys-terminal-theme/) variant with support for working with batch submission systems for large clusters. Supports Slurm, LSF / IBM Spectrum LSF, and PBS.
+* [ys](https://github.com/cristiancavalli/ys-zsh-custom-theme) - Clean, simple, compatible and meaningful theme meant for dark backgrounds.
+* [ysm](https://github.com/hanbinpro/ysm-zsh-theme) - Simple ZSH theme with `git` status information.
+* [yuki](https://github.com/yuki-torii/yuki-zsh-theme) - A dark optimized ZSH theme.
+* [z4rr3t](https://github.com/inimicus/z4rr3t) - Based on sindresorhus' [pure](https://github.com/sindresorhus/pure) theme.
+* [zemm-blinks](https://github.com/aranasaurus/zemm-blinks.zsh-theme) - Customized version of oh-my-zsh [blinks](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/blinks.zsh-theme) with mercurial support and other changes.
+* [zero](https://github.com/arlimus/zero.zsh) :1st_place_medal: :hourglass: - Zero's theme & plugin. Has variants for both light and dark terminal backgrounds.
+* [zeta](https://github.com/skylerlee/zeta-zsh-theme) - Shows username, `git` status information, machine name and the current working directory.
+* [zqt](https://github.com/ladychili/zqt-zsh-theme) - Modified version of oh-my-zsh's [maran](https://github.com/robbyrussell/oh-my-zsh/blob/master/themes/maran.zsh-theme) theme.
+* [zsh2000](https://github.com/inspectahstack/zsh2000) - Powerline looking ZSH theme which includes the `rvm` prompt, `git` status and branch, current time, user, hostname, pwd, exit status, whether running as root and background job status.
+* [zshcomrade](https://github.com/landongn/zshcomrade) - A ZSH theme, comrade!
+* [zwsh](https://github.com/naens/zwsh) :1st_place_medal: :running_man: :hourglass_flowing_sand: - A Zpm3/Wordstar mode/theme for ZSH.
+* [zys](https://github.com/ZYSzys/zys-zsh-theme) :hourglass: - Similar to agnoster-zsh-theme, designed to disclose information contextually, with a powerline aesthetic.
+* [Awesome Terminal Fonts](https://github.com/gabrielelana/awesome-terminal-fonts) :2nd_place_medal: - A family of fonts that includes some nice monospaced Icons.
+* [Fantasque Awesome Font](https://github.com/ztomer/fantasque_awesome_powerline) - A nice monospaced font, patched with Font-Awesome, Octoicons and Powerline-Glyphs.
+* [Fantasque-sans](https://github.com/belluzj/fantasque-sans) :1st_place_medal: :hourglass: - Another powerline font.
+* [Hack](https://sourcefoundry.org/hack/) - Another Powerline-compatible font designed specifically for source code.
+* [Input Mono](http://input.fontbureau.com/) - A family of fonts designed specifically for code. It offers both monospaced and proportional fonts and includes powerline glyphs.
+* [Monoid](https://larsenwork.com/monoid/) - Monoid is customizable and optimized for coding with bitmap-like sharpness at 15px line-height even on low res displays.
+* [nerd fonts](https://github.com/ryanoasis/nerd-fonts) :1st_place_medal: :walking_man: :hourglass_flowing_sand: :briefcase: - Collection of over 20 patched fonts (over 2,000 variations) & FontForge font patcher python script for Powerline, Font Awesome, Octicons, Devicons, and Vim Devicons. Includes: Droid Sans, Meslo, Source Code, AnonymousPro, Hack, ProFont, Inconsolata, and many more.
+* [Powerline patched font collection](https://github.com/powerline/fonts) :1st_place_medal: :hourglass_flowing_sand: - A collection of a dozen or so fonts patched to include powerline gylphs.
+* [Terminus](http://files.ax86.net/terminus-ttf/) - TTF version of Terminus that includes powerline glyphs.
+* [Iosevka](https://github.com/be5invis/Iosevka) :1st_place_medal: :running_man: :alarm_clock: :briefcase: :chart_with_upwards_trend: - Coders’ typeface, built from code. Highly customizable.
