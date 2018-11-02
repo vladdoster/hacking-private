@@ -4,7 +4,7 @@
 
 # Iconography
 
-### Detecting devoted time or work
+### Devoted time or work detection
 
 🥈 - has 50 or more commits  
 🥇 - has 100 or more commits
