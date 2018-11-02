@@ -4,7 +4,7 @@
 
 # Iconography
 
-### Devoted time or work detection
+### Devoted time and work detection
 
 🥈 - has 50 or more commits  
 🥇 - has 100 or more commits
@@ -18,7 +18,7 @@
 
 ⌛️- long time no update (updated not in last 3 months, but in last 6 months)  
 ⏳ - updated in last 3 months, active  
-⏰ - updated in last month and month before it (single new commit will not yield such a strong symbol like alarm clock; the additional criterion ("month before it") is to take into account only more constantly attended projects),
+⏰ - updated in last month and month before it (single new commit will not yield such a strong symbol like the alarm clock; the additional criterion ("month before it") is to take into account only a more constantly attended projects)
 
 ### Research & development detection
 
