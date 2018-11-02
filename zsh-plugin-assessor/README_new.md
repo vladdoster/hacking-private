@@ -11,8 +11,8 @@
 
 ### Progress detection
 
-🚶- slow/moderate progress: 1 commit in each of last 3 months or 5 commits in total in 3 last months  
-🏃- fast progress: 3 commits in each of last 3 months or 10 commits in total in last 3 months
+🚶- slow/moderate progress: 1 commit in each of last 3 months or 5 commits in total during the 3 last months (90 days)  
+🏃- fast progress: 3 commits in each of last 3 months or 10 commits in total during the 3 last months
 
 ### Attention detection
 
