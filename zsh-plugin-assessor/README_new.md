@@ -7,29 +7,23 @@
 ### Detecting devoted time or work
 
 🥈 - has 50 or more commits
-
 🥇 - has 100 or more commits
 
 ### Progress detection
 
 🚶- slow/moderate progress: 1 commit in each of last 3 months or 5 commits in total in 3 last months
-
 🏃- fast progress: 3 commits in each of last 3 months or 10 commits in total in last 3 months
 
 ### Attention detection
 
 💤 - no update in last 6 months
-
 ⌛️- long time no update (updated not in last 3 months, but in last 6 months)
-
 ⏳ - updated in last 3 months, active
-
 ⏰ - updated in last month and month before it (single new commit will not yield it such a strong symbol like alarm clock; the additional criterion ("month before it") is to take into account only more constantly attended projects),
 
 ### Research & development detection
 
 💼 - has branches with at least 50 commits in total
-
 📈 – the branches were active 3 times in last 4 months
 
 ## Plugins
