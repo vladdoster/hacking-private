@@ -16,7 +16,6 @@
 
 ### Attention detection
 
-💤 - no update in last 6 months  
 ⌛️- long time no update (updated not in last 3 months, but in last 6 months)  
 ⏳ - updated in last 3 months, active  
 ⏰ - updated in last month and month before it (single new commit will not yield it such a strong symbol like alarm clock; the additional criterion ("month before it") is to take into account only more constantly attended projects),
