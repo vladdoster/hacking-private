@@ -1,0 +1,42 @@
+enable.sh(1)
+============
+:compat-mode!:
+
+NAME
+----
+enable.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_enable
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 15 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_enable
+~~~~~~~~~~~~~~
+
+____
+ # Enable breakpoint(s)/watchpoint(s) by entry number(s).
+____
+
+Has 2 line(s). Calls functions:
+
+ _Dbg_do_enable
+ `-- break.sh/_Dbg_enable_disable
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

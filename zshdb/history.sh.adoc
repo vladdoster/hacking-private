@@ -1,0 +1,46 @@
+history.sh(1)
+=============
+:compat-mode!:
+
+NAME
+----
+history.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_set_history
+ _Dbg_do_show_history
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 7 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add_sub
+
+_Dbg_do_set_history
+~~~~~~~~~~~~~~~~~~~
+
+Has 29 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_show_history
+~~~~~~~~~~~~~~~~~~~~
+
+Has 8 line(s). Calls functions:
+
+ _Dbg_do_show_history
+ `-- test-setshow.sh/_Dbg_msg
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

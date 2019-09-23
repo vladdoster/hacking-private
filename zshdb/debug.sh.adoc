@@ -1,0 +1,46 @@
+debug.sh(1)
+===========
+:compat-mode!:
+
+NAME
+----
+debug.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_set_debug
+ _Dbg_do_show_debug
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 4 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add_sub
+
+_Dbg_do_set_debug
+~~~~~~~~~~~~~~~~~
+
+Has 2 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_show_debug
+~~~~~~~~~~~~~~~~~~
+
+Has 3 line(s). Calls functions:
+
+ _Dbg_do_show_debug
+ `-- setshow.sh/_Dbg_show_onoff
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

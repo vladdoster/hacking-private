@@ -1,0 +1,60 @@
+stepping.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+stepping.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_next
+ _Dbg_do_skip
+ _Dbg_do_skip_internal
+ _Dbg_do_step
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 7 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+_Dbg_do_next
+~~~~~~~~~~~~
+
+Has 28 line(s). Doesn't call other functions.
+
+Called by:
+
+ processor.sh/_Dbg_onecmd
+
+_Dbg_do_skip
+~~~~~~~~~~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_skip_internal
+~~~~~~~~~~~~~~~~~~~~~
+
+Has 17 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_step
+~~~~~~~~~~~~
+
+Has 27 line(s). Doesn't call other functions.
+
+Called by:
+
+ processor.sh/_Dbg_onecmd
+

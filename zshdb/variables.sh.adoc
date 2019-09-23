@@ -1,0 +1,40 @@
+variables.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+variables.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_info_variables
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 23 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add_sub
+
+_Dbg_do_info_variables
+~~~~~~~~~~~~~~~~~~~~~~
+
+Has 43 line(s). Calls functions:
+
+ _Dbg_do_info_variables
+ `-- list.sh/_Dbg_do_list_typeset_attr
+
+Uses feature(s): _export_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

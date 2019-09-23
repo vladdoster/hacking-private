@@ -1,0 +1,110 @@
+test-save-restore.sh(1)
+=======================
+:compat-mode!:
+
+NAME
+----
+test-save-restore.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_save_restore_create_unsetopt
+ test_save_restore_IFS_PS4
+ test_save_restore_is_unsetopt
+ test_save_restore_ksharrays
+ test_save_restore_shwordsplit
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 13 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_save_restore_create_unsetopt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 11 line(s). Calls functions:
+
+ test_save_restore_create_unsetopt
+ `-- save-restore.sh/_Dbg_create_unsetopt
+
+Uses feature(s): _setopt_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_save_restore_IFS_PS4
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test that we are saving and restoring POSIX variables IFS and PS4 that
+ # the debugger changes.
+____
+
+Has 16 line(s). Calls functions:
+
+ test_save_restore_IFS_PS4
+ |-- save-restore.sh/_Dbg_set_debugger_entry
+ `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_save_restore_is_unsetopt
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #!/bin/zsh
+ # -*- shell-script -*-
+____
+
+Has 8 line(s). Calls functions:
+
+ test_save_restore_is_unsetopt
+ `-- save-restore.sh/_Dbg_is_unsetopt
+
+Uses feature(s): _setopt_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_save_restore_ksharrays
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test that we are saving and restoring zsh option ksharrays that
+ # the debugger changes.
+____
+
+Has 14 line(s). Calls functions:
+
+ test_save_restore_ksharrays
+ |-- save-restore.sh/_Dbg_set_debugger_entry
+ `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+
+Uses feature(s): _setopt_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_save_restore_shwordsplit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test that we are saving and restoring zsh option shwordsplit that
+ # the debugger changes.
+____
+
+Has 16 line(s). Calls functions:
+
+ test_save_restore_shwordsplit
+ |-- save-restore.sh/_Dbg_set_debugger_entry
+ `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+
+Uses feature(s): _setopt_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

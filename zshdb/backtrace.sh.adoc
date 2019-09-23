@@ -1,0 +1,52 @@
+backtrace.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+backtrace.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_backtrace
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 36 line(s). Calls functions:
+
+ Script-Body
+ |-- alias.sh/_Dbg_alias_add
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_backtrace
+~~~~~~~~~~~~~~~~~
+
+____
+ # Print a stack backtrace. $1 after processing options is the maximum
+ # number of entries to include.
+____
+
+Has 36 line(s). Calls functions:
+
+ _Dbg_do_backtrace
+ |-- gdb.sh/_Dbg_print_frame
+ |-- help.sh/_Dbg_do_help
+ `-- run.sh/_Dbg_not_running
+
+Uses feature(s): _getopts_, _setopt_
+
+Called by:
+
+ info.sh/_Dbg_do_info_internal
+ sig.sh/_Dbg_exit_handler
+ sig.sh/_Dbg_sig_handler
+

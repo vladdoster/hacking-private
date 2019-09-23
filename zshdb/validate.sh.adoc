@@ -24,7 +24,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 1 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 1 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_is_alias
 ~~~~~~~~~~~~~
@@ -35,7 +35,10 @@ ____
 
 Has 5 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ test-validate.sh/test_validate_is_alias
+ trace.sh/_Dbg_do_trace_alias
 
 _Dbg_is_function
 ~~~~~~~~~~~~~~~~
@@ -44,7 +47,11 @@ Has 10 line(s). Doesn't call other functions.
 
 Called by:
 
+ examine.sh/_Dbg_do_examine
  fns.sh/_Dbg_parse_linespec
+ test-validate.sh/test_validate_is_function
+ trace.sh/_Dbg_do_trace
+ trace.sh/_Dbg_do_untrace
 
 _Dbg_is_int
 ~~~~~~~~~~~
@@ -55,7 +62,9 @@ ____
 
 Has 6 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ test-validate.sh/test_validate_is_integer
 
 _Dbg_is_signed_int
 ~~~~~~~~~~~~~~~~~~
@@ -66,5 +75,8 @@ ____
 
 Has 6 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ down.sh/_Dbg_do_down
+ test-validate.sh/test_validate_is_integer
 

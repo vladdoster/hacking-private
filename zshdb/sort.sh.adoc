@@ -26,6 +26,8 @@ Has 19 line(s). Calls functions:
  Script-Body
  `-- sort_list
 
+Uses feature(s): _setopt_
+
 sort_list
 ~~~~~~~~~
 
@@ -45,4 +47,5 @@ Called by:
  help.sh/_Dbg_help_info
  help.sh/_Dbg_help_set
  help.sh/_Dbg_help_show
+ test-sort.sh/test_sort
 

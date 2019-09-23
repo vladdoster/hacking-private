@@ -17,6 +17,9 @@ FUNCTIONS
  _Dbg_alias_expand
  _Dbg_alias_find_aliased
  _Dbg_alias_remove
+ _Dbg_do_alias
+ _Dbg_do_show_alias
+ _Dbg_do_unalias
 
 DETAILS
 -------
@@ -24,7 +27,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 2 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 2 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_alias_add
 ~~~~~~~~~~~~~~
@@ -35,7 +38,18 @@ ____
 
 Has 3 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ backtrace.sh/Script-Body
+ continue.sh/Script-Body
+ delete.sh/Script-Body
+ edit.sh/Script-Body
+ eval.sh/Script-Body
+ examine.sh/Script-Body
+ info.sh/Script-Body
+ next.sh/Script-Body
+ quit.sh/Script-Body
+ test-alias.sh/test_alias
 
 _Dbg_alias_expand
 ~~~~~~~~~~~~~~~~~
@@ -50,6 +64,7 @@ Has 5 line(s). Doesn't call other functions.
 Called by:
 
  processor.sh/_Dbg_onecmd
+ test-alias.sh/test_alias
 
 _Dbg_alias_find_aliased
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +76,11 @@ ____
 
 Has 14 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Uses feature(s): _setopt_
+
+Called by:
+
+ test-alias.sh/test_alias
 
 _Dbg_alias_remove
 ~~~~~~~~~~~~~~~~~
@@ -72,5 +91,28 @@ ____
 
 Has 3 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ test-alias.sh/test_alias
+
+_Dbg_do_alias
+~~~~~~~~~~~~~
+
+Has 6 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_show_alias
+~~~~~~~~~~~~~~~~~~
+
+Has 9 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_unalias
+~~~~~~~~~~~~~~~
+
+Has 4 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 

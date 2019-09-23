@@ -14,8 +14,8 @@ FUNCTIONS
 ---------
 
  _Dbg_check_line
- _Dbg_file_not_read_in
  _Dbg_filecache_reset
+ _Dbg_file_not_read_in
  _Dbg_get_maxline
  _Dbg_get_source_line
  _Dbg_is_file
@@ -34,6 +34,8 @@ Has 9 line(s). Calls functions:
  Script-Body
  `-- _Dbg_filecache_reset
 
+Uses feature(s): _zmodload_
+
 _Dbg_check_line
 ~~~~~~~~~~~~~~~
 
@@ -47,7 +49,19 @@ Has 17 line(s). Calls functions:
  _Dbg_check_line
  `-- msg.sh/_Dbg_errmsg
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ continue.sh/_Dbg_do_continue
+ test-filecache.sh/test_filecache_check_line
+
+_Dbg_filecache_reset
+~~~~~~~~~~~~~~~~~~~~
+
+Has 3 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
 
 _Dbg_file_not_read_in
 ~~~~~~~~~~~~~~~~~~~~~
@@ -61,16 +75,9 @@ Has 4 line(s). Calls functions:
  _Dbg_file_not_read_in
  `-- msg.sh/_Dbg_errmsg
 
-Not called by script or any function, may be a hook or Zle widget, etc.
-
-_Dbg_filecache_reset
-~~~~~~~~~~~~~~~~~~~~
-
-Has 3 line(s). Doesn't call other functions.
-
 Called by:
 
- Script-Body
+ continue.sh/_Dbg_do_continue
 
 _Dbg_get_maxline
 ~~~~~~~~~~~~~~~~
@@ -87,7 +94,7 @@ Has 7 line(s). Calls functions:
 
 Uses feature(s): _eval_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_get_source_line
 ~~~~~~~~~~~~~~~~~~~~
@@ -111,7 +118,10 @@ Uses feature(s): _eval_
 
 Called by:
 
+ eval.sh/_Dbg_do_eval
  list.sh/_Dbg_list
+ test-get-sourceline.sh/test_get_source_line
+ test-get-sourceline.sh/test_get_source_line_with_spaces
 
 _Dbg_is_file
 ~~~~~~~~~~~~
@@ -126,7 +136,7 @@ Has 43 line(s). Calls functions:
  _Dbg_is_file
  `-- msg.sh/_Dbg_errmsg
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_readin
 ~~~~~~~~~~~
@@ -150,6 +160,10 @@ Called by:
 
  _Dbg_readin_if_new
  gdb.sh/_Dbg_print_location
+ load.sh/_Dbg_do_load
+ test-action.sh/test_action
+ test-filecache.sh/test_filecache_check_line
+ test-filecache.sh/test_filecache_readin_maxline
 
 _Dbg_readin_if_new
 ~~~~~~~~~~~~~~~~~~

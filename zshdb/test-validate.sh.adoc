@@ -1,0 +1,72 @@
+test-validate.sh(1)
+===================
+:compat-mode!:
+
+NAME
+----
+test-validate.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_validate_is_alias
+ test_validate_is_function
+ test_validate_is_integer
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 18 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_validate_is_alias
+~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_is_alias
+____
+
+Has 12 line(s). Calls functions:
+
+ test_validate_is_alias
+ `-- validate.sh/_Dbg_is_alias
+
+Uses feature(s): _alias_, _unalias_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_validate_is_function
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_is_function
+____
+
+Has 27 line(s). Calls functions:
+
+ test_validate_is_function
+ `-- validate.sh/_Dbg_is_function
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_validate_is_integer
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_is_int
+____
+
+Has 23 line(s). Calls functions:
+
+ test_validate_is_integer
+ |-- validate.sh/_Dbg_is_int
+ `-- validate.sh/_Dbg_is_signed_int
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

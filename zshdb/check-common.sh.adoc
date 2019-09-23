@@ -1,0 +1,70 @@
+check-common.sh(1)
+==================
+:compat-mode!:
+
+NAME
+----
+check-common.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ check_output
+ run_debugger
+ run_test_check
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 18 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+Uses feature(s): _export_, _setopt_
+
+_Exports (environment):_ abs_top_srcdir [big]*//* host_os [big]*//* SH [big]*//* srcdir [big]*//* top_builddir [big]*//* top_srcdir
+
+check_output
+~~~~~~~~~~~~
+
+Has 5 line(s). Doesn't call other functions.
+
+Called by:
+
+ run_test_check
+
+run_debugger
+~~~~~~~~~~~~
+
+____
+ # Run the debugger on test program $1 with (optional) debugger options $2
+ # using commandfile $3. We assume $TOP_BUILDDIR, $TOP_SRCDIR and
+ # $TEST_NAME have been set previously
+____
+
+Has 7 line(s). Doesn't call other functions.
+
+Called by:
+
+ run_test_check
+
+_Environment variables used:_ SH [big]*//* top_builddir [big]*//* top_srcdir
+
+run_test_check
+~~~~~~~~~~~~~~
+
+Has 17 line(s). Calls functions:
+
+ run_test_check
+ |-- check_output
+ `-- run_debugger
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Environment variables used:_ srcdir [big]*//* top_builddir [big]*//* top_srcdir
+

@@ -1,0 +1,165 @@
+zterm-background.sh(1)
+======================
+:compat-mode!:
+
+NAME
+----
+zterm-background.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ exit_if_not_sourced
+ get_default_bg
+ is_dark_colorfgbg
+ is_dark_rgb
+ is_sourced
+ osx_get_terminal_fg_bg
+ xterm_compatible_fg_bg
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 67 line(s). Calls functions:
+
+ Script-Body
+ |-- exit_if_not_sourced
+ |   `-- is_sourced
+ |-- get_default_bg
+ |   `-- is_dark_colorfgbg
+ |-- is_dark_colorfgbg
+ |-- is_dark_rgb
+ |-- is_sourced
+ |-- osx_get_terminal_fg_bg
+ |   |-- is_dark_colorfgbg
+ |   `-- is_dark_rgb
+ `-- xterm_compatible_fg_bg
+
+Uses feature(s): _export_
+
+_Exports (environment):_ COLORFGBG [big]*//* DARK_BG
+
+exit_if_not_sourced
+~~~~~~~~~~~~~~~~~~~
+
+____
+ # Exit if we are not source.
+ # if sourced, then we just set exitrc
+ # which was assumed to be declared outside
+____
+
+Has 4 line(s). Calls functions:
+
+ exit_if_not_sourced
+ `-- is_sourced
+
+Called by:
+
+ Script-Body
+
+get_default_bg
+~~~~~~~~~~~~~~
+
+____
+ # On return, variable is_dark_bg is set
+ # We follow Emacs logic (at least initially)
+____
+
+Has 19 line(s). Calls functions:
+
+ get_default_bg
+ `-- is_dark_colorfgbg
+
+Called by:
+
+ Script-Body
+
+_Environment variables used:_ COLORFGBG
+
+is_dark_colorfgbg
+~~~~~~~~~~~~~~~~~
+
+____
+ # Consult (environment) variable COLORFGB
+ # On return, variable is_dark_bg is set
+____
+
+Has 13 line(s). Doesn't call other functions.
+
+Called by:
+
+ get_default_bg
+ osx_get_terminal_fg_bg
+ Script-Body
+
+_Environment variables used:_ COLORFGBG
+
+is_dark_rgb
+~~~~~~~~~~~
+
+____
+ # Pass as parameters R G B values in hex
+ # On return, variable is_dark_bg is set
+____
+
+Has 7 line(s). Doesn't call other functions.
+
+Called by:
+
+ osx_get_terminal_fg_bg
+ Script-Body
+
+is_sourced
+~~~~~~~~~~
+
+Has 5 line(s). Doesn't call other functions.
+
+Called by:
+
+ exit_if_not_sourced
+ Script-Body
+
+osx_get_terminal_fg_bg
+~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # From a comment left duthen in my StackOverflow answer cited above.
+____
+
+Has 11 line(s). Calls functions:
+
+ osx_get_terminal_fg_bg
+ |-- is_dark_colorfgbg
+ `-- is_dark_rgb
+
+Called by:
+
+ Script-Body
+
+_Environment variables used:_ COLORFGBG
+
+xterm_compatible_fg_bg
+~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # From:
+ # http://unix.stackexchange.com/questions/245378/common-environment-variable-to-set-dark-or-light-terminal-background/245381#245381
+ # and:
+ # https://bugzilla.gnome.org/show_bug.cgi?id=733423#c1
+ #
+ # User should set up RGB_fg and RGB_bg arrays
+____
+
+Has 14 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
+

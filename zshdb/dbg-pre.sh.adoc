@@ -1,0 +1,136 @@
+dbg-pre.sh(1)
+=============
+:compat-mode!:
+
+NAME
+----
+dbg-pre.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_show_version
+ _Dbg_expand_filename
+ _Dbg_msg
+ _Dbg_tempname
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 21 line(s). Calls functions:
+
+ Script-Body
+ `-- dbg-opts.sh/_Dbg_parse_options
+
+_Dbg_do_show_version
+~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Used by "show version" as well as --version
+____
+
+Has 1 line(s). Calls functions:
+
+ _Dbg_do_show_version
+ `-- _Dbg_msg
+
+Called by:
+
+ dbg-opts.sh/_Dbg_parse_options
+ show.sh/_Dbg_do_show_internal
+
+_Dbg_expand_filename
+~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Expand filename given as $1.
+ # we echo the expanded name or return $1 unchanged if a bad filename.
+ # Return is 0 if good or 1 if bad.
+ # File globbing is handled.
+ # Note we don't check that the file exists, just that the format is
+ # valid; we do check that we can "search" the directory implied in the
+ # filename.
+____
+
+Has 21 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_msg
+~~~~~~~~
+
+____
+ # This function is overwritten by when lib/fns.sh gets loaded
+____
+
+Has 1 line(s). Doesn't call other functions.
+
+Called by:
+
+ _Dbg_do_show_version
+ action.sh/_Dbg_list_action
+ action.sh/_Dbg_set_action
+ annotate.sh/_Dbg_do_set_annotate
+ basename.sh/_Dbg_do_show_basename
+ breakpoints.sh/_Dbg_do_info_breakpoints
+ break.sh/_Dbg_enable_disable_brkpt
+ break.sh/_Dbg_set_brkpt
+ break.sh/_Dbg_unset_brkpt
+ condition.sh/_Dbg_do_condition
+ copying.sh/_Dbg_do_show_copying
+ delete.sh/_Dbg_do_delete_internal
+ display.sh/_Dbg_enable_disable_display
+ editing.sh/_Dbg_do_show_editing
+ eval.sh/_Dbg_do_eval
+ examine.sh/_Dbg_do_examine
+ files.sh/_Dbg_do_info_files
+ gdb.sh/_Dbg_print_command
+ gdb.sh/_Dbg_print_frame
+ gdb.sh/_Dbg_print_location
+ help.sh/_Dbg_help_set
+ help.sh/_Dbg_help_show
+ highlight.sh/_Dbg_do_show_highlight
+ history.sh/_Dbg_do_show_history
+ hook.sh/_Dbg_hook_breakpoint_hit
+ hook.sh/_Dbg_trap_handler
+ info-help.sh/_Dbg_info_help
+ kill.sh/_Dbg_do_kill
+ line.sh/_Dbg_do_info_line
+ linetrace.sh/_Dbg_do_set_linetrace
+ load.sh/_Dbg_do_load
+ processor.sh/_Dbg_onecmd
+ processor.sh/_Dbg_process_commands
+ program.sh/_Dbg_do_info_program
+ pwd.sh/_Dbg_do_pwd
+ quit.sh/_Dbg_do_quit
+ set.sh/_Dbg_do_set_internal
+ setshow.sh/_Dbg_help_set_onoff
+ setshow.sh/_Dbg_set_onoff
+ setshow.sh/_Dbg_show_onoff
+ show.sh/_Dbg_do_show_internal
+ signals.sh/_Dbg_do_info_signals
+ sig.sh/_Dbg_err_handler
+ sig.sh/_Dbg_exit_handler
+ sig.sh/_Dbg_sig_handler
+ style.sh/_Dbg_do_show_style
+ undisplay.sh/_Dbg_do_undisplay
+
+_Dbg_tempname
+~~~~~~~~~~~~~
+
+____
+ # Create temporary file based on $1
+ # file $1
+____
+
+Has 1 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

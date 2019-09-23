@@ -1,0 +1,74 @@
+ok4zshdb.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+ok4zshdb.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ debug_hook
+ functrace_no_source
+ get_processor
+ second_fn
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 24 line(s). Calls functions:
+
+ Script-Body
+ |-- functrace_no_source
+ |   `-- second_fn
+ `-- get_processor
+
+debug_hook
+~~~~~~~~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+functrace_no_source
+~~~~~~~~~~~~~~~~~~~
+
+Has 1 line(s). Calls functions:
+
+ functrace_no_source
+ `-- second_fn
+
+Called by:
+
+ Script-Body
+
+get_processor
+~~~~~~~~~~~~~
+
+Has 9 line(s). Doesn't call other functions.
+
+Uses feature(s): _setopt_
+
+Called by:
+
+ Script-Body
+
+second_fn
+~~~~~~~~~
+
+Has 12 line(s). Doesn't call other functions.
+
+Uses feature(s): _zmodload_
+
+Called by:
+
+ functrace_no_source
+

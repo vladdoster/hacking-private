@@ -1,0 +1,44 @@
+linetrace.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+linetrace.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_set_linetrace
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 23 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add_sub
+
+Uses feature(s): _source_
+
+_Dbg_do_set_linetrace
+~~~~~~~~~~~~~~~~~~~~~
+
+Has 37 line(s). Calls functions:
+
+ _Dbg_do_set_linetrace
+ |-- journal.sh/_Dbg_write_journal_eval
+ |-- msg.sh/_Dbg_errmsg
+ `-- test-setshow.sh/_Dbg_msg
+
+Uses feature(s): _eval_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

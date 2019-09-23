@@ -26,7 +26,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 4 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 4 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_erase_journals
 ~~~~~~~~~~~~~~~~~~~
@@ -40,8 +40,10 @@ Has 2 line(s). Doesn't call other functions.
 Called by:
 
  _Dbg_source_journal
- hook.sh/_Dbg_cleanup
  hook.sh/_Dbg_cleanup2
+ hook.sh/_Dbg_cleanup
+ quit.sh/_Dbg_do_quit
+ test-journal.sh/test_journal
 
 _Dbg_source_journal
 ~~~~~~~~~~~~~~~~~~~
@@ -60,6 +62,7 @@ Called by:
  hook.sh/_Dbg_trap_handler
  save-restore.sh/_Dbg_set_debugger_entry
  sig.sh/_Dbg_subexit_handler
+ test-journal.sh/test_journal
 
 _Dbg_write_journal
 ~~~~~~~~~~~~~~~~~~
@@ -78,8 +81,11 @@ Called by:
  action.sh/_Dbg_set_action
  break.sh/_Dbg_set_brkpt
  dbg-call.sh/_Dbg_debugger
+ export.sh/_Dbg_do_export
  hook.sh/_Dbg_trap_handler
+ next.sh/_Dbg_do_next
  processor.sh/_Dbg_process_commands
+ quit.sh/_Dbg_do_quit
 
 _Dbg_write_journal_avar
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,14 +113,26 @@ Uses feature(s): _eval_
 Called by:
 
  action.sh/_Dbg_unset_action_arrays
+ annotate.sh/_Dbg_do_set_annotate
+ args.sh/_Dbg_do_set_args
+ autolist.sh/_Dbg_do_set_autolist
  break.sh/_Dbg_clear_all_brkpt
  break.sh/_Dbg_delete_brkpt_entry
  break.sh/_Dbg_enable_disable_brkpt
  break.sh/_Dbg_unset_brkpt_arrays
  display.sh/_Dbg_enable_disable_display
  hook.sh/_Dbg_hook_error_handler
+ linetrace.sh/_Dbg_do_set_linetrace
+ listsize.sh/_Dbg_do_set_listsize
+ next.sh/_Dbg_do_next
  processor.sh/_Dbg_process_commands
+ return.sh/_Dbg_do_return
  setshow.sh/_Dbg_set_onoff
+ showcommand.sh/_Dbg_do_set_showcommand
+ test-journal.sh/test_journal
+ trace-commands.sh/_Dbg_do_set_trace_commands
+ undisplay.sh/_Dbg_do_undisplay
+ width.sh/_Dbg_do_set_width
 
 _Dbg_write_journal_var
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -130,5 +148,5 @@ Has 5 line(s). Calls functions:
 
 Uses feature(s): _eval_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 

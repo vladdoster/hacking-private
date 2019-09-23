@@ -1,0 +1,44 @@
+continue.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+continue.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_continue
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 16 line(s). Calls functions:
+
+ Script-Body
+ |-- alias.sh/_Dbg_alias_add
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_continue
+~~~~~~~~~~~~~~~~
+
+Has 34 line(s). Calls functions:
+
+ _Dbg_do_continue
+ |-- break.sh/_Dbg_set_brkpt
+ |-- filecache.sh/_Dbg_check_line
+ |-- filecache.sh/_Dbg_file_not_read_in
+ |-- fns.sh/_Dbg_linespec_setup
+ |-- msg.sh/_Dbg_errmsg
+ `-- run.sh/_Dbg_not_running
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

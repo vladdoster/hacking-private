@@ -1,0 +1,62 @@
+info.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+info.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_info
+ _Dbg_do_info_internal
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 22 line(s). Calls functions:
+
+ Script-Body
+ |-- alias.sh/_Dbg_alias_add
+ `-- help.sh/_Dbg_help_add
+
+Uses feature(s): _source_
+
+_Dbg_do_info
+~~~~~~~~~~~~
+
+Has 2 line(s). Calls functions:
+
+ _Dbg_do_info
+ `-- _Dbg_do_info_internal
+     |-- backtrace.sh/_Dbg_do_backtrace
+     |-- list.sh/_Dbg_list_columns
+     `-- msg.sh/_Dbg_errmsg
+
+Called by:
+
+ _Dbg_do_info_internal
+
+_Dbg_do_info_internal
+~~~~~~~~~~~~~~~~~~~~~
+
+Has 29 line(s). Calls functions:
+
+ _Dbg_do_info_internal
+ |-- backtrace.sh/_Dbg_do_backtrace
+ |-- _Dbg_do_info
+ |-- list.sh/_Dbg_list_columns
+ `-- msg.sh/_Dbg_errmsg
+
+Called by:
+
+ _Dbg_do_info
+

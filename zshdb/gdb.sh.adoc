@@ -24,7 +24,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 1 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 1 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_print_command
 ~~~~~~~~~~~~~~~~~~
@@ -32,29 +32,32 @@ _Dbg_print_command
 Has 14 line(s). Calls functions:
 
  _Dbg_print_command
- `-- msg.sh/_Dbg_msg
+ `-- test-setshow.sh/_Dbg_msg
 
 Called by:
 
  _Dbg_print_location_and_command
+ program.sh/_Dbg_do_info_program
 
 _Dbg_print_frame
 ~~~~~~~~~~~~~~~~
 
 ____
  # Print position $1 of stack frame (from global _Dbg_frame_stack)
- # Prefix the entry with $2 if that's set.
+ # If $2 is set, show the source line code.
 ____
 
-Has 27 line(s). Calls functions:
+Has 32 line(s). Calls functions:
 
  _Dbg_print_frame
  |-- fns.sh/_Dbg_split
+ |-- list.sh/_Dbg_list
  |-- msg.sh/_Dbg_errmsg
- `-- msg.sh/_Dbg_msg
+ `-- test-setshow.sh/_Dbg_msg
 
 Called by:
 
+ backtrace.sh/_Dbg_do_backtrace
  frame.sh/_Dbg_frame_adjust
 
 _Dbg_print_location
@@ -72,7 +75,7 @@ Has 22 line(s). Calls functions:
  |-- filecache.sh/_Dbg_readin
  |-- fns.sh/_Dbg_split
  |-- msg.sh/_Dbg_errmsg
- `-- msg.sh/_Dbg_msg
+ `-- test-setshow.sh/_Dbg_msg
 
 Called by:
 
@@ -86,12 +89,12 @@ Has 2 line(s). Calls functions:
 
  _Dbg_print_location_and_command
  |-- _Dbg_print_command
- |   `-- msg.sh/_Dbg_msg
+ |   `-- test-setshow.sh/_Dbg_msg
  `-- _Dbg_print_location
      |-- filecache.sh/_Dbg_readin
      |-- fns.sh/_Dbg_split
      |-- msg.sh/_Dbg_errmsg
-     `-- msg.sh/_Dbg_msg
+     `-- test-setshow.sh/_Dbg_msg
 
 Called by:
 

@@ -1,0 +1,38 @@
+test-cmd-complete.sh(1)
+=======================
+:compat-mode!:
+
+NAME
+----
+test-cmd-complete.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_cmd_complete
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 22 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+Uses feature(s): _source_
+
+test_cmd_complete
+~~~~~~~~~~~~~~~~~
+
+____
+ # Test command completion
+____
+
+Has 4 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

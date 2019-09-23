@@ -21,17 +21,20 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 3 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 3 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_info_help
 ~~~~~~~~~~~~~~
 
-Has 65 line(s). Calls functions:
+Has 83 line(s). Calls functions:
 
  _Dbg_info_help
  |-- list.sh/_Dbg_list_columns
  |-- msg.sh/_Dbg_errmsg
- `-- msg.sh/_Dbg_msg
+ |-- msg.sh/_Dbg_msg_rst
+ |-- msg.sh/_Dbg_section
+ |-- nexting.sh/p
+ `-- test-setshow.sh/_Dbg_msg
 
 Uses feature(s): _source_
 

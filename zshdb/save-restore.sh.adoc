@@ -29,7 +29,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 7 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 7 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_create_unsetopt
 ~~~~~~~~~~~~~~~~~~~~
@@ -48,6 +48,7 @@ Uses feature(s): _eval_
 Called by:
 
  _Dbg_set_debugger_entry
+ test-save-restore.sh/test_save_restore_create_unsetopt
 
 _Dbg_is_unsetopt
 ~~~~~~~~~~~~~~~~
@@ -58,9 +59,12 @@ ____
 
 Has 2 line(s). Doesn't call other functions.
 
+Uses feature(s): _setopt_
+
 Called by:
 
  _Dbg_create_unsetopt
+ test-save-restore.sh/test_save_restore_is_unsetopt
 
 _Dbg_restore_from_nested_shell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,14 +76,14 @@ ____
 
 Has 5 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_restore_state
 ~~~~~~~~~~~~~~~~~~
 
 Has 2 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_restore_user_vars
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -93,20 +97,23 @@ Called by:
  _Dbg_set_to_return_from_debugger
  hook.sh/_Dbg_cleanup
  set-d-vars.sh/Script-Body
+ test-fns.sh/test_fns_esc_dbg_enter_return
 
 _Dbg_save_state
 ~~~~~~~~~~~~~~~
 
 Has 1 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ quit.sh/_Dbg_do_quit
 
 _Dbg_set_debugger_entry
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ____
  # Do things for debugger entry. Set some global debugger variables
- # Remove trapping ourselves. 
+ # Remove trapping ourselves.
  # We assume that we are nested two calls deep from the point of debug
  # or signal fault. If this isn't the constant 2, then consider adding
  # a parameter to this routine.
@@ -118,26 +125,35 @@ Has 12 line(s). Calls functions:
  |-- _Dbg_create_unsetopt
  |   `-- _Dbg_is_unsetopt
  |-- _Dbg_set_debugger_internal
- `-- journal.sh/_Dbg_source_journal
+ |-- journal.sh/_Dbg_source_journal
+ `-- quit.sh/_Dbg_do_quit
 
 Called by:
 
  hook.sh/_Dbg_trap_handler
  sig.sh/_Dbg_sig_handler
+ test-fns.sh/test_fns_esc_dbg_enter_return
+ test-save-restore.sh/test_save_restore_IFS_PS4
+ test-save-restore.sh/test_save_restore_ksharrays
+ test-save-restore.sh/test_save_restore_shwordsplit
 
 _Dbg_set_debugger_internal
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ____
  # Does things to after on entry of after an eval to set some debugger
- # internal settings  
+ # internal settings
 ____
 
 Has 5 line(s). Doesn't call other functions.
 
+Uses feature(s): _setopt_
+
 Called by:
 
  _Dbg_set_debugger_entry
+ eval.sh/_Dbg_do_eval
+ examine.sh/_Dbg_do_examine
  hook.sh/_Dbg_hook_action_hit
 
 _Dbg_set_to_return_from_debugger
@@ -153,4 +169,7 @@ Called by:
  hook.sh/_Dbg_hook_enter_debugger
  hook.sh/_Dbg_trap_handler
  sig.sh/_Dbg_sig_handler
+ test-save-restore.sh/test_save_restore_IFS_PS4
+ test-save-restore.sh/test_save_restore_ksharrays
+ test-save-restore.sh/test_save_restore_shwordsplit
 

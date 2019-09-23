@@ -26,3 +26,5 @@ Has 12 line(s). Calls functions:
  |-- fns.sh/_Dbg_set_dol_q
  `-- save-restore.sh/_Dbg_restore_user_vars
 
+Uses feature(s): _eval_
+

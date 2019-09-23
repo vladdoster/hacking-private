@@ -1,0 +1,43 @@
+kill.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+kill.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_kill
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 29 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_kill
+~~~~~~~~~~~~
+
+Has 28 line(s). Calls functions:
+
+ _Dbg_do_kill
+ |-- hook.sh/_Dbg_cleanup2
+ |-- msg.sh/_Dbg_confirm
+ |-- msg.sh/_Dbg_errmsg
+ `-- test-setshow.sh/_Dbg_msg
+
+Uses feature(s): _kill_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

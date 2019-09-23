@@ -1,0 +1,31 @@
+dbg-main.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+dbg-main.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 40 line(s). Calls functions:
+
+ Script-Body
+ |-- msg.sh/_Dbg_errmsg
+ |-- set.sh/_Dbg_do_set
+ `-- source.sh/_Dbg_do_source
+
+Uses feature(s): _source_
+

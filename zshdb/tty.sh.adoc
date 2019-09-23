@@ -22,7 +22,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 1 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 1 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_open_if_tty
 ~~~~~~~~~~~~~~~~
@@ -31,7 +31,7 @@ ____
  #
  # Return 0 if $1 is a tty and open it. Otherwise return
  # 0. _Dbg_new_fdi will be set to the file descriptor of the open tty
- # or set to -1 if none could be opened.  
+ # or set to -1 if none could be opened.
  #
  # We write the interface this way because intead of say a routine to
  # test a name refers to a terminal, because it's easy to tell if a
@@ -44,6 +44,7 @@ Has 16 line(s). Doesn't call other functions.
 Called by:
 
  _Dbg_set_tty
+ test-tty.sh/test_tty
 
 _Dbg_set_tty
 ~~~~~~~~~~~~
@@ -60,5 +61,8 @@ Has 11 line(s). Calls functions:
  |-- _Dbg_open_if_tty
  `-- msg.sh/_Dbg_errmsg
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ set.sh/_Dbg_do_set_internal
+ test-tty.sh/test_tty
 

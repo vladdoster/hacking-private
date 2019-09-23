@@ -1,0 +1,46 @@
+trace-commands.sh(1)
+====================
+:compat-mode!:
+
+NAME
+----
+trace-commands.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_set_trace_commands
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 13 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+Uses feature(s): _source_
+
+_Dbg_do_set_trace_commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Handled special because of the dash in the command name.
+ # _Dbg_help_add_sub set trace-commands \
+ # 'Set showing debugger commands' 1
+____
+
+Has 15 line(s). Calls functions:
+
+ _Dbg_do_set_trace_commands
+ |-- journal.sh/_Dbg_write_journal_eval
+ `-- msg.sh/_Dbg_errmsg
+
+Called by:
+
+ set.sh/_Dbg_do_set_internal
+

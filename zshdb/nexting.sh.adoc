@@ -1,0 +1,49 @@
+nexting.sh(1)
+=============
+:compat-mode!:
+
+NAME
+----
+nexting.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ p
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 12 line(s). Calls functions:
+
+ Script-Body
+ `-- p
+
+Uses feature(s): _setopt_
+
+p
+~
+
+____
+ #!/bin/zsh
+ # For testing next, next+ next-, default next and set force.
+____
+
+Has 1 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
+ handle.sh/_Dbg_do_handle
+ help.sh/_Dbg_help_set
+ help.sh/_Dbg_help_show
+ info-help.sh/_Dbg_info_help
+ show.sh/_Dbg_do_show_internal
+

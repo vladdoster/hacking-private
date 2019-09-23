@@ -1,0 +1,38 @@
+pwd.sh(1)
+=========
+:compat-mode!:
+
+NAME
+----
+pwd.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_pwd
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 6 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_pwd
+~~~~~~~~~~~
+
+Has 3 line(s). Calls functions:
+
+ _Dbg_do_pwd
+ `-- test-setshow.sh/_Dbg_msg
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

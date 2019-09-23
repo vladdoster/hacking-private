@@ -1,0 +1,42 @@
+up.sh(1)
+========
+:compat-mode!:
+
+NAME
+----
+up.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_up
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 30 line(s). Calls functions:
+
+ Script-Body
+ |-- help.sh/_Dbg_do_help
+ `-- help.sh/_Dbg_help_add
+
+Uses feature(s): _source_
+
+_Dbg_do_up
+~~~~~~~~~~
+
+Has 5 line(s). Calls functions:
+
+ _Dbg_do_up
+ |-- frame.sh/_Dbg_frame_adjust
+ `-- run.sh/_Dbg_not_running
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

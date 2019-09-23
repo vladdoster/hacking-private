@@ -13,6 +13,8 @@ Documentation automatically generated with `zshelldoc'
 FUNCTIONS
 ---------
 
+ _Dbg_do_list
+ _Dbg_do_list_typeset_attr
  _Dbg_list
  _Dbg_list_columns
  _Dbg_list_globals
@@ -25,7 +27,23 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 3 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 3 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+_Dbg_do_list
+~~~~~~~~~~~~
+
+Has 51 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_list_typeset_attr
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 8 line(s). Doesn't call other functions.
+
+Called by:
+
+ variables.sh/_Dbg_do_info_variables
 
 _Dbg_list
 ~~~~~~~~~
@@ -44,7 +62,9 @@ Has 51 line(s). Calls functions:
  |-- msg.sh/_Dbg_errmsg
  `-- msg.sh/_Dbg_printf
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ gdb.sh/_Dbg_print_frame
 
 _Dbg_list_columns
 ~~~~~~~~~~~~~~~~~
@@ -60,6 +80,8 @@ Called by:
  _Dbg_list_locals
  _Dbg_list_typeset_attr
  info-help.sh/_Dbg_info_help
+ info.sh/_Dbg_do_info_internal
+ show.sh/_Dbg_do_show_internal
 
 _Dbg_list_globals
 ~~~~~~~~~~~~~~~~~
@@ -70,7 +92,7 @@ Has 5 line(s). Calls functions:
  `-- _Dbg_list_columns
      `-- columnize.sh/columnize
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_list_locals
 ~~~~~~~~~~~~~~~~
@@ -81,7 +103,7 @@ Has 5 line(s). Calls functions:
  `-- _Dbg_list_columns
      `-- columnize.sh/columnize
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_list_typeset_attr
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -92,5 +114,5 @@ Has 5 line(s). Calls functions:
  `-- _Dbg_list_columns
      `-- columnize.sh/columnize
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 

@@ -1,0 +1,39 @@
+return.sh(1)
+============
+:compat-mode!:
+
+NAME
+----
+return.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_return
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 17 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_return
+~~~~~~~~~~~~~~
+
+Has 14 line(s). Calls functions:
+
+ _Dbg_do_return
+ |-- journal.sh/_Dbg_write_journal_eval
+ `-- msg.sh/_Dbg_errmsg
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

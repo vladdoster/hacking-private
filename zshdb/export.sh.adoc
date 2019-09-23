@@ -1,0 +1,42 @@
+export.sh(1)
+============
+:compat-mode!:
+
+NAME
+----
+export.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_export
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 11 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_export
+~~~~~~~~~~~~~~
+
+Has 23 line(s). Calls functions:
+
+ _Dbg_do_export
+ |-- fns.sh/_Dbg_defined
+ |-- journal.sh/_Dbg_write_journal
+ `-- msg.sh/_Dbg_errmsg
+
+Uses feature(s): _eval_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

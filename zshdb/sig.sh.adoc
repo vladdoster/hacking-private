@@ -30,7 +30,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 12 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 12 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_err_handler
 ~~~~~~~~~~~~~~~~
@@ -38,30 +38,32 @@ _Dbg_err_handler
 Has 5 line(s). Calls functions:
 
  _Dbg_err_handler
- |-- msg.sh/_Dbg_msg
- `-- processor.sh/_Dbg_process_commands
+ |-- processor.sh/_Dbg_process_commands
+ `-- test-setshow.sh/_Dbg_msg
 
 Uses feature(s): _eval_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_exit_handler
 ~~~~~~~~~~~~~~~~~
 
 ____
- # Debugger exit handler. Don't really exit - but go back the debugger 
+ # Debugger exit handler. Don't really exit - but go back the debugger
  # command loop
 ____
 
 Has 33 line(s). Calls functions:
 
  _Dbg_exit_handler
- |-- msg.sh/_Dbg_msg
- `-- processor.sh/_Dbg_process_commands
+ |-- backtrace.sh/_Dbg_do_backtrace
+ |-- processor.sh/_Dbg_process_commands
+ |-- quit.sh/_Dbg_do_quit
+ `-- test-setshow.sh/_Dbg_msg
 
 Uses feature(s): _eval_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_init_default_traps
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -71,13 +73,13 @@ Has 4 line(s). Calls functions:
  _Dbg_init_default_traps
  `-- _Dbg_init_trap
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_init_trap
 ~~~~~~~~~~~~~~
 
 ____
- # Set up generic trap handler. Arguments are: 
+ # Set up generic trap handler. Arguments are:
  # NAME print showstack stop passthrough
 ____
 
@@ -88,6 +90,7 @@ Uses feature(s): _eval_, _trap_
 Called by:
 
  _Dbg_init_default_traps
+ handle.sh/_Dbg_do_handle
 
 _Dbg_name2signum
 ~~~~~~~~~~~~~~~~
@@ -101,7 +104,7 @@ Has 3 line(s). Doesn't call other functions.
 
 Uses feature(s): _kill_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_save_handler
 ~~~~~~~~~~~~~~~~~
@@ -114,27 +117,28 @@ Has 10 line(s). Doesn't call other functions.
 
 Uses feature(s): _eval_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_sig_handler
 ~~~~~~~~~~~~~~~~
 
 ____
  # Since the command loop may be called we need to be careful about
- # using variable names that would be exposed to the user. 
+ # using variable names that would be exposed to the user.
 ____
 
 Has 30 line(s). Calls functions:
 
  _Dbg_sig_handler
+ |-- backtrace.sh/_Dbg_do_backtrace
  |-- hook.sh/_Dbg_hook_enter_debugger
- |-- msg.sh/_Dbg_msg
  |-- save-restore.sh/_Dbg_set_debugger_entry
- `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+ |-- save-restore.sh/_Dbg_set_to_return_from_debugger
+ `-- test-setshow.sh/_Dbg_msg
 
 Uses feature(s): _eval_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_signum2name
 ~~~~~~~~~~~~~~~~
@@ -148,7 +152,7 @@ Has 3 line(s). Doesn't call other functions.
 
 Uses feature(s): _kill_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_subexit_handler
 ~~~~~~~~~~~~~~~~~~~~
@@ -156,9 +160,10 @@ _Dbg_subexit_handler
 Has 7 line(s). Calls functions:
 
  _Dbg_subexit_handler
- `-- journal.sh/_Dbg_source_journal
+ |-- journal.sh/_Dbg_source_journal
+ `-- quit.sh/_Dbg_do_quit
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_subst_handler_var
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -171,5 +176,5 @@ ____
 
 Has 10 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 

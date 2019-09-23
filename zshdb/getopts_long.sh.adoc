@@ -1,0 +1,64 @@
+getopts_long.sh(1)
+==================
+:compat-mode!:
+
+NAME
+----
+getopts_long.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ getopts_long
+ test_getopts_long
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 194 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+Uses feature(s): _eval_
+
+getopts_long
+~~~~~~~~~~~~
+
+____
+ # History:
+ # 2005 ?? - 1.0
+ #   first version
+ # 2009-08-12 - 1.1
+ #   thanks to ujqm8360@netwtc.net for helping fix a few bugs:
+ #     - -ab x where -b accepts arguments wasn't handled properly. Also,
+ #       $OPTLIND wasn't set properly (at least not the same way as most
+ #       getopts implementation do).
+ #     - The handling of ambiguous long options was incorrect.
+____
+
+Has 289 line(s). Doesn't call other functions.
+
+Uses feature(s): _eval_
+
+Called by:
+
+ test_getopts_long
+ dbg-opts.sh/_Dbg_parse_options
+
+test_getopts_long
+~~~~~~~~~~~~~~~~~
+
+Has 17 line(s). Calls functions:
+
+ test_getopts_long
+ `-- getopts_long
+
+Uses feature(s): _eval_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

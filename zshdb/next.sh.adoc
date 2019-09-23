@@ -1,0 +1,50 @@
+next.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+next.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_next
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 20 line(s). Calls functions:
+
+ Script-Body
+ |-- alias.sh/_Dbg_alias_add
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_next
+~~~~~~~~~~~~
+
+____
+ # Next command
+ # $1 is command next+, next-, or next
+ # $2 is an optional additional count.
+____
+
+Has 28 line(s). Calls functions:
+
+ _Dbg_do_next
+ |-- journal.sh/_Dbg_write_journal
+ |-- journal.sh/_Dbg_write_journal_eval
+ |-- msg.sh/_Dbg_errmsg
+ `-- run.sh/_Dbg_not_running
+
+Called by:
+
+ processor.sh/_Dbg_onecmd
+

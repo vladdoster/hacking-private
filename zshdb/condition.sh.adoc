@@ -1,0 +1,45 @@
+condition.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+condition.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_condition
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 23 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_condition
+~~~~~~~~~~~~~~~~~
+
+____
+ # Set a condition for a given breakpoint $1 is a breakpoint number
+ # $2 is a condition. If not given, set "unconditional" or 1.
+ # returns 0 if success or 1 if fail.
+____
+
+Has 25 line(s). Calls functions:
+
+ _Dbg_do_condition
+ |-- msg.sh/_Dbg_errmsg
+ `-- test-setshow.sh/_Dbg_msg
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

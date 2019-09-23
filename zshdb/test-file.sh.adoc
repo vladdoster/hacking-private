@@ -1,0 +1,67 @@
+test-file.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+test-file.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_file_adjust_filename
+ test_file_glob_filename
+ test_file_resolve_expand_filename
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 17 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_file_adjust_filename
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_adjust_filename
+____
+
+Has 10 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_file_glob_filename
+~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #!/bin/zsh
+ # -*- shell-script -*-
+ # Test _Dbg_tilde_expand_filename
+____
+
+Has 27 line(s). Calls functions:
+
+ test_file_glob_filename
+ `-- file.sh/_Dbg_tilde_expand_filename
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Environment variables used:_ check-common.sh -> srcdir
+
+test_file_resolve_expand_filename
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_tilde_expand_filename
+____
+
+Has 10 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

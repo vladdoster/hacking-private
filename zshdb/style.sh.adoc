@@ -1,0 +1,55 @@
+style.sh(1)
+===========
+:compat-mode!:
+
+NAME
+----
+style.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_set_style
+ _Dbg_do_show_style
+ _Dbg_list_styles
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 4 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add_sub
+
+_Dbg_do_set_style
+~~~~~~~~~~~~~~~~~
+
+Has 25 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_show_style
+~~~~~~~~~~~~~~~~~~
+
+Has 10 line(s). Calls functions:
+
+ _Dbg_do_show_style
+ |-- msg.sh/_Dbg_msg_nocr
+ `-- test-setshow.sh/_Dbg_msg
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_list_styles
+~~~~~~~~~~~~~~~~
+
+Has 3 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

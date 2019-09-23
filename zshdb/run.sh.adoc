@@ -13,6 +13,7 @@ Documentation automatically generated with `zshelldoc'
 FUNCTIONS
 ---------
 
+ _Dbg_do_run
  _Dbg_not_running
  _Dbg_run_cmdline
 
@@ -22,7 +23,14 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 1 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 1 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+_Dbg_do_run
+~~~~~~~~~~~
+
+Has 37 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_not_running
 ~~~~~~~~~~~~~~~~
@@ -34,7 +42,13 @@ Has 5 line(s). Calls functions:
 
 Called by:
 
+ backtrace.sh/_Dbg_do_backtrace
+ continue.sh/_Dbg_do_continue
+ down.sh/_Dbg_do_down
  frame.sh/_Dbg_frame_int_setup
+ next.sh/_Dbg_do_next
+ test-run.sh/test_run_not_running
+ up.sh/_Dbg_do_up
 
 _Dbg_run_cmdline
 ~~~~~~~~~~~~~~~~
@@ -60,5 +74,5 @@ ____
 
 Has 3 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 

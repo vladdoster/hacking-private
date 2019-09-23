@@ -30,7 +30,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 10 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 10 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_copies
 ~~~~~~~~~~~
@@ -47,6 +47,7 @@ Uses feature(s): _eval_
 Called by:
 
  processor.sh/_Dbg_process_commands
+ test-fns.sh/test_fns_copies
 
 _Dbg_defined
 ~~~~~~~~~~~~
@@ -57,7 +58,11 @@ ____
 
 Has 2 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ examine.sh/_Dbg_do_examine
+ export.sh/_Dbg_do_export
+ test-fns.sh/test_fns_defined
 
 _Dbg_esc_dq
 ~~~~~~~~~~~
@@ -69,7 +74,7 @@ ____
 
 Has 1 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_eval_extract_condition
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,7 +88,10 @@ ____
 
 Has 12 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ eval.sh/_Dbg_do_eval
+ test-lib-eval.sh/test_eval_subst
 
 _Dbg_get_typeset_attr
 ~~~~~~~~~~~~~~~~~~~~~
@@ -101,7 +109,7 @@ Has 16 line(s). Doesn't call other functions.
 
 Uses feature(s): _eval_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_linespec_setup
 ~~~~~~~~~~~~~~~~~~~
@@ -120,7 +128,10 @@ Has 14 line(s). Calls functions:
  |   `-- validate.sh/_Dbg_is_function
  `-- msg.sh/_Dbg_errmsg
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ continue.sh/_Dbg_do_continue
+ edit.sh/_Dbg_do_edit
 
 _Dbg_onoff
 ~~~~~~~~~~
@@ -132,7 +143,7 @@ ____
 
 Has 3 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_parse_linespec
 ~~~~~~~~~~~~~~~~~~~
@@ -155,6 +166,7 @@ Has 21 line(s). Calls functions:
 Called by:
 
  _Dbg_linespec_setup
+ test-fns.sh/test_fns_parse_linespec
 
 _Dbg_set_dol_q
 ~~~~~~~~~~~~~~
@@ -167,7 +179,9 @@ Has 1 line(s). Doesn't call other functions.
 
 Called by:
 
+ eval.sh/_Dbg_do_eval
  set-d-vars.sh/Script-Body
+ test-fns.sh/test_fns_set_q
 
 _Dbg_split
 ~~~~~~~~~~
@@ -190,4 +204,5 @@ Called by:
  hook.sh/_Dbg_hook_action_hit
  hook.sh/_Dbg_hook_breakpoint_hit
  hook.sh/_Dbg_trap_handler
+ test-fns.sh/test_fns_split
 

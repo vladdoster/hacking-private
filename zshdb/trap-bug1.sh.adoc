@@ -1,0 +1,44 @@
+trap-bug1.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+trap-bug1.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ set_dollar_question
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 5 line(s). Calls functions:
+
+ Script-Body
+ `-- set_dollar_question
+
+Uses feature(s): _trap_
+
+set_dollar_question
+~~~~~~~~~~~~~~~~~~~
+
+____
+ #!/bin/zsh -f
+ # Tests for $? not set properly inside trap DEBUG.
+____
+
+Has 1 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
+

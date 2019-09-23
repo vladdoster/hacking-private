@@ -1,0 +1,64 @@
+set.sh(1)
+=========
+:compat-mode!:
+
+NAME
+----
+set.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_set
+ _Dbg_do_set_internal
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 25 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+Uses feature(s): _source_
+
+_Dbg_do_set
+~~~~~~~~~~~
+
+Has 2 line(s). Calls functions:
+
+ _Dbg_do_set
+ `-- _Dbg_do_set_internal
+     |-- msg.sh/_Dbg_undefined_cmd
+     |-- setshow.sh/_Dbg_set_onoff
+     |-- test-setshow.sh/_Dbg_msg
+     |-- trace-commands.sh/_Dbg_do_set_trace_commands
+     `-- tty.sh/_Dbg_set_tty
+
+Called by:
+
+ dbg-main.sh/Script-Body
+
+_Dbg_do_set_internal
+~~~~~~~~~~~~~~~~~~~~
+
+Has 32 line(s). Calls functions:
+
+ _Dbg_do_set_internal
+ |-- msg.sh/_Dbg_undefined_cmd
+ |-- setshow.sh/_Dbg_set_onoff
+ |-- test-setshow.sh/_Dbg_msg
+ |-- trace-commands.sh/_Dbg_do_set_trace_commands
+ `-- tty.sh/_Dbg_set_tty
+
+Called by:
+
+ _Dbg_do_set
+

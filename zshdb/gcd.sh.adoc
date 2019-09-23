@@ -1,0 +1,49 @@
+gcd.sh(1)
+=========
+:compat-mode!:
+
+NAME
+----
+gcd.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ gcd
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 4 line(s). Calls functions:
+
+ Script-Body
+ `-- gcd
+
+gcd
+~~~
+
+____
+ #!/usr/bin/env zsh
+ # Greatest Common Divisor in POSIX shell using Euclid's algorithm.  On
+ # return, variable gcd_value is set and is the gcd of parameters $1
+ # and $2. The GCD of a negative number is the same as the GCD of its
+ # absolute value, since a negative number is -1 times its positive
+ # value.  Negative numbers are set when there is an error; -1 is set
+ # when the wrong number of parameters are given.
+____
+
+Has 13 line(s). Calls functions:
+
+ gcd
+
+Called by:
+
+ Script-Body
+

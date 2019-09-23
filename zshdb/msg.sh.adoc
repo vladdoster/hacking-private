@@ -30,7 +30,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 10 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 10 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_confirm
 ~~~~~~~~~~~~
@@ -42,7 +42,10 @@ Has 35 line(s). Calls functions:
 
 Uses feature(s): _read_, _vared_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ delete.sh/_Dbg_do_delete_internal
+ kill.sh/_Dbg_do_kill
 
 _Dbg_errmsg
 ~~~~~~~~~~~
@@ -61,24 +64,55 @@ Called by:
 
  _Dbg_undefined_cmd
  action.sh/_Dbg_unset_action
+ annotate.sh/_Dbg_do_set_annotate
+ autolist.sh/_Dbg_do_set_autolist
+ breakpoints.sh/_Dbg_do_info_breakpoints
  break.sh/_Dbg_delete_brkpt_entry
- break.sh/_Dbg_enable_disable
  break.sh/_Dbg_enable_disable_brkpt
+ break.sh/_Dbg_enable_disable
+ condition.sh/_Dbg_do_condition
+ continue.sh/_Dbg_do_continue
+ dbg-main.sh/Script-Body
+ dbg-opts.sh/_Dbg_check_tty
+ delete.sh/_Dbg_do_delete_internal
  display.sh/_Dbg_disp_enable_disable
  display.sh/_Dbg_enable_disable_display
- file.sh/_Dbg_resolve_expand_filename
+ down.sh/_Dbg_do_down
+ edit.sh/_Dbg_do_edit
+ export.sh/_Dbg_do_export
  filecache.sh/_Dbg_check_line
  filecache.sh/_Dbg_file_not_read_in
  filecache.sh/_Dbg_is_file
+ file.sh/_Dbg_resolve_expand_filename
  fns.sh/_Dbg_linespec_setup
  frame.sh/_Dbg_frame_adjust
  frame.sh/_Dbg_frame_int_setup
  gdb.sh/_Dbg_print_frame
  gdb.sh/_Dbg_print_location
+ handle.sh/_Dbg_do_handle
  info-help.sh/_Dbg_info_help
+ info.sh/_Dbg_do_info_internal
+ kill.sh/_Dbg_do_kill
+ line.sh/_Dbg_do_info_line
+ linetrace.sh/_Dbg_do_set_linetrace
  list.sh/_Dbg_list
+ listsize.sh/_Dbg_do_set_listsize
+ load.sh/_Dbg_do_load
+ next.sh/_Dbg_do_next
+ program.sh/_Dbg_do_info_program
+ quit.sh/_Dbg_do_quit
+ return.sh/_Dbg_do_return
  run.sh/_Dbg_not_running
+ showcommand.sh/_Dbg_do_set_showcommand
+ show.sh/_Dbg_do_show_internal
+ source.sh/_Dbg_do_source
+ trace-commands.sh/_Dbg_do_set_trace_commands
+ trace.sh/_Dbg_do_trace_alias
+ trace.sh/_Dbg_do_trace
+ trace.sh/_Dbg_do_untrace
  tty.sh/_Dbg_set_tty
+ undisplay.sh/_Dbg_do_undisplay
+ width.sh/_Dbg_do_set_width
 
 _Dbg_errmsg_no_cr
 ~~~~~~~~~~~~~~~~~
@@ -92,7 +126,7 @@ Has 2 line(s). Calls functions:
  _Dbg_errmsg_no_cr
  `-- _Dbg_msg_nocr
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_msg
 ~~~~~~~~
@@ -108,25 +142,50 @@ Called by:
  _Dbg_section
  action.sh/_Dbg_list_action
  action.sh/_Dbg_set_action
+ annotate.sh/_Dbg_do_set_annotate
+ basename.sh/_Dbg_do_show_basename
+ breakpoints.sh/_Dbg_do_info_breakpoints
  break.sh/_Dbg_enable_disable_brkpt
  break.sh/_Dbg_set_brkpt
  break.sh/_Dbg_unset_brkpt
+ condition.sh/_Dbg_do_condition
+ copying.sh/_Dbg_do_show_copying
+ delete.sh/_Dbg_do_delete_internal
  display.sh/_Dbg_enable_disable_display
+ editing.sh/_Dbg_do_show_editing
+ eval.sh/_Dbg_do_eval
+ examine.sh/_Dbg_do_examine
+ files.sh/_Dbg_do_info_files
  gdb.sh/_Dbg_print_command
  gdb.sh/_Dbg_print_frame
  gdb.sh/_Dbg_print_location
  help.sh/_Dbg_help_set
  help.sh/_Dbg_help_show
+ highlight.sh/_Dbg_do_show_highlight
+ history.sh/_Dbg_do_show_history
+ hook.sh/_Dbg_hook_breakpoint_hit
  hook.sh/_Dbg_trap_handler
  info-help.sh/_Dbg_info_help
+ kill.sh/_Dbg_do_kill
+ line.sh/_Dbg_do_info_line
+ linetrace.sh/_Dbg_do_set_linetrace
+ load.sh/_Dbg_do_load
  processor.sh/_Dbg_onecmd
  processor.sh/_Dbg_process_commands
+ program.sh/_Dbg_do_info_program
+ pwd.sh/_Dbg_do_pwd
+ quit.sh/_Dbg_do_quit
+ set.sh/_Dbg_do_set_internal
  setshow.sh/_Dbg_help_set_onoff
  setshow.sh/_Dbg_set_onoff
  setshow.sh/_Dbg_show_onoff
+ show.sh/_Dbg_do_show_internal
+ signals.sh/_Dbg_do_info_signals
  sig.sh/_Dbg_err_handler
  sig.sh/_Dbg_exit_handler
  sig.sh/_Dbg_sig_handler
+ style.sh/_Dbg_do_show_style
+ undisplay.sh/_Dbg_do_undisplay
 
 _Dbg_msg_nocr
 ~~~~~~~~~~~~~
@@ -136,7 +195,11 @@ Has 5 line(s). Doesn't call other functions.
 Called by:
 
  _Dbg_errmsg_no_cr
+ basename.sh/_Dbg_do_show_basename
+ editing.sh/_Dbg_do_show_editing
  help.sh/_Dbg_help_set
+ highlight.sh/_Dbg_do_show_highlight
+ style.sh/_Dbg_do_show_style
 
 _Dbg_msg_rst
 ~~~~~~~~~~~~
@@ -151,6 +214,7 @@ Called by:
  help.sh/_Dbg_help_info
  help.sh/_Dbg_help_set
  help.sh/_Dbg_help_show
+ info-help.sh/_Dbg_info_help
 
 _Dbg_printf
 ~~~~~~~~~~~
@@ -168,6 +232,7 @@ Has 2 line(s). Calls functions:
 Called by:
 
  action.sh/_Dbg_list_action
+ breakpoints.sh/_Dbg_do_info_breakpoints
  break.sh/_Dbg_print_brkpt_count
  list.sh/_Dbg_list
 
@@ -200,6 +265,8 @@ Has 6 line(s). Calls functions:
 Called by:
 
  action.sh/_Dbg_list_action
+ breakpoints.sh/_Dbg_do_info_breakpoints
+ info-help.sh/_Dbg_info_help
 
 _Dbg_undefined_cmd
 ~~~~~~~~~~~~~~~~~~
@@ -217,4 +284,5 @@ Has 5 line(s). Calls functions:
 Called by:
 
  processor.sh/_Dbg_onecmd
+ set.sh/_Dbg_do_set_internal
 

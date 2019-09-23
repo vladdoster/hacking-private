@@ -1,0 +1,59 @@
+settrace.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+settrace.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ hanoi
+ init
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 25 line(s). Calls functions:
+
+ Script-Body
+ |-- dbg-trace.sh/_Dbg_debugger
+ |-- hanoi
+ |   `-- dbg-trace.sh/_Dbg_debugger
+ `-- init
+     `-- dbg-trace.sh/_Dbg_debugger
+
+Uses feature(s): _source_
+
+hanoi
+~~~~~
+
+Has 15 line(s). Calls functions:
+
+ hanoi
+ `-- dbg-trace.sh/_Dbg_debugger
+
+Called by:
+
+ Script-Body
+
+init
+~~~~
+
+Has 1 line(s). Calls functions:
+
+ init
+ `-- dbg-trace.sh/_Dbg_debugger
+
+Called by:
+
+ Script-Body
+

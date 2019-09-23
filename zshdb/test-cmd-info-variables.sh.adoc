@@ -1,0 +1,37 @@
+test-cmd-info-variables.sh(1)
+=============================
+:compat-mode!:
+
+NAME
+----
+test-cmd-info-variables.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_cmd_info_variables
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 16 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_cmd_info_variables
+~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #!/bin/zsh
+ # -*- shell-script -*-
+____
+
+Has 27 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

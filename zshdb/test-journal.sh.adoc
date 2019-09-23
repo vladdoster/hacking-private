@@ -1,0 +1,43 @@
+test-journal.sh(1)
+==================
+:compat-mode!:
+
+NAME
+----
+test-journal.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_journal
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 18 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_journal
+~~~~~~~~~~~~
+
+____
+ #!/bin/zsh
+ # -*- shell-script -*-
+ # Test journaling routines
+____
+
+Has 15 line(s). Calls functions:
+
+ test_journal
+ |-- journal.sh/_Dbg_erase_journals
+ |-- journal.sh/_Dbg_source_journal
+ `-- journal.sh/_Dbg_write_journal_eval
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

@@ -1,0 +1,41 @@
+test-tty.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+test-tty.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_tty
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 14 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_tty
+~~~~~~~~
+
+____
+ #!/bin/zsh
+ # -*- shell-script -*-
+____
+
+Has 25 line(s). Calls functions:
+
+ test_tty
+ |-- tty.sh/_Dbg_open_if_tty
+ `-- tty.sh/_Dbg_set_tty
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

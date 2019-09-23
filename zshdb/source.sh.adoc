@@ -1,0 +1,49 @@
+source.sh(1)
+============
+:compat-mode!:
+
+NAME
+----
+source.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_info_source
+ _Dbg_do_source
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 6 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_info_source
+~~~~~~~~~~~~~~~~~~~
+
+Has 10 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_source
+~~~~~~~~~~~~~~
+
+Has 16 line(s). Calls functions:
+
+ _Dbg_do_source
+ |-- file.sh/_Dbg_tilde_expand_filename
+ `-- msg.sh/_Dbg_errmsg
+
+Called by:
+
+ dbg-main.sh/Script-Body
+

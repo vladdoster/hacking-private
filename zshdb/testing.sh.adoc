@@ -1,0 +1,51 @@
+testing.sh(1)
+=============
+:compat-mode!:
+
+NAME
+----
+testing.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ bar
+ foo
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 11 line(s). Calls functions:
+
+ Script-Body
+ `-- foo
+     `-- bar
+
+bar
+~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Called by:
+
+ foo
+
+foo
+~~~
+
+Has 2 line(s). Calls functions:
+
+ foo
+ `-- bar
+
+Called by:
+
+ Script-Body
+

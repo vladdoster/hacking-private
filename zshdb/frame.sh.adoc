@@ -13,6 +13,7 @@ Documentation automatically generated with `zshelldoc'
 FUNCTIONS
 ---------
 
+ _Dbg_do_frame
  _Dbg_frame_adjust
  _Dbg_frame_complete
  _Dbg_frame_file
@@ -28,7 +29,14 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 7 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 7 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+_Dbg_do_frame
+~~~~~~~~~~~~~
+
+Has 13 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_frame_adjust
 ~~~~~~~~~~~~~~~~~
@@ -44,7 +52,11 @@ Has 35 line(s). Calls functions:
  |-- gdb.sh/_Dbg_print_location
  `-- msg.sh/_Dbg_errmsg
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ down.sh/_Dbg_do_down
+ test-frame.sh/test_frame_adjust
+ up.sh/_Dbg_do_up
 
 _Dbg_frame_complete
 ~~~~~~~~~~~~~~~~~~~
@@ -54,7 +66,7 @@ Has 13 line(s). Calls functions:
  _Dbg_frame_complete
  `-- _Dbg_frame_low_high
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_frame_file
 ~~~~~~~~~~~~~~~
@@ -74,8 +86,11 @@ Has 8 line(s). Calls functions:
 
 Called by:
 
+ edit.sh/_Dbg_do_edit
  filecache.sh/_Dbg_get_source_line
  filecache.sh/_Dbg_readin
+ test-frame.sh/test_frame
+ test-get-sourceline.sh/test_get_source_line_with_spaces
 
 _Dbg_frame_int_setup
 ~~~~~~~~~~~~~~~~~~~~
@@ -90,6 +105,8 @@ Has 7 line(s). Calls functions:
  _Dbg_frame_int_setup
  |-- msg.sh/_Dbg_errmsg
  `-- run.sh/_Dbg_not_running
+
+Uses feature(s): _setopt_
 
 Called by:
 
@@ -106,7 +123,7 @@ ____
 
 Has 4 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_frame_lineno
 ~~~~~~~~~~~~~~~~~
@@ -118,6 +135,7 @@ Has 6 line(s). Calls functions:
 
 Called by:
 
+ edit.sh/_Dbg_do_edit
  filecache.sh/_Dbg_get_source_line
 
 _Dbg_frame_low_high
@@ -151,4 +169,6 @@ Has 17 line(s). Calls functions:
 Called by:
 
  hook.sh/_Dbg_trap_handler
+ test-frame.sh/test_frame_adjust
+ test-frame.sh/test_frame
 

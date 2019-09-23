@@ -1,0 +1,68 @@
+dbg-test2.sh(1)
+===============
+:compat-mode!:
+
+NAME
+----
+dbg-test2.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ fn1
+ fn2
+ fn3
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 16 line(s). Calls functions:
+
+ Script-Body
+ |-- fn1
+ |   `-- fn3
+ `-- fn3
+
+fn1
+~~~
+
+____
+ #!../../zsh
+ # -*- shell-script -*-
+ # Note: no CVS Id line since it would mess up regression testing.
+ # This code is used for various debugger testing.
+____
+
+Has 3 line(s). Calls functions:
+
+ fn1
+ `-- fn3
+
+Called by:
+
+ Script-Body
+
+fn2
+~~~
+
+Has 3 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+fn3
+~~~
+
+Has 2 line(s). Doesn't call other functions.
+
+Called by:
+
+ fn1
+ Script-Body
+

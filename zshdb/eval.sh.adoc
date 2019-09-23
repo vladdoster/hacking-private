@@ -1,0 +1,80 @@
+eval.sh(1)
+==========
+:compat-mode!:
+
+NAME
+----
+eval.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_complete_eval
+ _Dbg_do_eval
+ _Dbg_do_print
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 57 line(s). Calls functions:
+
+ Script-Body
+ |-- alias.sh/_Dbg_alias_add
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_complete_eval
+~~~~~~~~~~~~~~~~~~
+
+____
+ # _Dbg_complete_level_1_data[eval?]=\
+ #   '\$(typeset extracted; \
+ #     _Dbg_eval_extract_condition "$_Dbg_source_line"; echo $extracted)'
+____
+
+Has 1 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_eval
+~~~~~~~~~~~~
+
+Has 39 line(s). Calls functions:
+
+ _Dbg_do_eval
+ |-- filecache.sh/_Dbg_get_source_line
+ |-- fns.sh/_Dbg_eval_extract_condition
+ |-- fns.sh/_Dbg_set_dol_q
+ |-- save-restore.sh/_Dbg_set_debugger_internal
+ `-- test-setshow.sh/_Dbg_msg
+
+Called by:
+
+ _Dbg_do_print
+ display.sh/_Dbg_eval_all_display
+ processor.sh/_Dbg_onecmd
+
+_Dbg_do_print
+~~~~~~~~~~~~~
+
+Has 7 line(s). Calls functions:
+
+ _Dbg_do_print
+ `-- _Dbg_do_eval
+     |-- filecache.sh/_Dbg_get_source_line
+     |-- fns.sh/_Dbg_eval_extract_condition
+     |-- fns.sh/_Dbg_set_dol_q
+     |-- save-restore.sh/_Dbg_set_debugger_internal
+     `-- test-setshow.sh/_Dbg_msg
+
+Called by:
+
+ examine.sh/_Dbg_do_examine
+ processor.sh/_Dbg_annotation
+

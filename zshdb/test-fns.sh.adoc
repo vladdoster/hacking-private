@@ -1,0 +1,126 @@
+test-fns.sh(1)
+==============
+:compat-mode!:
+
+NAME
+----
+test-fns.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_fns_copies
+ test_fns_defined
+ test_fns_esc_dbg_enter_return
+ test_fns_esc_dq_function
+ test_fns_parse_linespec
+ test_fns_set_q
+ test_fns_split
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 20 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_fns_copies
+~~~~~~~~~~~~~~~
+
+____
+ #!/bin/zsh
+ # -*- shell-script -*-
+____
+
+Has 12 line(s). Calls functions:
+
+ test_fns_copies
+ `-- fns.sh/_Dbg_copies
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_fns_defined
+~~~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_defined
+____
+
+Has 8 line(s). Calls functions:
+
+ test_fns_defined
+ `-- fns.sh/_Dbg_defined
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_fns_esc_dbg_enter_return
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_set_entry and _Dbg_set_to_return_from_debugger
+____
+
+Has 10 line(s). Calls functions:
+
+ test_fns_esc_dbg_enter_return
+ |-- save-restore.sh/_Dbg_restore_user_vars
+ `-- save-restore.sh/_Dbg_set_debugger_entry
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_fns_esc_dq_function
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_eqs_dq
+____
+
+Has 13 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_fns_parse_linespec
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 23 line(s). Calls functions:
+
+ test_fns_parse_linespec
+ `-- fns.sh/_Dbg_parse_linespec
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_fns_set_q
+~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_set_dol_q
+____
+
+Has 4 line(s). Calls functions:
+
+ test_fns_set_q
+ `-- fns.sh/_Dbg_set_dol_q
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_fns_split
+~~~~~~~~~~~~~~
+
+____
+ # Test _Dbg_split
+____
+
+Has 5 line(s). Calls functions:
+
+ test_fns_split
+ `-- fns.sh/_Dbg_split
+
+Uses feature(s): _setopt_
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

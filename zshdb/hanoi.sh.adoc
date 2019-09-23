@@ -1,0 +1,59 @@
+hanoi.sh(1)
+===========
+:compat-mode!:
+
+NAME
+----
+hanoi.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ hanoi
+ init
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 19 line(s). Calls functions:
+
+ Script-Body
+ |-- hanoi
+ `-- init
+
+Uses feature(s): _source_
+
+hanoi
+~~~~~
+
+Has 13 line(s). Calls functions:
+
+ hanoi
+
+Called by:
+
+ Script-Body
+
+init
+~~~~
+
+____
+ #!/bin/zsh
+ # $Id: hanoi.sh.in,v 1.2 2008/08/22 18:54:08 rockyb Exp $
+ # Towers of Hanoi
+ # We've added calls to set line tracing if the 1st argument is "trace"
+____
+
+Has 3 line(s). Doesn't call other functions.
+
+Called by:
+
+ Script-Body
+

@@ -1,0 +1,62 @@
+breakpoints.sh(1)
+=================
+:compat-mode!:
+
+NAME
+----
+breakpoints.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_info_breakpoints
+ _Dbg_info_breakpoints_complete
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 32 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add_sub
+
+Uses feature(s): _source_
+
+_Dbg_do_info_breakpoints
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # list breakpoints and break condition.
+ # If $1 is given just list those associated for that line.
+____
+
+Has 45 line(s). Calls functions:
+
+ _Dbg_do_info_breakpoints
+ |-- break.sh/_Dbg_print_brkpt_count
+ |-- msg.sh/_Dbg_errmsg
+ |-- msg.sh/_Dbg_printf
+ |-- msg.sh/_Dbg_section
+ `-- test-setshow.sh/_Dbg_msg
+
+Called by:
+
+ processor.sh/_Dbg_onecmd
+
+_Dbg_info_breakpoints_complete
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 1 line(s). Calls functions:
+
+ _Dbg_info_breakpoints_complete
+ `-- break.sh/_Dbg_breakpoint_list
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

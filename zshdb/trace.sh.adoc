@@ -1,0 +1,75 @@
+trace.sh(1)
+===========
+:compat-mode!:
+
+NAME
+----
+trace.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ _Dbg_do_trace
+ _Dbg_do_trace_alias
+ _Dbg_do_untrace
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 15 line(s). Calls functions:
+
+ Script-Body
+ `-- help.sh/_Dbg_help_add
+
+_Dbg_do_trace
+~~~~~~~~~~~~~
+
+Has 21 line(s). Calls functions:
+
+ _Dbg_do_trace
+ |-- _Dbg_do_trace_alias
+ |   |-- msg.sh/_Dbg_errmsg
+ |   `-- validate.sh/_Dbg_is_alias
+ |-- msg.sh/_Dbg_errmsg
+ `-- validate.sh/_Dbg_is_function
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_do_trace_alias
+~~~~~~~~~~~~~~~~~~~
+
+Has 14 line(s). Calls functions:
+
+ _Dbg_do_trace_alias
+ |-- msg.sh/_Dbg_errmsg
+ `-- validate.sh/_Dbg_is_alias
+
+Uses feature(s): _alias_
+
+Called by:
+
+ _Dbg_do_trace
+
+_Dbg_do_untrace
+~~~~~~~~~~~~~~~
+
+____
+ # Undo wrapping fn
+ # $? is 0 if successful.
+____
+
+Has 11 line(s). Calls functions:
+
+ _Dbg_do_untrace
+ |-- msg.sh/_Dbg_errmsg
+ `-- validate.sh/_Dbg_is_function
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

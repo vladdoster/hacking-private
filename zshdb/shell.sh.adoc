@@ -13,11 +13,15 @@ Documentation automatically generated with `zshelldoc'
 FUNCTIONS
 ---------
 
+ _Dbg_do_shell
+ _Dbg_parse_shell_cmd_options
  _Dbg_shell_append_fn_typesets
  _Dbg_shell_append_typesets
  _Dbg_shell_new_shell_profile
  _Dbg_shell_variable_names
  _Dbg_shell_variable_typeset
+ _Dbg_write_saved_vars
+ save_vars
 
 DETAILS
 -------
@@ -25,7 +29,23 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 5 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 5 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+Uses feature(s): _zmodload_
+
+_Dbg_do_shell
+~~~~~~~~~~~~~
+
+Has 17 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+_Dbg_parse_shell_cmd_options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Has 24 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_shell_append_fn_typesets
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,14 +80,14 @@ Has 10 line(s). Calls functions:
  `-- _Dbg_shell_append_typesets
      `-- _Dbg_shell_variable_typeset
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_shell_variable_names
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Has 1 line(s). Doesn't call other functions.
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_shell_variable_typeset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,4 +97,18 @@ Has 16 line(s). Doesn't call other functions.
 Called by:
 
  _Dbg_shell_append_typesets
+
+_Dbg_write_saved_vars
+~~~~~~~~~~~~~~~~~~~~~
+
+Has 11 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+save_vars
+~~~~~~~~~
+
+Has 1 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 

@@ -1,0 +1,56 @@
+test-frame.sh(1)
+================
+:compat-mode!:
+
+NAME
+----
+test-frame.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_frame
+ test_frame_adjust
+ test_frame_complete
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 23 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_frame
+~~~~~~~~~~
+
+Has 11 line(s). Calls functions:
+
+ test_frame
+ |-- frame.sh/_Dbg_frame_file
+ `-- frame.sh/_Dbg_frame_save_frames
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_frame_adjust
+~~~~~~~~~~~~~~~~~
+
+Has 26 line(s). Calls functions:
+
+ test_frame_adjust
+ |-- frame.sh/_Dbg_frame_adjust
+ `-- frame.sh/_Dbg_frame_save_frames
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_frame_complete
+~~~~~~~~~~~~~~~~~~~
+
+Has 31 line(s). Doesn't call other functions.
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

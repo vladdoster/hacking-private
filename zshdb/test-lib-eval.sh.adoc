@@ -1,0 +1,37 @@
+test-lib-eval.sh(1)
+===================
+:compat-mode!:
+
+NAME
+----
+test-lib-eval.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_eval_subst
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 16 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+Uses feature(s): _setopt_
+
+test_eval_subst
+~~~~~~~~~~~~~~~
+
+Has 34 line(s). Calls functions:
+
+ test_eval_subst
+ `-- fns.sh/_Dbg_eval_extract_condition
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

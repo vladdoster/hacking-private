@@ -57,6 +57,8 @@ Has 11 line(s). Calls functions:
  print_columns
  `-- columnize
 
+Uses feature(s): _setopt_
+
 Called by:
 
  Script-Body

@@ -1,0 +1,58 @@
+test-filecache.sh(1)
+====================
+:compat-mode!:
+
+NAME
+----
+test-filecache.sh - a shell script
+
+SYNOPSIS
+--------
+Documentation automatically generated with `zshelldoc'
+
+FUNCTIONS
+---------
+
+ test_filecache_check_line
+ test_filecache_readin_maxline
+
+DETAILS
+-------
+
+Script Body
+~~~~~~~~~~~
+
+Has 19 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
+
+test_filecache_check_line
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ # Test check_line
+ # test should appear after tests which read in source.
+____
+
+Has 18 line(s). Calls functions:
+
+ test_filecache_check_line
+ |-- filecache.sh/_Dbg_check_line
+ `-- filecache.sh/_Dbg_readin
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+
+test_filecache_readin_maxline
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+____
+ #!/bin/zsh
+ # -*- shell-script -*-
+ # Test readin and maxline
+____
+
+Has 12 line(s). Calls functions:
+
+ test_filecache_readin_maxline
+ `-- filecache.sh/_Dbg_readin
+
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
+

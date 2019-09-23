@@ -27,7 +27,7 @@ DETAILS
 Script Body
 ~~~~~~~~~~~
 
-Has 8 line(s). No functions are called (may attach to Zle or do hooks, etc.).
+Has 8 line(s). No functions are called (may set up e.g. a hook, a Zle widget bound to a key, etc.).
 
 _Dbg_cleanup
 ~~~~~~~~~~~~
@@ -43,7 +43,9 @@ Has 8 line(s). Calls functions:
  |-- journal.sh/_Dbg_erase_journals
  `-- save-restore.sh/_Dbg_restore_user_vars
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ quit.sh/_Dbg_do_quit
 
 _Dbg_cleanup2
 ~~~~~~~~~~~~~
@@ -61,12 +63,14 @@ Has 4 line(s). Calls functions:
 
 Uses feature(s): _trap_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Called by:
+
+ kill.sh/_Dbg_do_kill
 
 _Dbg_hook_action_hit
 ~~~~~~~~~~~~~~~~~~~~
 
-Has 25 line(s). Calls functions:
+Has 26 line(s). Calls functions:
 
  _Dbg_hook_action_hit
  |-- fns.sh/_Dbg_split
@@ -86,10 +90,11 @@ ____
  # Sets _Dbg_brkpt_num to the breakpoint number found.
 ____
 
-Has 21 line(s). Calls functions:
+Has 25 line(s). Calls functions:
 
  _Dbg_hook_breakpoint_hit
- `-- fns.sh/_Dbg_split
+ |-- fns.sh/_Dbg_split
+ `-- test-setshow.sh/_Dbg_msg
 
 Uses feature(s): _eval_
 
@@ -124,7 +129,7 @@ Has 2 line(s). Calls functions:
  _Dbg_hook_error_handler
  `-- journal.sh/_Dbg_write_journal_eval
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
 _Dbg_trap_handler
 ~~~~~~~~~~~~~~~~~
@@ -137,26 +142,27 @@ ____
 Has 100 line(s). Calls functions:
 
  _Dbg_trap_handler
+ |-- break.sh/_Dbg_delete_brkpt_entry
  |-- _Dbg_hook_action_hit
  |   |-- fns.sh/_Dbg_split
  |   `-- save-restore.sh/_Dbg_set_debugger_internal
  |-- _Dbg_hook_breakpoint_hit
- |   `-- fns.sh/_Dbg_split
+ |   |-- fns.sh/_Dbg_split
+ |   `-- test-setshow.sh/_Dbg_msg
  |-- _Dbg_hook_enter_debugger
  |   |-- gdb.sh/_Dbg_print_location_and_command
  |   |-- processor.sh/_Dbg_process_commands
  |   `-- save-restore.sh/_Dbg_set_to_return_from_debugger
- |-- break.sh/_Dbg_delete_brkpt_entry
  |-- fns.sh/_Dbg_split
  |-- frame.sh/_Dbg_frame_save_frames
  |-- gdb.sh/_Dbg_print_location_and_command
  |-- journal.sh/_Dbg_source_journal
  |-- journal.sh/_Dbg_write_journal
- |-- msg.sh/_Dbg_msg
  |-- save-restore.sh/_Dbg_set_debugger_entry
- `-- save-restore.sh/_Dbg_set_to_return_from_debugger
+ |-- save-restore.sh/_Dbg_set_to_return_from_debugger
+ `-- test-setshow.sh/_Dbg_msg
 
-Uses feature(s): _trap_
+Uses feature(s): _setopt_, _trap_
 
-Not called by script or any function, may be a hook or Zle widget, etc.
+Not called by script or any function (may be e.g. a hook, a Zle widget, etc.).
 
