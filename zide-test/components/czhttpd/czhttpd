@@ -1,0 +1,907 @@
+#!/usr/bin/env zsh
+#
+# czhttpd - zsh web server
+#
+# Author: jsks
+# Site: https://github.com/jsks/czhttpd
+###
+
+emulate -R zsh
+
+# Several accumulated bug fixes since 5.6
+if [[ $ZSH_VERSION < 5.6 ]]; then
+    print 'Incompatible zsh version, requires >=zsh-5.6'
+    exit 113
+fi
+
+# Clear env
+for z in ${(SM)$(export)#*=}; do
+    case ${z%=} in
+        (PWD|_|HOME)
+            continue;;
+        (*)
+            unset ${z%=};;
+    esac
+done
+
+export PATH=/sbin:/bin:/usr/bin:/usr/local/bin
+
+# Load Modules
+ml=(datetime files parameter param/private stat system net/tcp zutil)
+for i in $ml; zmodload zsh/$i || exit 127
+
+### zsh options
+# unset:
+#   multibyte - to accurately get length of utf8 strings
+#   glob_dots - prevent iterating through dot files automatically
+#   err_return - set only within `srv` to handle errors at highest level
+# set:
+#   bare_glob_qual - required for our patterns in `list_dir`
+#   local_options - selectively turn on multios & err_return
+#   extended_glob - to allow negation case statement patterns
+unsetopt multibyte glob_dots err_return
+setopt bare_glob_qual local_options extended_glob
+
+# Declare global variable types
+typeset -A MTYPES HTTP_CODES
+typeset -a LOG_FORMAT
+
+typeset CONFIG DOCROOT STDOUT
+
+typeset IP_REDIRECT PORT MAX_CONN \
+        HTTP_KEEP_ALIVE HTTP_TIMEOUT HTTP_RECV_TIMEOUT HTTP_BODY_SIZE \
+        HTTP_CACHE HTTP_CACHE_AGE \
+        INDEX_FILE HIDDEN_FILES FOLLOW_SYMLINKS \
+        LOG_FILE HTML_CACHE HTML_CACHE_DIR
+
+typeset -A req_headers
+
+integer logfd
+
+HTTP_CODES=( 200    "Ok"
+             301    "Moved Permanently"
+             304    "Not Modified"
+             400    "Bad Request"
+             403    "Forbidden"
+             404    "Not Found"
+             405    "Method Not Allowed"
+             412    "Precondition Failed"
+             413    "Request Entity Too Large"
+             500    "Internal Server Error"
+             501    "Not Implemented"
+             503    "Service Unavailable"
+             505    "HTTP Version Not Supported" )
+
+readonly HTTP_CODES ARGV="$*"
+
+# Set once for every invocation of czhttpd
+readonly SERVER_SOFTWARE="czhttpd/$(printf '%.1f\n' "$((RANDOM/10000.0))")b" \
+         SERVER_PROTOCOL="HTTP/1.1"
+
+### Platform specific code
+function ip_addr() {
+    case $OSTYPE in
+        (linux*)
+            private -a tcp_list ip
+            private i k v
+
+            tcp_list=("${(f@)$(</proc/net/tcp)}")
+
+            for i in $tcp_list[2,-1]; do
+                if [[ $i[7,14] != 00000000 && $i[7,14] != 0100007F ]]; then
+                    for k v in "${(s..)i[7,14]}"; do
+                        ip+="0x${(L)k}${(L)v}"
+                    done
+
+                    break
+                fi
+            done
+
+            printf "%d.%d.%d.%d\n" ${(Oa)ip[@]};;
+        (darwin*|*bsd*)
+            private line
+
+            while read line; do
+                if [[ ${line[(w)1]} == "inet"  && ${line[(w)2]} != "127.0.0.1" ]]; then
+                    print ${line[(w)2]}
+                    return
+                fi
+            done < <(ifconfig);;
+        (*)
+            print "127.0.0.1";;
+    esac
+}
+
+### Function renaming
+# This is crude, but we want modules to be able to transparently
+# override main functions. Previously, we prefixed the main functions
+# in czhttpd with '__' and defined a wrapper function which executed
+# the appropriate function (ex: `__send` vs the `send` defined in
+# 'compress.sh').
+#
+# This way we don't have to modify the main source code for each
+# module and can simply dynamically rename the functions we want to
+# override with the caveat that obviously two modules can't override
+# the same function, but that was already a prior restriction.
+#
+# Note, we can't use aliases because "alias names are resolved when
+# the function is read."
+function rename_fn() {
+    # New function name already defined. If we reload czhttpd we don't
+    # want to rename and lose the old fn definition.
+    [[ ${+functions[$2]} == 1 ]] && return
+
+    private f=$(typeset -f $1)
+    eval "$2 ${f[(w)2,-1]}"
+}
+
+### Logging/info functions
+function error() {
+    local cur_time
+    setopt multios
+    get_time
+
+    print "[$cur_time] Fatal Error: $*" >&2 >&$logfd
+
+    cleanup 2>/dev/null
+    exit 113
+}
+
+# Check that we have a valid fd and reset if necessary (ex: logging
+# within process substitution).
+function check_logfd() {
+    if ! print -nu $logfd 2>/dev/null; then
+        if (( STDOUT )); then
+            exec {logfd}>&1
+        else
+            exec {logfd}>>$LOG_FILE
+        fi
+    fi
+}
+
+function log_f() {
+    local cur_time
+
+    check_logfd
+    get_time
+
+    print -u $logfd "${(e@)LOG_FORMAT} $*"
+}
+
+function log_err() {
+    log_f "Error -> $*"
+}
+
+# Used to log stderr from child processes
+function capture_stderr() {
+    private pid buf
+
+    pid=$sysparams[ppid]
+    sysread buf
+
+    [[ -n $buf ]] && log_err "${(f)buf}"
+}
+
+function help() {
+<<EOF
+Usage: czhttpd [OPTIONS] [file or dir]
+
+czhttpd - cloud's zsh http server
+
+Options
+    -c :    Optional configuration file (default: ~/.config/czhttpd/main.conf)
+    -h :    Print this help message
+    -p :    Port to bind to (default: 8080)
+    -v :    Redirect log messages to stdout
+
+If no file or directory is given, czhttpd defaults to serving
+the current directory.
+EOF
+
+exit
+}
+
+### Initialization functions
+function parse_conf() {
+    private i
+
+    if [[ -f $1 ]]; then
+        . $1 || error "Could not source config file $1"
+    fi
+
+    # Dumb, but cli args > config file
+    [[ -n _PORT ]] && { PORT=$_PORT; unset _PORT }
+
+    for i in PORT MAX_CONN HTTP_TIMEOUT HTTP_RECV_TIMEOUT HTTP_BODY_SIZE; do
+        if [[ -n ${(P)i} && ${(P)i} != <-> ]]; then
+            error "Invalid value for $i, expected integer"
+        fi
+    done
+
+    for i in HTTP_KEEP_ALIVE HTTP_CACHE HIDDEN_FILES FOLLOW_SYMLINKS HTML_CACHE; do
+        if [[ -n ${(P)i} && ${(P)i} != [01] ]]; then
+            error "Invalid value for $i, expected 0|1"
+        fi
+    done
+
+    if (( STDOUT )); then
+        exec {logfd}>&1
+    elif [[ -n $LOG_FILE ]]; then
+        if [[ $LOG_FILE == "/dev/null" ]]; then
+            :
+        elif [[ -e $LOG_FILE && (! -f $LOG_FILE || ! -w $LOG_FILE) ]]; then
+            error "Invalid logging file: $LOG_FILE"
+        elif [[ ! -w ${LOG_FILE:h} ]]; then
+            error "Cannot create logging file: $LOG_FILE"
+        fi
+
+        : >> $LOG_FILE
+        exec {logfd}>>$LOG_FILE
+    else
+        exec {logfd}>/dev/null
+    fi
+}
+
+function parse_args() {
+    local -A opts
+    private i
+
+    zparseopts -D -A opts c: p: h v || error "Failed to parse arguments" 2>/dev/null
+
+    for i in ${(kM)opts}; do
+        case $i in
+            ("-c")
+                [[ ! -f $opts[-c] ]] && error "Config file $opts[-c] does not exist"
+                CONFIG="$opts[-c]";;
+            ("-h")
+                help;;
+            ("-p")
+                _PORT="$opts[-p]";;
+            ("-v")
+                STDOUT=1;;
+        esac
+    done
+
+    : ${CONFIG:=~/.config/czhttpd/conf/main.conf}
+
+    if [[ -n $1 ]]; then
+        [[ -e $1 ]] || error "$1 is not a valid directory or file."
+        typeset +r -g DOCROOT="$1"
+        readonly -g DOCROOT
+    else
+        typeset +r -g DOCROOT="$PWD"
+        readonly -g DOCROOT
+    fi
+}
+
+### Utility functions
+# Dear reader, I apologize in advance for this, but all of these
+# utility functions modify scoped variables rather than return
+# (`print`) values.  Subshells are expensive and we care about
+# latency, remember to declare vars in calling f().
+#
+# Calculate size of file in appropriate units.
+#   @Sets `fsize`
+function calc_size() {
+    [[ -d "$1" ]] && { fsize="-"; return }
+    private -F KB MB GB
+    local -a stat_size
+
+    KB=1024.0
+    MB=1048576.0
+    GB=1073741824.0
+
+    stat -A stat_size -L +size $1
+    local -F 1 stat_size=$stat_size
+
+    (( stat_size < KB )) && { fsize="${stat_size}B"; return }
+    (( stat_size < MB )) && { ((stat_size/=KB)); fsize="${stat_size}K"; return }
+    (( stat_size < GB )) && { ((stat_size/=MB)); fsize="${stat_size}M"; return }
+    (( stat_size > GB )) && { ((stat_size/=GB)); fsize="${stat_size}G"; return }
+}
+
+# Generates ETAG string for a given file from its mtime, inode, and
+# our pseudo randomly generated server version string.
+#   @Sets `etag`
+function gen_etag() {
+    private -a inode mtime
+    stat -A inode -L +inode $1
+    stat -A mtime -L +mtime $1
+
+    printf -v etag "\"%x-%x-%s\"" $mtime $inode $SERVER_SOFTWARE
+}
+
+# Formatted time string
+#   @Sets `cur_time`
+function get_time() {
+    strftime -s cur_time "%a %d %b, %H:%M:%S" $EPOCHSECONDS
+}
+
+# Mime type according to first our global mtype array, and then `file`
+#   @Sets `mtype`
+function mime_type() {
+    [[ -h "${1%/}" ]] && mtype="symbolic link->"
+    [[ -d "$1" ]] && { mtype+="Directory"; return }
+
+    private tail="${(L)1:t}"
+
+    # If we're dealing with a hidden file, we treat the character
+    # string following the first '.' as the rootname, with the
+    # extension being everything after the second '.'.
+    [[ $tail[1] == "." ]] && tail=${tail[2,-1]}
+
+    if [[ -n $MTYPES[${tail#*.}] ]]; then
+        mtype+="$MTYPES[${tail#*.}]"
+    else
+        if which file >/dev/null; then
+            private file_mime=$(file --mime-type -bL $1)
+
+            case $file_mime in
+                (*"no read permission")
+                    mtype+="application/octet-stream";;
+                ("text/"*)
+                    mtype+="text/plain";;
+                (*)
+                    mtype+="${${mtype#application/x-executable}:-application/octet-stream}";;
+            esac
+        else
+            mtype+="${MTYPES[default]:-application/octet-stream}"
+        fi
+    fi
+}
+
+# Lock using mkdir
+#   @Sets `LOCK`
+#
+#   Note:
+#       - We can't use `zsystem flock` since sibling shells won't
+#         respect lock
+#       - LOCK will be declared global so that all f()s have access
+function mklock() {
+    typeset -g LOCK=${1}.lock
+    private -i count
+
+    while ! mkdir $LOCK 2>/dev/null; do
+        (( ++count >= 2000 )) && { unset LOCK; return 1 }
+
+        sleep 0.01
+    done
+
+    return
+}
+
+# Formatted last modification time for file
+#   @Sets `mtime`
+function mod_time() {
+    stat -A mtime -L -F "%d-%b-%Y %T" +mtime $1 2>/dev/null || print "\-"
+}
+
+# Unlock using rmdir
+#   @Unsets `LOCK`
+function rmlock() {
+    if [[ -n $LOCK ]]; then
+        rmdir $LOCK; unset LOCK
+    fi
+}
+
+# Decode url
+#   @Sets `decoded_url`
+function urldecode() {
+    printf -v decoded_url '%b' "${1:gs/%/\\x}"
+}
+
+### HTTP functions
+function http_listen() {
+    typeset -g listenfd
+
+    if (( PORT > 1024 )); then
+        if [[ $PORT != ${$(ztcp -L)[(w)4]} || -z $listenfd ]]; then
+            ztcp -c
+            ztcp -l $PORT 2>/dev/null || error "Could not bind to port $PORT"
+            print "Listening on $PORT"
+            listenfd=$REPLY
+        fi
+    else
+        error "Invalid port number, $PORT"
+    fi
+}
+
+function parse_ztcp() {
+    unset client_host; typeset -g client_host
+    private sessions conn_line
+
+    sessions=$(ztcp -L)
+    for conn_line in ${(f@)sessions}; do
+        if [[ $conn_line[3] == "I" ]]; then
+            client_host=${conn_line[(w)5]}
+            break
+        fi
+    done
+}
+
+# Parse client requests
+#
+# Would be marginally quicker to use sysread + we would have better
+# return values, but that would also add an insane amount of
+# complexity (esp. wrt pipelining).
+#
+# Ex: One of our shortcomings now is that we don't know why read may
+# fail, so we can't return a 408 on timeout. Instead we just
+# incorrectly blanket return 400 for all errors encountered when
+# parsing a request.
+function parse_request() {
+    unset req_headers; typeset -gA req_headers
+    private method url version key value line
+
+    # Use HTTP_TIMEOUT for first read since we're blocking until
+    # initial bytes from request. We only return 400 when client has
+    # sent data since we may hit EOF when keep-alive is enabled and
+    # client has closed connection after single request. If client
+    # closes in the middle of any other reads, send 400 and simply
+    # suppress EPIPE.
+    read -t $HTTP_TIMEOUT -r -u $fd line || {
+        [[ -n $line ]] && error_headers 400
+        return 1
+    }
+
+    for method url version in ${(s. .)line%$'\r'}; do
+        req_headers[method]="$method"
+        req_headers[url]="${url%\?*}"
+        req_headers[querystr]="${(M)url%\?*}"
+        req_headers[version]="$version"
+    done
+
+    while :; do
+        read -t $HTTP_RECV_TIMEOUT -r -u $fd line || { error_headers 400; return 1 }
+        [[ -z $line || $line == $'\r' ]] && break
+
+        for key value in ${(s.: .)line%$'\r'}; do
+            # Malformed request
+            [[ -z $key || -z $value ]] && { error_headers 400; return 1 }
+
+            req_headers[${(L)key}]="${=value}"
+        done
+    done
+
+    if [[ $req_headers[transfer-encoding] == "chunked" ]]; then
+        parse_req_body_chunked
+    elif [[ -n $req_headers[content-length] ]]; then
+        parse_req_body_fixed
+    fi
+}
+
+function parse_req_body_chunked() {
+    private buff line
+    private -i count total offset chunk_size
+
+    while :; do
+        # Find our hexadecimal first
+        read -t $HTTP_RECV_TIMEOUT -r -u $fd line || { error_headers 400; return 1 }
+        [[ -z ${line%$'\r'} ]] && continue
+
+        # If 0 we're at the end
+        [[ ${line%$'\r'} == 0 ]] && return 0
+
+        # Convert hex
+        chunk_size=$(printf '%d\n' 0x${line%$'\r'})
+
+        # Set bufsize to $chunk_size; h/o, sysread not guaranteed to read
+        # that many bytes so loop
+        while :; do
+            sysread -c count -t $HTTP_RECV_TIMEOUT -s $chunk_size -i $fd buff || {
+                error_headers 400; return 1
+            }
+
+            total+=$count
+            req_headers[msg-body]+="$buff"
+
+            # When chunk_size == 0 we've read the right amount
+            (( ! (chunk_size-=count) )) && break
+        done
+
+        # Throw away CRLF
+        offset=2
+        while :; do
+            sysread -c count -o 1 -t $HTTP_RECV_TIMEOUT -s $offset -i $fd >/dev/null
+            (( ! (offset-=count) )) && break
+        done
+
+        (( total > HTTP_BODY_SIZE )) && { error_headers 413; return 1 }
+        unset line
+    done
+
+    error_headers 400
+    return 1
+
+}
+
+function parse_req_body_fixed() {
+    private buff
+    private -i count total bufsize
+
+    [[ $req_headers[content-length] != <-> ]] && { error_headers 400; return 1 }
+    (( req_headers[content-length] > HTTP_BODY_SIZE )) && { error_headers 413; return 1 }
+
+    # Same as parsing chunked body, we can't guarantee that sysread
+    # will read $bufsize in one go.
+    bufsize=$req_headers[content-length]
+    while :; do
+
+        # This is ugly, but we want to break without error if body < length;
+        # requires extended_glob
+        sysread -c count -t $HTTP_RECV_TIMEOUT -s $bufsize -i $fd buff || {
+            case $? in
+                (4)
+                    break;;
+                (^0)
+                    return 1;;
+            esac
+        }
+
+        req_headers[msg-body]+="$buff"
+        total+=$count
+
+        (( ! (bufsize-=count) )) && break
+    done
+
+    (( total != $req_headers[content-length] )) && { error_headers 400; return 1 }
+
+    return 0
+}
+
+function check_request() {
+    if [[ -z $req_headers[url] ||
+              -z $req_headers[method] ||
+              -z $req_headers[version] ]]; then
+        error_headers 400
+        return 1
+    fi
+
+    case $req_headers[version] in
+        ($SERVER_PROTOCOL)
+            [[ -z $req_headers[host] ]] && { error_headers 400; return 1 };;
+        (*)
+            error_headers 505
+            return 1;;
+    esac
+
+    case $req_headers[method] in
+        ("HEAD"|"GET"|"POST")
+            return 0;;
+        (*)
+            error_headers 501
+            return 1;;
+    esac
+}
+
+function return_headers() {
+    if [[ -z $HTTP_CODES[$1] ]]; then
+        log_err "Could not find status code $1"
+        return 1
+    fi
+
+    private i resp_headers
+    local -x TZ=UTC
+    local cur_time
+    get_time
+
+    resp_headers="$SERVER_PROTOCOL $1 $HTTP_CODES[$1]\r\n"
+
+    if (( HTTP_KEEP_ALIVE )); then
+        resp_headers+="Connection: ${req_headers[connection]:-keep-alive}\r\n"
+    else
+        resp_headers+="Connection: close\r\n"
+    fi
+
+    resp_headers+="Date: $cur_time GMT\r\n"
+    resp_headers+="Server: czhttpd\r\n"
+
+    for i in "$@[2,-1]"; resp_headers+="$i\r\n"
+
+    # Suppress EPIPE, thanks.
+    print -n "$resp_headers\r\n" 2>/dev/null
+}
+
+function error_headers() {
+    return_headers $1 "Content-type: text/plain; charset=UTF-8" \
+                  "Content-length: $(( ${#1} + ${#HTTP_CODES[$1]} + 1))" $@[2,-1]
+
+    # Suppress EPIPE here too.
+    print -n "$1 $HTTP_CODES[$1]" 2>/dev/null
+    log_f "$1 $HTTP_CODES[$1]"
+}
+
+### Dir listing functions
+# Iterate through directory and add each file/subdir to shared str
+# (quicker than redirecting `print` statements; also faster than
+# shared array)
+function build_index() {
+    local index
+    private i
+
+    cd "$1"
+
+    [[ "${1%/}" != "${DOCROOT%/}" ]] && html_fragment '../'
+
+    if (( HIDDEN_FILES )); then
+        for i in .*(-/NrT) .*(-.Nr); html_fragment "$i"
+    fi
+
+    # Always list directories first
+    for i in *(-/NrT) *(-.Nr); html_fragment "$i"
+
+    cd -
+
+    print -n "<!DOCTYPE html><html><head><style type="text/css"> a {text-decoration: none;} a:hover, a:focus { color: white; background: rgba(0,0,0,0.3); cursor: pointer; } h2 { margin-bottom: 10px } table { border-collapse: collapse; } thead th { padding-top: 4px; padding-bottom: 6px; text-align: left; } thead th:nth-child(2) { text-align: left; padding-right: 12px; } tbody td:nth-child(2) { text-align: right; padding-right: 12px; } tbody td:first-child { padding-right: 30px; } div.list { background-color: #F5F5F5; border-top: 1px solid black; border-bottom: 1px solid black; font: 90% monospace; margin: 4px;} div.footer { font: 90% monospace; color: grey; font-style: italic; padding-left: 4px; }</style><title>czhttpd</title></head><body><h2>Index of $1</h2><div class=list><table><thead><tr><th>Name</th><th>Last-Modified</th><th>Size</th><th>Type</th></tr></thead><tbody>${index[@]}</tbody></table></div><div class=footer>$SERVER_SOFTWARE</div></body></html>"
+}
+
+function html_fragment() {
+    local mtype fsize
+    local -a mtime
+
+    mod_time $1
+    calc_size $1
+    mime_type $1
+
+    index+="<tr><td><a href=\"$1\">$1</a></td><td>$mtime</td><td>$fsize</td><td>$mtype</td></tr>"
+}
+
+### Send
+# Quicker to send using `sysread` rather than redirection (ex: `<$1`)
+function send_file() {
+    if [[ $req_headers[method] != "HEAD" ]]; then
+        private -i filefd
+        exec {filefd}<$1
+
+        { while :; do
+            sysread -i $filefd -o 1 || {
+                case $? in
+                    (5)
+                        return 0;;
+                    (^0)
+                        return 1;;
+                esac
+            }
+        done } always { exec {filefd}>&- }
+    fi
+}
+
+function send_chunk() {
+    if [[ $req_headers[method] != "HEAD" ]]; then
+        private buff
+
+        # Buffer output into 8K chunks using a pipe and sysread
+        while sysread buff; do
+            printf '%x\r\n' "${#buff}"
+            printf '%s\r\n' "$buff"
+        done
+
+        printf '%x\r\n' "0"
+        printf '\r\n'
+    fi
+}
+
+# Wrapper function which determines whether to send resource as chunks
+# or as whole
+function send() {
+    if [[ -n $1 ]]; then
+        if (( HTTP_CACHE )); then
+            private -a cache_headers=("Cache-Control: max-age=$HTTP_CACHE_AGE" \
+                                       "Etag: $etag")
+        fi
+
+        return_headers 200 "Content-type: $mtype; charset=UTF-8" \
+                       "Content-Length: $fsize" \
+                       $cache_headers
+
+        send_file $1
+    else
+        return_headers 200 "Content-type: $mtype; charset=UTF-8" \
+                      "Transfer-Encoding: chunked"
+        send_chunk
+    fi
+
+    log_f 200
+}
+
+###
+# How to fulfill valid request (create directory listing or send a
+# file etc etc)
+function handler() {
+    # We'll only allow POST for CGI scripts. If this function is being
+    # invoked we're either dealing with dir listing or a file.
+    [[ $req_headers[method] == "POST" ]] && { error_headers 405; return }
+
+    if [[ -f $1 ]]; then
+        local mtype
+        local -a fsize
+
+        [[ -z $mtype ]] && mime_type $1
+        [[ -z $fsize ]] && stat -A fsize -L +size $1
+
+        if (( HTTP_CACHE )); then
+            local etag
+            [[ -z $etag ]] && gen_etag $1
+
+            if [[ -n $req_headers[if-none-match] && \
+                      $etag == $req_headers[if-none-match] ]]; then
+                return_headers 304
+                log_f 304
+                return
+            fi
+        fi
+
+        send $1
+    else
+        if (( HTML_CACHE )); then
+            local cache_file="${HTML_CACHE_DIR}/${1//\//}.html"
+            if [[ $cache_file -ot $1 || ! -f $cache_file ]]; then
+                mklock $cache_file
+                build_index $1 > $cache_file
+                rmlock
+            fi
+
+            { cd $HTML_CACHE_DIR; handler ${cache_file:t} } always { cd $DOCROOT }
+        else
+            mtype="text/html"
+            send < <(build_index $1)
+        fi
+    fi
+}
+
+###
+# Can we fulfill the request?
+function srv() {
+    local decoded_url
+    private pathname
+
+    urldecode ${1:-$req_headers[url]}
+    pathname="${DOCROOT}$decoded_url"
+
+    if [[ $HIDDEN_FILES != 1 && ${pathname:t} == .* ]]; then
+        log_f "Requested resource dot file/directory when HIDDEN_FILES disabled"
+        error_headers 403; return
+    fi
+
+    if [[ $FOLLOW_SYMLINKS != 1 && -h ${pathname%/} ]]; then
+        log_f "Requested resource symlink when FOLLOW_SYMLINKS disabled"
+        error_headers 403; return
+    fi
+
+    { if [[ -f ${pathname%/} ]]; then
+          handler ${pathname:A}
+      elif [[ -d $pathname ]]; then
+          if [[ $pathname != $DOCROOT && $pathname[-1] != "/" ]]; then
+              error_headers 301 "Location: http://$SERVER_ADDR:$PORT${pathname#$DOCROOT}/"
+          elif [[ -f $pathname/$INDEX_FILE ]]; then
+              handler $pathname/$INDEX_FILE
+          else
+              if [[ -r "$pathname" && -x "$pathname" ]]; then
+                  handler "$pathname"
+              else
+                  error_headers 403
+              fi
+          fi
+      else
+          error_headers 404
+      fi } always { [[ $? != 0 ]] && error_headers 500 }
+}
+
+### Misc
+function cleanup() {
+    setopt noerr_return
+
+    private i
+    for i in $jobstates; kill -15 ${(SM)i##<->} 2>/dev/null
+
+    rm -rf $HTML_CACHE_DIR
+    ztcp -c
+    log_f "> Exiting main"
+}
+
+###
+# Signal to reload configuration
+function TRAPHUP() {
+    cz_init || error "Failed to reload configuration"
+}
+
+### Main
+# Declare our default config vars in a function so that we can later reload
+function cz_init() {
+    LOG_FORMAT=( '[$cur_time]'
+                 '[pid: ${pid:-$sysparams[pid]}]'
+                 '$client_host'
+                 '$req_headers[method]'
+                 '$req_headers[url]'
+                 '$req_headers[version]' )
+
+    parse_args ${=ARGV}
+    parse_conf $CONFIG
+
+    log_f "> Initializing czhttpd"
+    log_f "MAX_CONN: ${MAX_CONN:=12}"
+    log_f "PORT: ${PORT:=8080}"
+    log_f "IP_REDIRECT: ${IP_REDIRECT:=$(ip_addr)}"
+    log_f "HTTP_KEEP_ALIVE: ${HTTP_KEEP_ALIVE:=1}"
+    log_f "HTTP_TIMEOUT: ${HTTP_TIMEOUT:=30}"
+    log_f "HTTP_RECV_TIMEOUT: ${HTTP_RECV_TIMEOUT:=5}"
+    log_f "HTTP_BODY_SIZE: ${HTTP_BODY_SIZE:=16384}"
+    log_f "HTTP_CACHE: ${HTTP_CACHE:=0}"
+    log_f "HTTP_CACHE_AGE: ${HTTP_CACHE_AGE:=200}"
+    log_f "INDEX_FILE: ${INDEX_FILE:=index.html}"
+    log_f "HIDDEN_FILES: ${HIDDEN_FILES:=0}"
+    log_f "FOLLOW_SYMLINKS: ${FOLLOW_SYMLINKS:=0}"
+    log_f "HTML_CACHE: ${HTML_CACHE:=0}"
+    log_f "HTML_CACHE_DIR: ${HTML_CACHE_DIR:=/tmp/.czhttpd-$$/}"
+    log_f "LOG_FILE: ${LOG_FILE:=/dev/null}"
+
+    # readonly vars that should not be modified by anything except this f()
+    typeset +r -g SERVER_NAME="$IP_REDIRECT"
+    typeset +r -g SERVER_ADDR="$SERVER_NAME"
+    readonly -g SERVER_NAME SERVER_ADDR
+
+    if [[ -z $MTYPES ]]; then
+        MTYPES=( pdf       application/pdf
+                 gz        application/x-gzip
+                 tar.gz    application/x-tgz
+                 tgz       application/x-tgz
+                 tar       application/x-tar
+                 zip       application/zip
+                 gif       image/gif
+                 jpeg      image/jpeg
+                 jpg       image/jpeg
+                 png       image/png
+                 css       text/css
+                 html      text/html
+                 htm       text/html
+                 js        text/javascript
+                 sh        text/plain
+                 py        text/plain
+                 pl        text/plain
+                 log       text/plain
+                 conf      text/plain
+                 text      text/plain
+                 txt       text/plain
+                 default   application/octet-stream )
+    fi
+
+    if (( HTML_CACHE )) && [[ ! -d $HTML_CACHE_DIR ]]; then
+        mkdir $HTML_CACHE_DIR || error "Failed to create cache dir"
+    fi
+}
+
+trap "cleanup 2>/dev/null; exit" INT TERM KILL EXIT; trap '' PIPE
+
+cz_init || error "Failed to initialize czhttpd"
+http_listen
+
+while :; do
+    ztcp -a $listenfd
+    fd=$REPLY
+
+    if (( ${#jobstates} >= MAX_CONN )); then
+        error_headers 503 >&$fd
+        ztcp -c $fd
+        continue
+    fi
+
+    (trap "ztcp -c; rmlock 2>/dev/null; exit" INT TERM KILL EXIT
+     trap '' PIPE
+
+     setopt err_return
+
+     parse_ztcp
+
+     while :; do
+         # err_return does not work in condition expressions, see:
+         # http://www.zsh.org/mla/users/2012/msg00816.html
+         parse_request
+         check_request
+         srv
+
+         [[ $HTTP_KEEP_ALIVE == 0 || $req_headers[connection] == "close" ]] && \
+             break
+     done) >&$fd 2> >(capture_stderr) &
+
+    ztcp -c $fd
+done

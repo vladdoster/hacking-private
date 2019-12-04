@@ -1,0 +1,31 @@
+# Copyright (c) 2018 Sebastian Gniazdowski
+#
+# Loads databases' definitions into single hash whose keys are
+# constructed as follows:
+#
+# - DB_DEFS[${sel_db}_<access>_engine]="file"
+# - DB_DEFS[${sel_db}_<hooks>_on_open]='prompt "" ""'
+#
+# <access>, <hooks> denote sections in ini file and are followed
+# by field name (a key).
+
+# Global hash with data on all storages (databases, files)
+typeset -gA DB_DEFS
+
+local -A XDG_MAP
+XDG_MAP=( "%XDG_CONFIG_HOME%" "${XDG_CONFIG_HOME:-$HOME/.config}"
+          "%XDG_CACHE_HOME%" "${XDG_CACHE_HOME:-$HOME/.cache}" )
+
+.zflai_read_ini_file "$ZFLAI_SRC_DIR/default/default.def" DB_DEFS "default_"
+
+local def_file
+for def_file in "$CONFIG_DIR"/*.def(N); do
+    .zflai_read_ini_file "$def_file" DB_DEFS "${def_file:r:t}_"
+done
+
+local key
+for key in "${(k)DB_DEFS[@]}"; do
+    DB_DEFS[$key]="${DB_DEFS[$key]//(#b)(%XDG_CONFIG_HOME%|%XDG_CACHE_HOME%)/${XDG_MAP[${match[1]}]}}"
+done
+
+# vim:ft=zsh:et

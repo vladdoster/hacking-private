@@ -1,0 +1,114 @@
+# vim: set ft=zsh:
+
+##
+# Format epoch time.
+#
+# When called as `shu:time:strp`, parses formatted time back into epoch time.
+#
+# This function requires the `strftime` built-in provided by the `zsh/datetime`
+# module.
+#
+# @module time
+#
+# @see zsh/datetime
+# @see strftime(3)
+# @see strptime(3)
+#
+# @param +s <name>
+#   (optional) Assign the result to a pre-defined scalar with the name <name>.
+#
+# @param -q
+#   (optional) Suppress error messages produced by `strftime`.
+#
+# @param -u
+#   (optional) Use UTC instead of the default time zone.
+#
+# @param -z <tz>
+#   (optional) Use <tz> instead of the default time zone. It is generally not
+#   possible to validate the time-zone value accurately, but in the interest of
+#   catching the most common mistake, the function will panic if <tz> contains
+#   a `%` (percentage symbol).
+#
+# @param $1 [shu:time:strf]
+#   (optional) The name of a `SHU_TIME_FMT_*` constant or a format string
+#   suitable for `strftime(3)`. Defaults to `SHU_TIME_FMT_STD_A`.
+#
+# @param $2 [shu:time:strf]
+#   (optional) An epoch time to format. Defaults to the current epoch time.
+#
+# @param $1 [shu:time:strp]
+#   The name of a `SHU_TIME_FMT_*` constant or a format string suitable for
+#   `strftime(3)`. This string is used to interpret $2.
+#
+# @param $2 [shu:time:strp]
+#   A formatted string which can be interpreted according to $1. Note that
+#   `strptime` will usually fail if this string contains a time zone that
+#   doesn't match the default time zone or the one specified by `-z` (it will
+#   not automatically use the time zone in the string).
+#
+# @return According to `strftime`.
+
+local    OPTARG OPTIND opt__ to_scalar__ quiet__ tz__
+local -a args__
+
+while getopts :qs:uz: opt__; do
+  case $opt__ in
+    # Assign result to scalar
+    +s)
+      (( ${(P)+OPTARG} )) ||
+      shu::panic "No such scalar: $OPTARG"
+
+      if [[ "${(Pt)OPTARG}-" != scalar-* ]] && [[ $OPTARG != *\[* ]]; then
+        shu::panic "No such scalar: $OPTARG"
+      fi
+
+      to_scalar__=$OPTARG
+      ;;
+    # Suppress error messages
+    q) quiet__=1 ;;
+    # UTC time zone
+    u) tz__=UTC ;;
+    # Custom time zone
+    z)
+      [[ $OPTARG == *'%'* ]] && shu::panic "Invalid time zone: $OPTARG"
+      tz__=$OPTARG
+      ;;
+    # Errors
+    ':') shu::panic "Missing argument to option: ${(l:2::-:)OPTARG}" ;;
+    '?') opt__=$OPTARG ;&
+    *)   shu::panic "Invalid option: ${(l:2::-:)opt__}" ;;
+  esac
+done
+
+shift $(( OPTIND - 1 ))
+
+[[ $0 != shu:time:strf ]] && (( $# < 2 )) && shu::panic 'Too few operands'
+(( $# > 2 )) && shu::panic 'Too many operands'
+
+: ${tz__:=$TZ}
+
+if [[ "SHU_TIME_${1:-}" == [A-Z0-9_]##_TIME_FMT_[A-Z0-9_]## ]]; then
+  [[ $1 == FMT_* ]] && 1="SHU_TIME_$1"
+
+  (( ${(P)+1} )) ||
+  shu::panic "No such time format: $1"
+
+  1=${(P)1}
+
+elif [[ $0 == shu:time:strf ]] && [[ ${1:-%} != *%* ]]; then
+  shu::panic "No time specifier provided: $1"
+
+elif [[ $0 != shu:time:strf ]] && [[ $1 != *%* ]]; then
+  shu::panic "No time specifier provided: $1"
+fi
+
+(( $#quiet__     )) && args__+=( -q )
+(( $#to_scalar__ )) && args__+=( -s $to_scalar__ )
+
+if [[ $0 == shu:time:strf ]]; then
+  args__+=( -- ${1:-$SHU_TIME_FMT_STD_A} ${2:-$EPOCHSECONDS} )
+else
+  args__+=( -r -- $1 $2 )
+fi
+
+TZ=$tz__ builtin strftime $args__

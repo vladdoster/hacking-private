@@ -1,0 +1,50 @@
+# Copyright (c) 2018 Sebastian Gniazdowski
+#
+# $1 - input line with table specification
+#
+
+[[ "$ZFLAI_LIBS_SOURCED" != "1" ]] && source "${ZFLAI_SRC_DIR}/zflai_lib.zsh"
+
+local __line="$1" __var_name __vn __spec
+local -a match mbegin mend
+
+# Examples:
+#   @dbs / zplugin-su-%ID :: timestamp:integer / exec-ms:integer
+#   @dbs / zplugin-su-%ID timestamp:integer / exec-ms:integer
+if [[ "$__line" = (#b)[[:blank:]]#"@"([^[:blank:]/]##)[[:blank:]]#/[[:blank:]]#([^[:blank:]:]##)[[:blank:]](#c0,1)([[:blank:]]#::[[:blank:]](#c0,1)|)(*) ]]; then
+    __var_name="${match[1]}__%__${match[2]}"
+    __spec="${match[4]}"
+elif [[ "$__line" = (#b)[[:blank:]]#([^[:blank:]:]##)[[:blank:]](#c0,1)([[:blank:]]#::[[:blank:]](#c0,1)|)(*) ]]; then
+    __var_name="${match[1]}"
+    __spec="${match[3]}"
+else
+    .zflai_run_log "Improper zflai-ctable call, didn't recognize syntax"
+    return 1
+fi
+
+.zflai_moderate_param_name "$__var_name" __var_name "tspec_"
+unset $__var_name 2>/dev/null
+typeset -gA "${__var_name}"
+
+local -a __fields __two
+__fields=( "${(@s:/:)__spec}" )
+
+local __f
+integer __idx=0
+for __f in "${__fields[@]}"; do
+    __f="${${__f##[[:blank:]]##}%%[[:blank:]]##}"
+    __two=( "${(@s,:,)__f}" )
+    __two[1]="${${__two[1]##[[:blank:]]##}%%[[:blank:]]##}"
+    __two[2]="${${__two[2]##[[:blank:]]##}%%[[:blank:]]##}"
+    (( ++ __idx ))
+    __vn="${__var_name}[${__idx}-${__two[1]}]"
+    : "${(P)__vn::=${__two[2]}}"
+done
+
+# Serialize to persistent cache
+local -A hsh
+__vn="${__var_name}[@]"
+hsh=( "${(@kv)${(kvP)__vn}}" )
+builtin print -r -- "${(j: :)${(qkv@)hsh}}" >! "$CACHE_DIR"/tables/"$__var_name".tab
+
+# vim:ft=zsh:et

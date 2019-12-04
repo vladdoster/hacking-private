@@ -1,0 +1,40 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"shu:io:eputf",
+				"shu:io:uputf",
+				"shu:io:eputs",
+				"shu:io:uputs",
+				"shu:time:strp",
+				"*.swo",
+				"*.swp",
+				"*.zwc",
+				"*~",
+				"Desktop.ini",
+				"ehthumbs.db",
+				"Thumbs.db",
+				".DS_Store",
+				".gitmodules",
+				".mailmap",
+				"*.sublime-project",
+				"*.sublime-workspace"
+			],
+			"folder_exclude_patterns":
+			[
+				".git",
+				".Spotlight-V100",
+				".Trashes"
+			],
+			"name": "shu2",
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"tab_size": 2,
+		"translate_tabs_to_spaces": false
+	}
+}

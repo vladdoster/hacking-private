@@ -1,0 +1,84 @@
+# vim: set ft=zsh:
+
+##
+# Print or consume standard input.
+#
+# This function is meant to be used for variable assignment à la `read`, except
+# that instead of working on delimited 'lines', it consumes all input at once
+# and in a 'raw' manner. It can also be used as a simple built-in alternative to
+# `cat`. It requires the `sysread` built-in provided by the `zsh/system` module.
+#
+# @module io
+#
+# @see zsh/system
+# @see read(2)
+#
+# @param -n, +n
+#   (optional) Strip trailing new lines from the result when assigning with
+#   `+s` (similar to `read`).
+#
+# @param +s <name>
+#   (optional) Assign the result to a pre-defined scalar with the name <name>.
+#   By default, trailing new lines are not stripped from the result (see `+n`).
+#   If this option is not provided, standard input is simply printed back to
+#   standard output (similar to `cat`).
+#
+# @return 0 on success, >0 on error.
+
+local    OPTARG OPTIND opt__ strip_nl__ to_scalar__ ret__
+local -a tmp__
+
+while getopts :ns: opt__; do
+  case $opt__ in
+    # Strip new-lines
+    n|+n)
+      strip_nl__=1
+      ;;
+    # Assign result to scalar
+    +s)
+      (( ${(P)+OPTARG} )) ||
+      shu::panic "No such scalar: $OPTARG"
+
+      if [[ "${(Pt)OPTARG}-" != scalar-* ]] && [[ $OPTARG != *\[* ]]; then
+        shu::panic "No such scalar: $OPTARG"
+      fi
+
+      to_scalar__=$OPTARG
+      ;;
+    # Errors
+    ':') shu::panic "Missing argument to option: ${(l:2::-:)OPTARG}" ;;
+    '?') opt__=$OPTARG ;&
+    *)   shu::panic "Invalid option: ${(l:2::-:)opt__}" ;;
+  esac
+done
+
+shift $(( OPTIND - 1 ))
+
+(( $# )) && shu::panic 'Too many operands'
+
+[[ -n $to_scalar__ ]] || {
+  (( strip_nl__ )) && shu::panic 'Option +s required with +n'
+
+  while sysread -s 65535 -o1; do
+    ret__=$?
+    (( ret__ == 5 )) && ret__=0
+  done
+
+  return ret__
+}
+
+# This is very sensitive to the precise method we use to store each pass;
+# seemingly trivial changes (such as using tmp__[idx++] instead) can have
+# significant performance costs!
+while sysread -s 65535 'tmp__[($#tmp__ + 1)]'; do
+  ret__=$?
+  (( ret__ == 5 )) && ret__=0
+done
+
+if (( strip_nl__ )); then
+  : ${(P)to_scalar__::=${${(j<>)tmp__}%%$'\n'##}}
+else
+  : ${(P)to_scalar__::=${(j<>)tmp__}}
+fi
+
+return ret__

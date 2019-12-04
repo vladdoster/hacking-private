@@ -1,0 +1,55 @@
+# vim: set ft=zsh:
+
+##
+# Get a list of registered functions.
+#
+# @module meta
+#
+# @param +a <name>
+#   (optional) Assign the result to a pre-defined array with the name <name>.
+#
+# @param $1
+#   (optional) A pattern used to restrict the results. The default is `shu:*`.
+#
+# @return 0 if matches were found, >0 otherwise.
+
+local    OPTARG OPTIND opt__ to_array__
+local -a fns__
+
+while getopts :a: opt__; do
+  case $opt__ in
+    # Assign result to array
+    +a)
+      (( ${(P)+OPTARG} )) ||
+      shu::panic "No such array: $OPTARG"
+
+      if [[ "${(Pt)OPTARG}-" != array-* ]] || [[ $OPTARG == *\[* ]]; then
+        shu::panic "No such array: $OPTARG"
+      fi
+
+      to_array__=$OPTARG
+      ;;
+    # Errors
+    ':') shu::panic "Missing argument to option: ${(l:2::-:)OPTARG}" ;;
+    '?') opt__=$OPTARG ;&
+    *)   shu::panic "Invalid option: ${(l:2::-:)opt__}" ;;
+  esac
+done
+
+shift $(( OPTIND - 1 ))
+
+(( $# > 1 )) && shu::panic 'Too many operands'
+
+: ${1:='shu:*'}
+
+fns__=( ${(f)"$( typeset -f + )"} )
+
+(( $# )) && fns__=( ${(M)fns__:#${~1}} )
+
+(( $#to_array__ )) && {
+  : ${(PA)to_array__::="${(@)fns__}"}
+  return $(( ! $#fns__ ))
+}
+
+(( $#fns__ )) || return 1
+print -rl -- $fns__

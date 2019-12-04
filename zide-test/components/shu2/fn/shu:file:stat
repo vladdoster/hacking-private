@@ -1,0 +1,169 @@
+# vim: set ft=zsh:
+
+##
+# Returns information about a file.
+#
+# The results returned by this function roughly correspond to the `stat`
+# structure described in `stat(2)`. Specifically, fields such as `mode`, `ino`,
+# and `ctime` are available. Additionally, 'human-readable' representations are
+# provided for certain fields via an `_s` suffix — for example, `uid_s` contains
+# the human-readable user name associated with the value of the `uid` field.
+#
+# This function requires the `zstat` built-in provided by the `zsh/stat` module.
+#
+# @module file
+#
+# @see zsh/stat
+# @see stat(2)
+#
+# @param +A <name>
+#   (optional) Assign the result to a pre-defined association with the name
+#   <name>.
+#
+# @param +s <name>
+#   (optional) Assign the result to a pre-defined scalar with the name <name>.
+#   A field name must be provided when this option is used.
+#
+# @param -F <fmt>
+#   (optional) Specify the time format used for human-readable time fields such
+#   as `mtime_s`. This may be provided as the name of a `SHU_TIME_FMT_*`
+#   constant or a format string suitable for `strftime(3)`. Defaults to
+#   `SHU_TIME_FMT_STD_A`.
+#
+# @param -u
+#   (optional) Use UTC instead of the default time zone. (This is only relevant
+#   to human-readable time fields such as `mtime_s`.)
+#
+# @param $1
+#   If only one operand is provided, this represents the path to a file to
+#   `stat`. Example: `shu:file:stat myfile`.
+#
+#   If two operands are provided, this represents the name of a field to limit
+#   the result to. The field name may optionally be prefixed by `st_` to reflect
+#   the naming convention used by the `stat` struct described in `stat(2)`.
+#   Example: `shu:file:stat ctime myfile`.
+#
+# @param $2
+#   (optional) The path to a file to `stat` (in the second use case described
+#   above).
+#
+# @return 0 on success, >0 on error.
+
+local    OPTARG OPTIND opt__ to_scalar__ to_assoc__ time_fmt__ utc_opt__
+local    field__ file__
+local -A assoc__
+
+while getopts :A:F:s:u opt__; do
+  case $opt__ in
+    # Assign result to association
+    +A)
+      (( ${(P)+OPTARG} )) ||
+      shu::panic "No such association: $OPTARG"
+
+      if [[ "${(Pt)OPTARG}-" != association-* ]] || [[ $OPTARG == *\[* ]]; then
+        shu::panic "No such association: $OPTARG"
+      fi
+
+       to_assoc__=$OPTARG
+      to_scalar__=
+      ;;
+    # Assign result to scalar
+    +s)
+      (( ${(P)+OPTARG} )) ||
+      shu::panic "No such scalar: $OPTARG"
+
+      if [[ "${(Pt)OPTARG}-" != scalar-* ]] && [[ $OPTARG != *\[* ]]; then
+        shu::panic "No such scalar: $OPTARG"
+      fi
+
+       to_assoc__=
+      to_scalar__=$OPTARG
+      ;;
+    # Specify date/time format
+    F)
+      [[ ${OPTARG#SHU_TIME_} == FMT_[A-Z0-9_]# ]] && {
+        OPTARG="SHU_TIME_${OPTARG#SHU_TIME_}"
+
+        (( ${(P)+OPTARG} )) ||
+        shu::panic "No such time format: $OPTARG"
+
+        OPTARG=${(P)OPTARG}
+      }
+      time_fmt__=$OPTARG
+      ;;
+    # UTC time zone
+    u) utc_opt__=-g ;;
+    # Errors
+    ':') shu::panic "Missing argument to option: ${(l:2::-:)OPTARG}" ;;
+    '?') opt__=$OPTARG ;&
+    *)   shu::panic "Invalid option: ${(l:2::-:)opt__}" ;;
+  esac
+done
+
+shift $(( OPTIND - 1 ))
+
+(( $# < 1 )) && shu::panic 'Too few operands'
+(( $# > 2 )) && shu::panic 'Too many operands'
+
+(( $# < 2 )) && (( $#to_scalar__ )) && shu::panic 'Field required with +s'
+
+if (( $# == 1 )); then
+  file__=$1
+
+else
+   file__=$2
+  field__=${${${(L)1}#+}#st_}
+
+  case $field__ in
+    device) field__=dev ;;
+    inode)  field__=ino ;;
+    '')     shu::panic 'Field required' ;;
+  esac
+fi
+
+: ${time_fmt__:=${SHU_TIME_FMT_STD_A}}
+
+zstat -norH assoc__ -F $time_fmt__ $utc_opt__ -- $file__ || return $?
+
+assoc__[dev]=${assoc__[device]}
+assoc__[ino]=${assoc__[inode]}
+
+assoc__[mode_s]=${${${assoc__[mode]}#*\(}%\)}
+  assoc__[mode]=${${${assoc__[mode]}%% *}:2}
+
+assoc__[atime_s]=${${${assoc__[atime]}#*\(}%\)}
+  assoc__[atime]=${assoc__[atime]%% *}
+
+assoc__[ctime_s]=${${${assoc__[ctime]}#*\(}%\)}
+  assoc__[ctime]=${assoc__[ctime]%% *}
+
+assoc__[mtime_s]=${${${assoc__[mtime]}#*\(}%\)}
+  assoc__[mtime]=${assoc__[mtime]%% *}
+
+assoc__[uid_s]=${${${assoc__[uid]}#*\(}%\)}
+  assoc__[uid]=${assoc__[uid]%% *}
+
+assoc__[gid_s]=${${${assoc__[gid]}#*\(}%\)}
+  assoc__[gid]=${assoc__[gid]%% *}
+
+unset -v 'assoc__[device]' 'assoc__[inode]'
+
+(( $#field__ && ! ${+assoc__[$field__]} )) &&
+shu::panic "No such field: $field__"
+
+(( $#to_scalar__ )) && {
+  : ${(P)to_scalar__::=${assoc__[$field__]}}
+  return
+}
+
+(( $#to_assoc__ )) && {
+  : ${(PAA)to_assoc__::="${(@kv)assoc__}"}
+  return
+}
+
+(( $#field__ )) && {
+  print -r -- ${assoc__[$field__]}
+  return
+}
+
+print -rlo -- ${(f)"$( print -rC2 -- "${(@k)assoc__}" "${(@)assoc__}" )"}

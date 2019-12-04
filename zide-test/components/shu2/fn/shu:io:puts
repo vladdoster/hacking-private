@@ -1,0 +1,237 @@
+# vim: set ft=zsh:
+
+##
+# Print a new-line-terminated string.
+#
+# By default, output is suppressed if the current verbosity level is quiet or
+# lower. This behaviour can be controlled with the verbosity options described
+# below.
+#
+# The `-q` and `-v` verbosity options have a cumulative effect if (and only if)
+# the same option is provided consecutively; when one verbosity option is
+# provided after a different one, the verbosity comparison is reset as if the
+# earlier option(s) had not appeared. For example, `shu:io:puts -vv` and
+# `shu:io:puts -v -v` both print when the verbosity level is VERBOSE2 or higher,
+# but `shu:io:puts -v1v` and `shu:io:puts -vvvqv` do not.
+#
+# It is not possible to specify a verbosity level outside the bounds of the
+# predefined `SHU_VERBOSITY_*` constants — `shu:io:puts -vvvvvvvv` has the same
+# effect as `shu:io:puts -vvvvv`.
+#
+# When called as `shu:io:eputs`, the output is prefixed by the base name of the
+# current script and sent to `stderr` (suitable for a general error message).
+#
+# When called as `shu:io:uputs`, the output is prefixed by the base name of the
+# current script, followed by its usage synopsis (if any), and sent to `stderr`
+# (suitable for a usage-error message).
+#
+# @module io
+#
+# @see printf
+#
+# @param -<num>
+#   (optional) Indent the string by <num> spaces.
+#
+# @param -a
+#   (optional) Always print, regardless of the current verbosity level.
+#
+# @param -l
+#   (optional) Print each string on a separate line instead of concatenating by
+#   spaces. Indentation and script-name prefixing is applied to each line
+#   (except for blank lines, which are left as-is).
+#
+# @param -n
+#   (optional) Print only if the current verbosity level is `N0` (normal) or
+#   *higher*. This is the default.
+#
+# @param -N
+#   (optional) Print only if the current verbosity level is `N0` (normal) or
+#   *lower*.
+#
+# @param -q
+#   (optional) Print only if the current verbosity level is `Q1` (quiet) or
+#   *higher*. May be applied cumulatively.
+#
+# @param -Q
+#   (optional) Print only if the current verbosity level is `Q1` (quiet) or
+#   *lower*. May be applied cumulatively.
+#
+# @param -r
+#   (optional) Set a trap to return from the calling function. This is primarily
+#   useful with the `eputs` and `uputs` variants. The return status is selected
+#   automatically based on the variant used: `SHU_EX_OK` for `puts`,
+#   `SHU_EX_ERR` for `eputs`, and `SHU_EX_USAGE` for `uputs`. Note: One must
+#   take care with `-r` and `-R`, as the semantics of function exit traps are
+#   somewhat peculiar. For example, the following command will not work, since
+#   exit traps are not executed recursively: `trap 'shu:io:puts -R123' EXIT`
+#
+# @param -R <ret>
+#   (optional) Like `-r`, but set the trap to return with the status <ret>.
+#
+# @param -t
+#   (optional) Prepend a time stamp to the input. The time stamp is inserted as
+#   if it were the first positional string argument.
+#
+# @param -T <format>
+#   (optional) Like `-t`, but accepts a format string to be passed to
+#   `shu:time:strf`.
+#
+# @param -v
+#   (optional) Print only if the current verbosity level is `V1` (verbose) or
+#   *higher*. May be applied cumulatively.
+#
+# @param -V
+#   (optional) Print only if the current verbosity level is `V1` (verbose) or
+#   *lower*. May be applied cumulatively.
+#
+# @param -x
+#   (optional) Require the verbosity level to match exactly that specified by
+#   the other verbosity options given. In other words, `-xn` must match exactly
+#   `N0` verbosity, `-xvvv` must match exactly `V3` verbosity, &c.
+#
+# @param -X
+#   (optional) Do not require an exact verbosity-level match (negate the effect
+#   of `-x`). This is the default.
+#
+# @param $1 ...
+#   (optional) Zero or more strings to print. Multiple strings are concatenated
+#   by spaces unless `-l` is given. Empty arguments are **not** elided.
+#
+# @return According to `print` or `printf`.
+
+local \
+  OPTARG OPTIND \
+  MATCH MBEGIN MEND \
+  opt last_opt last_num_optind \
+  cmp=$SHU_VERBOSITY_N0 op='<=' \
+  indent concat=1 trap_ret=-1 time exact \
+  ret
+local -a msg usage
+
+while getopts :0123456789alnNqQrR:tT:vVxX opt; do
+  # Clauses here are ordered roughly according to frequency of use
+  case $opt in
+    v|V)
+      if [[ $last_opt == $opt ]]; then
+        (( cmp < SHU_VERBOSITY_V5 )) && (( cmp++ ))
+      else
+        cmp=$SHU_VERBOSITY_V1
+         op='<='
+        [[ $opt == V ]] && op='>='
+      fi
+      ;;
+    q|Q)
+      if [[ $last_opt == $opt ]]; then
+        (( cmp > SHU_VERBOSITY_Q5 )) && (( cmp-- ))
+      else
+        cmp=$SHU_VERBOSITY_Q1
+         op='<='
+        [[ $opt == Q ]] && op='>='
+      fi
+      ;;
+    n|N)
+      cmp=$SHU_VERBOSITY_N0
+       op='<='
+      [[ $opt == N ]] && op='>='
+      ;;
+    a)
+      cmp=$SHU_VERBOSITY
+       op='=='
+      ;;
+    [0-9])
+      if (( last_num_optind != OPTIND )) || [[ $last_opt != [0-9] ]]; then
+        indent=
+      fi
+      indent+=$opt
+      last_num_optind=$OPTIND
+      ;;
+    l) concat=0 ;;
+    r)
+      case $0 in
+        shu:io:puts)  trap_ret=$SHU_EX_OK ;;
+        shu:io:eputs) trap_ret=$SHU_EX_ERR ;;
+        shu:io:uputs) trap_ret=$SHU_EX_USAGE ;;
+      esac
+      ;;
+    R)
+      if [[ $OPTARG == <0-255> ]]; then
+        trap_ret=$OPTARG
+      elif [[ ${(P)OPTARG:-} == <0-255> ]]; then
+        trap_ret=${(P)OPTARG}
+      else
+        shu::panic "Illegal return status: $OPTARG"
+      fi
+      ;;
+    t) time=$SHU_TIME_FMT_STD_A ;;
+    T) time=$OPTARG ;;
+    x) exact=1 ;;
+    X) exact=0 ;;
+    # Errors
+    ':') shu::panic "Missing argument to option: ${(l:2::-:)OPTARG}" ;;
+    '?') opt=$OPTARG ;&
+    *)   shu::panic "Invalid option: ${(l:2::-:)opt}" ;;
+  esac
+  last_opt=$opt
+done
+
+(( trap_ret > -1 )) && trap "return $trap_ret" EXIT
+
+(( exact )) && op='=='
+(( cmp $op SHU_VERBOSITY )) || return 0
+
+shift $(( OPTIND - 1 ))
+
+msg=( "$@" )
+
+[[ -n $time ]] && {
+  shu:time:strf +s time $time
+  msg=( $time "${(@)msg}" )
+}
+
+(( concat )) && msg=( "${(j< >)msg}" )
+
+case $0 in
+  shu:io:puts)
+    (( indent )) &&
+    msg=( "${(@)msg/(#m)(#s)?*/${(l<$indent>< >):-}${MATCH}}" )
+
+    print -rl -- "${(@)msg}"
+    return
+    ;;
+
+  shu:io:eputs)
+    [[ -n $* ]] || {
+      print >&2
+      return
+    }
+
+    msg=( "${(@)msg/(#m)(#s)?*/$SHU_SCRIPT_NAME: $MATCH}" )
+    (( indent )) &&
+    msg=( "${(@)msg/(#m)(#s)?*/${(l<$indent>< >):-}${MATCH}}" )
+
+    print -rl -- >&2 "${(@)msg}"
+    return
+    ;;
+
+  shu:io:uputs)
+    [[ -n $* ]] && {
+      msg=( "${(@)msg/(#m)(#s)?*/$SHU_SCRIPT_NAME: $MATCH}" )
+      (( indent )) &&
+      msg=( "${(@)msg/(#m)(#s)?*/${(l<$indent>< >):-}${MATCH}}" )
+
+      print -rl -- >&2 "${(@)msg}" || ret=$?
+    }
+
+    shu:meta:help +a usage -u
+
+    (( $#usage )) && {
+      usage=( "${(@)usage//(#s)/${(l<$indent>< >):-}}" )
+      print -rl -- >&2 "${(@)usage}" ||
+      ret=$?
+    }
+
+    return ret
+    ;;
+esac
+
+shu::panic

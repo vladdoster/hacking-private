@@ -1,0 +1,255 @@
+# vim: set ft=zsh:
+
+##
+# Parse the shu usage-help block out of a script.
+#
+# Usage-help blocks are comment blocks where each line contains one of the
+# following tags, optionally followed by a space and additional text:
+#
+# * `#?.` — Script name and version.
+# * `#?=` — Script description.
+# * `#?#` — Section heading.
+# * `#??` — Script usage synopsis.
+# * `#?-` — Script option or operand description, long form. Each option or
+#           operand is defined on its own line, with an indented description
+#           following on subsequent lines.
+# * `#?+` — Script option or operand description, short form. Each option or
+#           operand is defined on the same line as the first line of its
+#           description, separated by two spaces.
+# * `#?:` — Misc. pre-formatted text.
+#
+# On lines prefixed by `#?.`, `#?=` or `#??`, the special token `${0}` is
+# replaced by the base name of the script. In the former case, the token is
+# replaced anywhere it appears on the line. In the latter case, the token is
+# only replaced if it appears at the beginning of a line.
+#
+# On lines prefixed by `#?.`, text matching the pattern ` v:?*` (in other words,
+# a space, the letter v, a colon, and one or more characters to the end of the
+# line) is treated as a version string. (The `v:` is stripped out before
+# printing.) Any text preceding (or not including) this text is treated as the
+# script name, and may be used to expand `${0}` on subsequent lines (see `-n`
+# and `-N` options).
+#
+# Usage-help blocks are meant to be structured in a particular way, with
+# prefixes appearing roughly in the order listed above and lines not prefixed by
+# `#?.`, `#?=`, or `#?#` indented by two spaces. Descriptions on lines prefixed
+# by `#?-` are to be indented an additional two spaces. Hard tabs must **not**
+# be used within usage-help blocks.
+#
+# @todo The `${0}` functionality really makes a mess of things
+#
+# @module meta
+#
+# @param +a <name>
+#   (optional) Assign the result to a pre-defined array with the name <name>.
+#
+# @param +c
+#   (optional) Enable ANSI formatting.
+#
+# @param +C
+#   (optional) Disable ANSI formatting.
+#
+# @param -n
+#   (optional) Always use the script name appearing on a `#?.`-prefixed line to
+#   expand `${0}` on subsequent lines. By default, the `#?.`-name is only used
+#   for subsequent expansion if it doesn't contain a space.
+#
+# @param -N
+#   (optional) Never use the script name appearing on a `#?.`-prefixed line to
+#   expand `${0}` on subsequent lines. See `-n`.
+#
+# @param -r
+#   (optional) Return raw (unformatted) lines.
+#
+# @param -u
+#   (optional) Return usage-synopsis lines only.
+#
+# @param -v, -V
+#   (optional) Return name/version lines only.
+#
+# @param $1
+#   (optional) The path to the source file. If the path does not contain a `/`
+#   and no such file exists in the CWD, a PATH look-up is performed. If this
+#   argument is not provided at all, SHU_SCRIPT_PATH is used instead.
+#
+# @return 0 on success, >0 on error.
+
+local    OPTARG OPTIND MATCH MBEGIN MEND
+local    opt__ to_array__ raw__ only__ exp_vname__=-1
+local    name__ glob__ limit_glob__ line_raw__ line__ last__ syn_sp__
+local -a lines__ help__ cmd__
+local -A ansi__=( "${(@kv)SHU_ANSI}" )
+
+while getopts :a:cCnNruvV opt__; do
+  case $opt__ in
+    # Assign result to array
+    +a)
+      (( ${(P)+OPTARG} )) ||
+      shu::panic "No such array: $OPTARG"
+
+      if [[ "${(Pt)OPTARG}-" != array-* ]] || [[ $OPTARG == *\[* ]]; then
+        shu::panic "No such array: $OPTARG"
+      fi
+
+      to_array__=$OPTARG
+      ;;
+    # Enable ANSI formatting
+    +c) ansi__=( "${(@kv)SHU_ANSI_ACTIVE}" ) ;;
+    # Disable ANSI formatting
+    +C) ansi__=( "${(@kv)SHU_ANSI_INACTIVE}" ) ;;
+    # Always expand `${0}` to version script name
+    n) exp_vname__=1 ;;
+    # Never expand `${0}` to version script name
+    N) exp_vname__=0 ;;
+    # Return raw/unformatted lines
+    r) raw__=1 ;;
+    # Return usage-synopsis lines only
+    u) only__=usage ;;
+    # Return name/version lines only
+    v|V) only__=version ;;
+    # Errors
+    ':') shu::panic "Missing argument to option: ${(l:2::-:)OPTARG}" ;;
+    '?') opt__=$OPTARG ;&
+    *)   shu::panic "Invalid option: ${(l:2::-:)opt__}" ;;
+  esac
+done
+
+shift $(( OPTIND - 1 ))
+
+(( $# > 1 )) && shu::panic 'Too many operands'
+
+if (( ! $# )); then
+  1=$SHU_SCRIPT_PATH
+  name__=$SHU_SCRIPT_NAME
+elif [[ $1 != */* ]] && [[ ! -e $1 ]]; then
+  1=${commands[$1]:-}
+fi
+
+[[ -e $1 ]] || return 1
+
+: ${name__:=${1:t}}
+
+lines__=( "${(@f)mapfile[$1]:-}" )
+ glob__='[[:space:]]#\#\?[:.=?#+-](| *)'
+
+case $only__ in
+  usage)   limit_glob__='[[:space:]]#\#\?[?.](| *)' ;;
+  version) limit_glob__='[[:space:]]#\#\?.(| *)' ;;
+esac
+
+for line_raw__ in "${(@)lines__}"; do
+  [[ $line_raw__ == $~glob__ ]] || {
+    [[ -n $last__ ]] && break
+    continue
+  }
+
+  [[ $line_raw__ == ${~limit_glob__:-*} ]] || {
+    [[ -n $last__ ]] && break
+    continue
+  }
+
+  (( raw__ )) &&
+  { [[ $only__ != usage ]] || [[ $line_raw__ != [[:space:]]#'#?.'* ]] } && {
+     last__=$line_raw__
+    help__+=( $line_raw__ )
+    continue
+  }
+
+  (( $#line_raw__ > 4 )) || {
+    last__=$line_raw__
+    (( $#help__ )) && help__+=( '' )
+    continue
+  }
+
+  line__=${line_raw__[5,-1]}
+
+  case $line_raw__ in
+    # Name/version
+    [[:space:]]#\#\?.\ ?*)
+      line__=${line__/\$\{0\}/${name__}}
+      # Auto-detect name-expansion behaviour
+      (( exp_vname__ < 0 )) && {
+        if [[ ${${:-${line__} v:}%% v:*} == *?' '?* ]]; then
+          exp_vname__=0
+        else
+          exp_vname__=1
+        fi
+      }
+      # Override the name once if applicable
+      (( exp_vname__ == 1 )) && {
+        name__=${${:-${line__} v:}%% v:*}
+        exp_vname__=2
+      }
+      # Stop here if this is a usage line; we only wanted to parse the name
+      [[ $only__ == usage ]] && continue
+      line__=${line__/(#m) v:*(#e)/ version ${MATCH[4,-1]}}
+      ;;
+    # Description
+    [[:space:]]#\#\?\=\ ?*)
+      line__=${line__/\$\{0\}/${name__}}
+      ;;
+    # Heading
+    [[:space:]]#\#\?\#*)
+      line__="${ansi__[bold:on]}${line__}${ansi__[bold:off]}"
+      ;;
+    # Usage synopsis
+    [[:space:]]#\#\?\?*)
+      if [[ $line__ == '  ${0}'* ]]; then
+        syn_sp__=$#line__
+          line__=${line__/\$\{0\}/${name__}}
+        syn_sp__=$(( $#line__ - syn_sp__ ))
+      elif (( syn_sp__ > 0 )); then
+        line__="${(l<$syn_sp__>< >):-}${line__}"
+      elif (( syn_sp__ < 0 )); then
+        line__="${line__[((syn_sp__ * -1) + 1),-1]}"
+      fi
+      ;;
+    # Long-format option/operand description
+    [[:space:]]#\#\?\-*)
+      [[ $line__ == '  '[\[\<.-]* ]] &&
+      line__="${ansi__[fg:yellow2]}${line__}${ansi__[fg:reset]}"
+      ;;
+    # Short-format option/operand description
+    [[:space:]]#\#\?\+*)
+      [[ $line__ == '  '[\[\<.-]* ]] &&
+      line__="${(S)line__/(#m)  *  /${ansi__[fg:yellow2]}${MATCH}${ansi__[fg:reset]}}"
+      ;;
+  esac
+
+  [[ $only__ == usage ]] &&
+  [[ $line_raw__ == \#\?\?* ]] && {
+    if [[ $last__ == \#\?\?* ]] && [[ $line__ == '  '[^\ ]* ]]; then
+      line__="   or: ${line__[3,-1]}"
+    elif [[ $last__ == \#\?\?* ]]; then
+      line__="       ${line__[3,-1]}"
+    else
+      line__="usage: ${line__[3,-1]}"
+    fi
+  }
+
+   last__=$line_raw__
+  help__+=( "$line__" )
+done
+
+[[ $only__ == version ]] && {
+  case 1 in
+    $+commands[sha1sum])  cmd__=( sha1sum ) ;;
+    $+commands[gsha1sum]) cmd__=( gsha1sum ) ;;
+    $+commands[sha1])     cmd__=( sha1 -r ) ;;
+    $+commands[shasum])   cmd__=( shasum -a1 ) ;;
+    $+commands[digest])   cmd__=( digest -a sha1 ) ;;
+  esac
+
+  (( $#cmd__ )) && {
+    help__+=( '' )
+    help__+=( "(SHA1: ${"$( $cmd__ -- $SHU_SCRIPT_PATH )"%%[[:space:]]*})" )
+  }
+}
+
+(( $#to_array__ )) && {
+  : ${(PA)to_array__::="${(@)help__}"}
+  return $(( ! $#help__ ))
+}
+
+(( $#help__ )) || return 1
+print -rl -- "${(@)help__}"

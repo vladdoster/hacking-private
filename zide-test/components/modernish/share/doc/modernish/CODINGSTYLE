@@ -1,0 +1,140 @@
+Coding standards for shell programs using modernish:
+
+* Modernish library functions never have underscores or capital letters in
+  them, so using underscores or capital letters is a good way to avoid
+  potential conflicts with future library functions, as well as an easy way
+  for readers of your code to tell them apart.
+
+* Do 'use safe'. The safe mode turns off global field splitting (IFS='') and
+  global pathname expansion (set -f), makes the use of uninitialised
+  variabels an error (set -u) and protects against accidentally overwriting
+  files through output redirection (set -C). The first two of these
+  eliminate most of the need to quote variables! For more information about
+  the safe mode, see README.md under 'use safe', or online at:
+  https://github.com/modernish/modernish#user-content-use-safe
+  - Whenever you do need field splitting or pathname expansion, it is
+    strongly recommended to use the --split or --glob operators that
+    come with 'LOOP for...DO...DONE' (the var/loop module) and
+    'LOCAL...BEGIN...END' blocks (the var/local module). They safely
+    split or glob a list of arguments without subjecting your code to
+    any of their pitfalls.
+
+* Don't use variables without first ensuring they are initialised.
+  (To enforce this, the shell option -u (nounset) is enabled by 'use safe'.)
+  - However, if you do have a good reason to use a variable that may or may
+    not be initialised, you can explicitly specify this with an expansion of
+    the form "${var-}". This bypasses the '-u' check.
+
+* Output redirection:
+  - Don't overwrite possibly-existing files with >; use >|
+    if you legitimately expect to overwrite a file.
+    ('use safe' sets -C (noclobber) to enforce this.)
+  - Command hardening (provided by the sys/cmd/harden module) cannot check output
+    redirections, so always check that they worked, e.g. by adding '|| die'.
+
+* 'test' and '[' are deprecated for modernish scripts. For many reasons, it's
+  far easier to use 'test'/[' wrong than it is to use it right. Due to pitfalls
+  related to "empty removal", you still need to quote all variables used with
+  them even in the safe mode. It is highly recommended that you use modernish
+  testing functions instead, which fix these problems. They are hardened, more
+  readable, more consistent, and have more features. See README.md under
+  "Testing numbers, strings and files" for more information, or online at:
+  https://github.com/modernish/modernish#user-content-testing-numbers-strings-and-files
+
+* Don't use set -e (-o errexit). It is not supported by modernish code and
+  has too many pitfalls anyway, because it doesn't distinguish between a
+  legit false/negative/nonzero result and an actual error. Instead, use
+  'harden' for specific commands. See README.md under "use sys/cmd/harden", or:
+  https://github.com/modernish/modernish#user-content-use-sysharden
+
+  - Don't use the -f flag with hardened 'rm' (actually, don't use it at all
+    in your programs, full stop). The -f flag will cause 'rm' to ignore all
+    errors and continue trying to delete things. Too many home directories and
+    entire systems have been deleted because someone did 'rm -rf' with
+    unvalidated parameters resulting from broken algorithms:
+    http://www.techrepublic.com/article/moving-steams-local-folder-deletes-all-user-files-on-linux/
+    or even just because of a simple typo:
+    https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/issues/123
+    Not using '-f' would cause `rm` to fail properly in many cases, allowing
+    'harden' to do its thing to protect you and your users.
+
+* Suggested coding style:
+  - Indent with a single tab. Tabs are assumed to be 8 spaces wide.
+    (This gives automatic compatibility with <<-EOF here-documents.)
+  - Prefer "if command1; then command2; fi"  over "command1 && command2"
+    (unless you specifically want the exit status of command2).
+    This avoids pitfalls with an unexpected non-zero exit status.
+
+* When implementing a shell bug or quirk workaround, either identify it
+  in a comment using its modernish ID, for instance:
+      [some workaround here]	# BUG_FOOBAR compat
+  or, for a conditional workaround, use 'thisshellhas':
+      if thisshellhas BUG_FOOBAR; then
+              [code including workaround]
+      else
+              [regular code]
+      fi
+  This not only allows people reading the code to look up the bug and
+  understand what's going on, but also makes it easy to remove the
+  workarounds when modernish stops supporting a certain shell bug.
+     In many cases, the conditional workaround method should be used.
+  This is because workaround versions could trigger other bugs in other
+  shells that you're not accounting for. If you're not sure, err on the
+  side of implementing a conditional workaround.
+
+* When unsetting a variable, always use 'unset -v varname' instead of just
+  'unset varname', otherwise you might accidentally unset a shell function,
+  depending on the shell.
+  http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_29_04
+  "If neither -f nor -v is specified, name refers to a variable; if a
+  variable by that name does not exist, it is unspecified whether a function
+  by that name, if any, shall be unset."
+
+* Unless the safe mode is in effect, *always* double-quote expansions in
+  command arguments.
+
+* Single-quote your string literals (or double-quote string literals
+  containing variable references). This has two advantages:
+  1. It stops typos, like an extra space, from causing major havoc.
+     For instance, this trivial habit could have neutralised a typo
+     that deleted /usr by accident: rm -rf /usr /lib/nvidia-current/xorg/xorg
+     https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/commit/a047be85247755cdbe0acce6f1dafc8beb84f2ac
+  2. It makes syntax colouring in editors work as expected, making
+     your code much more readable, which helps to prevent bugs.
+
+* Quote empty string literals with single quotes, e.g. instead of
+	var=
+  do:
+	var=''
+
+* Avoid backticks for command substitution. Use $( ) instead.
+
+* Where possible, use a parameter expansion that removes a pattern instead
+  of a command substitution with echo+sed/awk or similar. It's hundreds of
+  times faster and it's got fewer pitfalls. See the end of 2.6.2 at:
+  http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02
+
+* Use POSIX shell arithmetic $(( )) instead of an 'expr' command substitution.
+  http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_04
+
+* 'command -p' is supposed to search a standard utility in the system's default path, which
+  is more secure. However, it's broken on far too many shells. Instead, use something like
+	PATH=$DEFPATH command YOUR COMMAND HERE
+  This has the added advantage of actually exporting PATH=$DEFPATH to the external
+  command, so that any commands sublaunched by it will also be searched in $DEFPATH.
+  For instance, consider
+	command -p sudo cp ...			# search 'sudo' in default path, but NOT 'cp'
+	PATH=$DEFPATH command sudo cp ...	# search both 'sudo' and 'cp' in default path
+
+_____________________________________
+Coding standards for modernish itself
+
+All of the above (where possible), plus the following.
+
+* Functions that use awk MUST NOT assume the support of any of the following
+  in the system awk present in $DEFPATH. POSIX requires all of these but too
+  many existing default awk installations lack one or more of them.
+  - locale support
+  - character [:classes:] in ERE bracket expressions
+  - interval expressions, a.k.a. repetition expressions, a.k.a. bounds in EREs
+  - matching "\a" and "\v" in EREs <https://github.com/onetrueawk/awk/pull/44>

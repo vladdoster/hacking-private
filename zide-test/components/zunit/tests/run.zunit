@@ -1,0 +1,20 @@
+#!/usr/bin/env zunit
+
+@test 'Test successful command' {
+  run return 0
+
+  assert $state equals 0
+}
+
+@test 'Test unsuccessful command' {
+  run return 1
+
+  assert $state equals 1
+}
+
+@test 'Test non-existent command' {
+  run a-non-existent-command
+
+  assert $state equals 127
+  assert $output matches 'run:[0-9]+: command not found: a-non-existent-command'
+}

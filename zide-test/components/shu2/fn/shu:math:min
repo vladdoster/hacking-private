@@ -1,0 +1,40 @@
+# vim: set ft=zsh:
+
+# @todo WARNING: This function is untested
+
+##
+# Give the lowest of a series of numbers.
+#
+# @module math
+#
+# @param $1 ... One or more numbers.
+#
+# @return 0
+
+local min nctx
+
+# Normal context?
+[[ $0 == shu:math:* ]] && nctx=1
+
+[[ ${1:-} == -- ]] && shift
+
+(( $# )) || shu::panic 'Too few operands'
+
+while (( $# )); do
+  (( nctx )) &&
+  [[ $1 != $~SHU_PAT_MATH_NUM ]] &&
+  shu::panic "Invalid arithmetic argument: $1"
+
+  : ${min:=$1}
+
+  (( $1 < min )) && min=$1
+  shift
+done
+
+# Normal context
+(( nctx )) && {
+  print -r -- $min
+  return 0
+}
+# Arithmetic context
+(( min ))

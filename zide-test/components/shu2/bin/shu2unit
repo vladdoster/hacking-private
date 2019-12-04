@@ -1,0 +1,174 @@
+#!/usr/bin/env zsh
+
+#?. shu2 test runner v:0.0.1
+#?:
+#?= Run shu2 unit tests.
+#?:
+#?# usage:
+#??   ${0} -h|-V
+#??   ${0} [-qv] <test> ...
+#?:
+#?# operands:
+#?+   <test> ...  Zero or more paths to shu2 unit-test files, or directories
+#?+               containing such files ending in a `.test` extension.
+#?:
+#?# options:
+#?+   -h  Display this usage help and exit.
+#?+   -q  Decrease output verbosity.
+#?+   -v  Increase output verbosity.
+#?:
+#?# notes:
+#?:   This script, and the tests it was written to execute, were rather hastily
+#?:   devised. In the future the test system may be completely redesigned.
+
+if (( $+functions[shu::noop] )); then
+  : # Library already loaded
+elif [[ -e ${0:A:h}/../lib ]]; then
+  source ${0:A:h}/../lib || return 166
+else
+  source /usr/local/lib/shu2/lib || return 166
+fi
+
+app::main() {
+  local     OPTARG OPTIND MATCH MBEGIN MEND
+  local     opt quiet assert_opt=-F
+  local     t i ret test_ret tmp passed failed total pad pad2
+  local -aU tests out
+
+  while getopts :hqvV opt; do
+    case $opt in
+      h)   shu:meta:help; return 0 ;;
+      V)   shu:meta:help -V; return 0 ;;
+      q)   shu:io:setvrb -q ;;
+      v)   shu:io:setvrb -n; assert_opt= ;;
+      ':') shu:io:uputs -r "Missing argument to option: ${(l:2::-:)OPTARG}" ;;
+      '?') opt=$OPTARG ;&
+      *)   shu:io:uputs -r "Invalid option: ${(l:2::-:)opt}" ;;
+    esac
+  done
+
+  shift $(( OPTIND - 1 ))
+
+  for t in "${@:-.}"; do
+    [[ -e $t ]] || t=$t.test
+    [[ -e $t ]] || {
+      shu:io:eputs -q "No such file or directory: ${t}"
+      ret=1
+      continue
+    }
+
+    # Don't resolve symlinks — we want to allow tests under different names
+    t=${t:a}
+
+    [[ -d $t ]] && {
+      tests+=( $t/*.test(-.) )
+      continue
+    }
+
+    tests+=( $t )
+  done
+
+  (( $#tests )) || {
+    shu:io:eputs -q 'No tests found.'
+    return 1
+  }
+
+  pad=${${(On)${${${tests:t}%.test}//(#m)*/$MEND}}[1]}
+
+  for t in $tests; do
+    grep -qswF @assert $t || {
+      shu:io:eputs -q "Not a valid test file: ${t}"
+      ret=1
+      continue
+    }
+
+    (( ++i > 1 )) && [[ -z $assert_opt ]] && shu:io:puts
+    shu:io:putf '%s%s%s' \
+      "${SHU_ANSI[bold:on]}" \
+      "${${t:t}%.test}" \
+      "${SHU_ANSI[reset]}"
+
+    out=( ${(f)"$(
+      shu:io:setvrb -n
+      exec 2>&1
+      ret=0
+
+      @assert() {
+        local    test_ret
+        local -A test_data
+
+        shu:test:assert +A test_data "${@}" || {
+          test_ret=1
+
+          (( $+test_data[summary] )) &&
+          shu:io:putf '%s%s %s%s\n' \
+            "${SHU_ANSI[fg:black2]}" \
+            "${${:-[FAIL]}//?/ }" \
+            "${test_data[summary]}" \
+            "${SHU_ANSI[reset]}"
+        }
+
+        (( ret += test_ret ))
+        return test_ret
+      }
+
+      source $t
+      return ret
+    )"} )
+    test_ret=$?
+
+    if [[ $assert_opt == -F ]] && (( ! test_ret )); then
+      pad2=$(( pad - ${#${${t:t}%.test}} ))
+      shu:io:putf ' ...%s %s[PASS]%s\n' \
+        "${(l<$pad2><.>):-}" \
+        "${SHU_ANSI[fg:green]}" \
+        "${SHU_ANSI[reset]}"
+    elif [[ $assert_opt == -P ]] && (( test_ret )); then
+      pad2=$(( pad - ${#${${t:t}%.test}} ))
+      shu:io:putf ' ...%s %s[FAIL]%s\n' \
+        "${(l<$pad2><.>):-}" \
+        "${SHU_ANSI[fg:red]}" \
+        "${SHU_ANSI[reset]}"
+    elif [[ $assert_opt == -F ]] && [[ -n $out ]]; then
+      shu:io:putf '\n%s\n' ${(F)${(@)out:#*\[PASS]*}}
+    elif [[ -n $out ]]; then
+      shu:io:putf '\n%s\n' ${(F)out}
+    fi
+
+    tmp=${#${(@M)out#*\[PASS]}}
+    (( passed += tmp ))
+    tmp=${#${(@M)out#*\[FAIL]}}
+    (( failed += tmp ))
+  done
+
+  total=$(( passed + failed ))
+
+  if (( failed || passed == 0 )); then
+    ret=1
+    shu:io:putf    '\n'
+    shu:io:putf -q '%s%d/%d (%d%%) assertion%s passed.%s\n' \
+      "${SHU_ANSI[fg:red]}" \
+      $passed \
+      $total \
+      $(( total ? (0.0 + passed) / $total * 100 : 0 )) \
+      "${${(M)total:#^1}:+s}" \
+      "${SHU_ANSI[fg:reset]}"
+  else
+    shu:io:putf    '\n'
+    shu:io:putf -q '%s%d/%d (%d%%) assertion%s passed.%s\n' \
+      "${SHU_ANSI[fg:green]}" \
+      $passed \
+      $total \
+      $(( total ? (0.0 + passed) / $total * 100 : 0 )) \
+      "${${(M)total:#^1}:+s}" \
+      "${SHU_ANSI[fg:reset]}"
+  fi
+
+  return ret
+}
+
+[[ $zsh_eval_context == toplevel ]] && {
+  app::main "$@"
+  return
+}
+return 0

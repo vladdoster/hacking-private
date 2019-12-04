@@ -1,0 +1,260 @@
+# vim: set ft=zsh:
+
+##
+# Test whether the given command yields the expected result.
+#
+# @module test
+#
+# @param +A <name>
+#   (optional) Assign the result to a pre-defined association with the name
+#   <name>. The following fields are provided:
+#
+#   * pass        — 1 if the assertion passed, 0 if not
+#   * return      — The return status of the command
+#   * result      — The output of the command
+#   * expected    — The expected result or return status ($1)
+#   * operator    — The normalised operator ($2)
+#   * command     — The command string ($3 ...)
+#   * description — The user's description
+#   * summary     — The summary of the assertion (default description)
+#
+#   Note that, somewhat unusually, use of this option does not disable the
+#   normal output of the function; use `-q` for that.
+#
+# @param +c
+#   (optional) Enable ANSI formatting.
+#
+# @param +C
+#   (optional) Disable ANSI formatting.
+#
+# @param -d <description>
+#   (optional) Set a description to be used in PASS/FAIL message.
+#
+# @param -D
+#   (optional) Use default description in PASS/FAIL message. This option
+#   overrides `-d` no matter where it appears on the command line.
+#
+# @param -e
+#   (optional) Pass $3 as a string to `eval`.
+#
+# @param -F
+#   (optional) Show PASS/FAIL message only on failure.
+#
+# @param -p
+#   (optional) Panic if the assertion fails.
+#
+# @param -P
+#   (optional) Show PASS/FAIL message only on success.
+#
+# @param -q
+#   (optional) Suppress PASS/FAIL message.
+#
+# @param -r
+#   (optional) Treat $1 as a return code rather than an output string.
+#
+# @param -s
+#   (optional) Capture only the executed command's `stdout`; discard `stderr`.
+#
+# @param -S
+#   (optional) Capture only the executed command's `stderr`; discard `stdout`.
+#
+# @param -r
+#   (optional) Treat $1 as a return code rather than an output string.
+#
+# @param $1
+#   The output text or (with `-r`) return code that the executed command is
+#   expected to produce.
+#
+# @param $2
+#   An operator indicating the expected relationship between $1 and $3.
+#   Supported operators include:
+#
+#   * `eq`, `=`,  `==` — $1 is equal to $3
+#   * `ne`, `!=`, `<>` — $1 is not equal to $3
+#   * `gl`, `~`        — $1 is an extended glob matching $3
+#   * `re`, `=~`       — $1 is a regular expression matching $3
+#   * `le`, `<=`, `=<` — $1 is equal to or less than $3 (with `-r` only)
+#   * `lt`, `<`        — $1 is less than $3 (with `-r` only)
+#   * `ge`, `>=`, `=>` — $1 is equal to or greater than $3 (with `-r` only)
+#   * `gt`, `>`        — $1 is greater than $3 (with `-r` only)
+#
+# @param $3 ...
+#   The command (and any arguments) to be executed, or (with `-e`) a string to
+#   be passed to `eval`. Multiple strings will be concatenated by spaces when
+#   used with `-e`.
+#
+# @return 0 on success, >0 on failure.
+
+local \
+  OPTARG OPTIND opt__ \
+  to_assoc__ desc__ no_desc__ eval_cmd__ \
+  show__=-1 fail_panics__ quiet__ compare_ret__ discard_fd__ \
+  expect__ op__ res__ ret__ pass__ cmd_str__ summary__
+local -a cmd__
+local -A assoc__ ansi__=( "${(@kv)SHU_ANSI}" )
+
+while getopts :A:Cd:DeFpPqrsS opt__; do
+  case $opt__ in
+    # Assign result to association
+    +A)
+      (( ${(P)+OPTARG} )) ||
+      shu::panic "No such association: ${OPTARG}"
+
+      if [[ "${(Pt)OPTARG}-" != association-* ]] || [[ $OPTARG == *\[* ]]; then
+        shu::panic "No such association: ${OPTARG}"
+      fi
+
+       to_assoc__=$OPTARG
+      ;;
+    # Enable ANSI formatting
+    +c) ansi__=( "${(@kv)SHU_ANSI_ACTIVE}" ) ;;
+    # Disable ANSI formatting
+    +C) ansi__=( "${(@kv)SHU_ANSI_INACTIVE}" ) ;;
+    # Set assertion description
+    d) desc__=$OPTARG ;;
+    # Use automatic assertion description
+    D) no_desc__=1 ;;
+    # Treat $3 as `eval` string
+    e) eval_cmd__=1 ;;
+    # Show PASS/FAIL on fail only
+    F) show__=0 ;;
+    # Panic on assertion failure
+    p) fail_panics__=1 ;;
+    # Show PASS/FAIL on pass only
+    P) show__=1 ;;
+    # Decrease output verbosity
+    q) quiet__=-q ;;
+    # Treat $1 as return code
+    r) compare_ret__=1 ;;
+    # Discard stderr
+    s) discard_fd__=2 ;;
+    # Discard stdout
+    S) discard_fd__=1 ;;
+    # Errors
+    ':') shu::panic "Missing argument to option: ${(l:2::-:)OPTARG}" ;;
+    '?') opt__=$OPTARG ;&
+    *)   shu::panic "Invalid option: ${(l:2::-:)opt__}" ;;
+  esac
+done
+
+shift $(( OPTIND - 1 ))
+
+(( $# >= 3 )) || shu::panic 'Too few operands'
+
+expect__=$1
+    op__=$2
+   cmd__=( "${@[3,-1]}" )
+
+(( compare_ret__ )) && {
+  [[ $expect__ == $~SHU_PAT_MATH_INT_POS ]] || {
+    if \
+      (( ${(P)+expect__} )) &&
+      [[ "${(Pt)expect__}-" == scalar-* ]] &&
+      [[ ${(P)expect__} == $~SHU_PAT_MATH_INT_POS ]]
+    then
+      expect__=${(P)expect__}
+    else
+      shu::panic "Not a valid return code: ${expect__}"
+    fi
+  }
+
+  (( expect__ > 255 )) &&
+  shu::panic "Not a valid return code: ${expect__}"
+}
+
+case $op__ in
+  (-|)eq|'='|'==')   op__=eq ;;
+  (-|)ne|'!='|'<>')  op__=ne ;;
+  (-|)gl(|ob)|'~')   op__=gl ;;
+  (-|)re(|gex)|'=~') op__=re ;;
+  (-|)le|'<='|'=<')  op__=le ;;
+  (-|)lt|'<')        op__=lt ;;
+  (-|)ge|'>='|'=>')  op__=ge ;;
+  (-|)gt|'>')        op__=gt ;;
+  *) shu::panic "Illegal operator: $op__" ;;
+esac
+
+[[ $op__ == [gl][et] ]] &&
+(( ! compare_ret__ )) &&
+shu::panic "Operator -$op__ can only be used with return codes"
+
+res__=$(
+  if (( discard_fd__ == 2 )); then
+    exec 2> /dev/null
+  elif (( discard_fd__ == 1 )); then
+    exec {fd}>&1
+    exec 1> /dev/null
+    exec 2>&$fd
+  else
+    exec 2>&1
+  fi
+
+     SHU_FD_STDOUT=1
+     SHU_FD_STDERR=2
+  SHU_PANIC_IGNORE=1
+   SHU_PANIC_TRACE=0
+
+  if (( eval_cmd__ )); then
+    eval "${(j< >)cmd__}"
+  else
+    "${(@)cmd__}"
+  fi
+)
+ret__=$?
+
+(( $#to_assoc__ )) && {
+  assoc__[return]=$ret__
+  assoc__[result]=$res__
+}
+
+(( compare_ret__ )) && res__=$ret__
+
+{
+  case $op__ in
+    eq) [[ $expect__ == $res__     ]] && pass__=1 ;;
+    ne) [[ $expect__ != $res__     ]] && pass__=1 ;;
+    gl) [[ $res__    == $~expect__ ]] && pass__=1 ;;
+    re) [[ $res__    =~ $expect__  ]] && pass__=1 ;;
+    le) (( expect__  <= res__      )) && pass__=1 ;;
+    lt) (( expect__  <  res__      )) && pass__=1 ;;
+    ge) (( expect__  >= res__      )) && pass__=1 ;;
+    gt) (( expect__  >  res__      )) && pass__=1 ;;
+  esac
+} always {
+  # Explode if we received a bad glob or regex pattern
+  (( TRY_BLOCK_ERROR )) && shu::panic "Error in pattern: $expect__"
+}
+
+if (( eval_cmd__ )); then
+  cmd_str__="${(j< >)cmd__}"
+else
+  cmd_str__="${(j< >)${(@q+)cmd__}}"
+fi
+
+summary__="\`${cmd_str__}\`: ${(q+)expect__} -$op__ ${(q+)res__}"
+
+(( $#to_assoc__ )) && {
+         assoc__[pass]=${pass__:-0}
+     assoc__[expected]=$expect__
+     assoc__[operator]=$op__
+      assoc__[command]=$cmd_str__
+  assoc__[description]=$desc__
+      assoc__[summary]=$summary__
+
+  : ${(PAA)to_assoc__::="${(@kv)assoc__}"}
+}
+
+(( no_desc__ )) && desc__=$summary__
+
+(( pass__ )) && {
+  (( show__ == -1 || show__ == pass__ )) &&
+  shu:io:putf $quiet__ '%s[PASS]%s %s\n' \
+    "${ansi__[fg:green]}" "${ansi__[fg:reset]}" $desc__
+  return 0
+}
+
+(( show__ == -1 || show__ == pass__ )) &&
+shu:io:putf $quiet__ '%s[FAIL]%s %s\n' \
+  "${ansi__[fg:red]}" "${ansi__[fg:reset]}" $desc__
+(( fail_panics__ )) && shu::panic 'Assertion failed'
+return 1

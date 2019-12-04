@@ -1,0 +1,12 @@
+[access]
+type = file
+file = %TABLE%.log
+path = %XDG_CACHE_HOME%/zflai/
+
+[hooks]
+on_open =
+on_open_sh =
+on_close =
+on_close_sh =
+
+; vim:ft=dosini:et

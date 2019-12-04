@@ -1,0 +1,74 @@
+#!/usr/bin/env zsh
+# -*- mode: sh; sh-indentation: 4; sh-basic-offset: 4; indent-tabs-mode:nil; -*-
+# vim:ft=zsh:sw=4:sts=4:et
+
+# Copyright 2019 Sebastian Gniazdowski
+# License: MIT
+
+# Run as script? ZSH_SCRIPT is a Zsh 5.3 addition
+if [[ $0 != "zide-test" || -n $ZSH_SCRIPT ]]; then
+    # Handle $0 according to the Zsh Plugin Standard:
+    # http://zdharma.org/Zsh-100-Commits-Club/Zsh-Plugin-Standard.html
+    0=${${ZERO:-${0:#$ZSH_ARGZERO}}:-${(%):-%N}}
+    0=${${(M)0##/*}:-$PWD/$0}
+else
+    0=${funcsourcetrace[-1]%:*}
+fi
+
+emulate -LR zsh
+setopt extendedglob warncreateglobal typesetsilent noshortloops rcquotes
+   
+typeset ZIDE_TEST_DIR=${0:h}
+fpath+=( $ZIDE_TEST_DIR )
+path+=( $ZIDE_TEST_DIR )
+
+# Load/setup the components
+source $ZIDE_TEST_DIR/components/zflai/zflai.plugin.zsh
+source $ZIDE_TEST_DIR/components/zui/zui.plugin.zsh
+source $ZIDE_TEST_DIR/components/zsh-string-lib/zsh-string-lib.lib.zsh
+typeset -x PATH=$PATH:$ZIDE_TEST_DIR/components/zshelldoc/bin
+source $ZIDE_TEST_DIR/components/shu2/lib
+typeset -x PATH=$PATH:$ZIDE_TEST_DIR/components/zunit
+typeset -x PATH=$PATH:$ZIDE_TEST_DIR/components/revolver
+typeset -x PATH=$PATH:$ZIDE_TEST_DIR/components/czhttpd
+typeset -x PATH=$PATH:$ZIDE_TEST_DIR/components/shfmt
+typeset -x PATH=$PATH:$ZIDE_TEST_DIR/components/modernish-bin/bin
+
+# Example uses
+
+# Zflai
+
+# Learn a table. The timestamp field is automatically populated.
+zflai-ctable  "a-table :: timestamp:integer / message:varchar(288)"
+# Log to the default backend – a file in ~/.cache/zflai
+zflai-log "a-table :: Hello World!"
+
+# Zsh-string-lib
+
+# Prepare a simple JSON buffer
+typeset json='{
+    "profiles":{
+	"empty": {},
+        "default":{
+            "as":"program"
+        },
+        "bgn":{
+            "as":"null",
+            "sbin":"fzy;contrib/fzy-*"
+        }
+    }
+}'
+
+# Parse the buffer
+local -A Strings; @str-parse-json "$json" "profiles" Strings
+
+# Get the `bgn' profile
+pos=${${(@Q)${(@z)Strings[2/1]}}[(I)bgn]}
+if (( pos )) {
+    local -A fields
+    fields=( "${(@Q)${(@z)Strings[3/$(( (pos+1) / 2 ))]}}" )
+    # Use the `fields' hash holding the values of the `bgn' object
+    # …
+    print -rl -- "${(kv)fields[@]}"
+}
+

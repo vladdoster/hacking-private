@@ -1,0 +1,2694 @@
+#! /bin/sh
+
+# modernish - a portable POSIX shell moderniser library.
+#
+# Goals:
+# 1. Sanity: fix frequent shell language pitfalls and annoyances
+# 2. Safety: enhance the security and robustness of shell scripts
+# 3. Portability: realise the POSIX promise of "write once, adopt everywhere" for the shell
+# 4. Versatility: extend the shell language with useful features
+#
+# Release and doc: https://github.com/modernish/modernish
+# POSIX reference: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/contents.html
+#
+# --- begin license ---
+# Copyright (c) 2019 Martijn Dekker <martijn@inlv.org>, Groningen, Netherlands
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+# --- end license ---
+
+# -------------
+
+case ${MSH_VERSION+s} in
+( s )	if ! { (unset -v MSH_VERSION) 2>|/dev/null && unset -v MSH_VERSION; }; then
+		case $MSH_VERSION in
+		( failedinit )	echo 'Initialisation has previously failed. Try another shell.' 1>&2 ;;
+		( * )		echo 'Already initialised. To reload modernish, exit this shell first.' 1>&2 ;;
+		esac
+		case $- in
+		( *i* )	return 128 ;;
+		esac
+		\exit 128
+	fi ;;
+esac >|/dev/null || {
+	echo 'modernish does not run on restricted shells.' 1>&2
+	case $- in
+	( *i* )	return 128 ;;
+	esac
+	\exit 128
+}
+
+# If PS4 is default, set a useful PS4 for xtrace (set -x) output.
+case ${PS4-} in
+( "+ " | "+%N:%i> " )
+	# The ${foo#{foo%/*/*}/} substitutions below are to trace just the last two
+	# elements of path names, instead of the full paths which can be very long.
+	case ${ZSH_VERSION:+Zsh}${NETBSD_SHELL:+Netsh}${KSH_VERSION:+Ksh}${BASH_VERSION:+Bash} in
+	(Zsh)	typeset -F SECONDS
+		PS4='+ [${SECONDS:+${SECONDS%????}s|}${ZSH_SUBSHELL:+S$ZSH_SUBSHELL,}${funcfiletrace:+${funcfiletrace#${funcfiletrace%/*/*}/},}${funcstack:+${funcstack#${funcstack%/*/*}/},}${LINENO:+L$LINENO,}e$?] ' ;;
+	(Netsh)	PS4='+ [${ToD:+$ToD|}${LINENO:+L$LINENO,}e$?] ' ;;
+	(Ksh)	case $KSH_VERSION in
+		('Version '* | 2[0-9][0-9][0-9].*)
+			typeset -F SECONDS
+			PS4='+ [${SECONDS:+${SECONDS%????}s|}${.sh.subshell:+S${.sh.subshell},}${.sh.file:+${.sh.file#${.sh.file%/*/*}/},}${.sh.fun:+${.sh.fun},}${LINENO:+L$LINENO,}e$?] ' ;;
+		(@\(*)	PS4='+ [${EPOCHREALTIME:+${EPOCHREALTIME#???????}s|}${BASHPID:+P$BASHPID,}${LINENO:+L$LINENO,}e$?] ' ;;
+		esac ;;
+	(Bash)	case ${EPOCHREALTIME:+s} in
+		(s)	PS4='+ [${EPOCHREALTIME:+${EPOCHREALTIME#???????}s|}' ;;
+		('')	PS4='+ [${SECONDS:+${SECONDS}s|}' ;;
+		esac
+		PS4=$PS4'${BASHPID:+P$BASHPID,}${BASH_SOURCE:+${BASH_SOURCE#${BASH_SOURCE%/*/*}/},}${FUNCNAME:+$FUNCNAME,}${LINENO:+L$LINENO,}e$?] ' ;;
+	('')	case ${SECONDS:+s} in
+		(s)	PS4='+ [${SECONDS:+${SECONDS}s|}${LINENO:+L$LINENO,}e$?] ' ;;
+		('')	PS4='+ [${LINENO:+L$LINENO,}e$?] ' ;;
+		esac ;;
+	esac ;;
+esac
+
+# -------------
+
+# Initialization, phase 1.
+
+# If modernish is initialised in a subshell on ksh93, force it to fork to avoid many bugs. Ref.:
+# https://github.com/att/ast/issues/480
+case ${KSH_VERSION-} in
+( 'Version '* | 2[0-9][0-9][0-9].* )
+	\command let .sh.subshell && \command ulimit -t unlimited 2>/dev/null ;;
+esac
+
+# For scripts, remove all aliases, as some shells set unhelpful defaults.
+# On interactive shells, remove certain aliases and functions that would interfere.
+case $- in
+( *i* )	\unset -f command exec alias unalias set unset exit return eval kill let ulimit getconf cd pwd true false local
+	\unalias command exec alias unalias set unset exit return eval kill let ulimit getconf cd pwd true false local \
+		echo printf test showusage \
+		@ROFUNC@	# install.sh will replace this tag
+	;;
+( * )	\unalias -a ;;
+esac 2>| /dev/null && :
+
+# Modernish does _not_ support -e (-o errexit).
+set +e
+
+# Save and turn off 'allexport' to avoid exporting internal variables.
+case $- in
+( *a* )	set +a; _Msh_allexport=y ;;
+( * )	unset -v _Msh_allexport ;;
+esac
+
+# Internal function for aborting initialisation.
+_Msh_initExit() {
+	case ${MSH_IGNORE_FATAL_BUGS+s} in
+	( s )	PATH=${DEFPATH:+$DEFPATH:}${_Msh_PATH:+$_Msh_PATH:}${PATH}:/bin:/usr/bin \
+			printf 'modernish: %s\n' "$@" "Continuing anyway. THINGS WILL BREAK." 1>&2
+		return 0 ;;
+	esac
+	case ${PATH},${_Msh_PATH+s} in
+	( /dev/null,s )
+		PATH=${_Msh_PATH} ;;
+	esac
+	PATH=${DEFPATH:+$DEFPATH:}${PATH}:/bin:/usr/bin \
+		printf 'modernish: %s\n' ${1+"$@"} "Initialisation failed. Aborting." 1>&2
+	MSH_VERSION=failedinit
+	readonly MSH_VERSION
+	case $- in
+	( *i* )	# try not to exit an interactive shell
+		kill -INT "$$" || kill -s INT "$$" ;;
+	esac 2>|/dev/null
+	\exit 128
+}
+
+# The version and location of modernish.
+MSH_VERSION=0.17.10-dev
+MSH_PREFIX=${srcdir:-$(_Msh_D=.; case $0 in (*/bin/modernish) _Msh_D=${0%/bin/*};; esac; cd "$_Msh_D" && pwd)} || _Msh_initExit # this line will be changed by install.sh
+MSH_MDL=$MSH_PREFIX/lib/modernish/mdl
+MSH_AUX=$MSH_PREFIX/lib/modernish/aux
+MSH_CONFIG=${XDG_CONFIG_HOME:-~/.config}/modernish
+
+# --- Standards compliance checks and settings ---
+
+# ... first, a sanity check
+case \
+${BASH_VERSION+s}\
+${KSH_VERSION+s}\
+${NETBSD_SHELL+s}\
+${POSH_VERSION+s}\
+${SH_VERSION+s}\
+${YASH_VERSION+s}\
+${ZSH_VERSION+s}\
+ in
+( s )	;;
+( '' )	command set -o posix 2>/dev/null ;;	# Try if a non-identifiable shell has a POSIX option
+( * )	_Msh_initExit "sanity check failed: more than one shell version identifier variable found" ;;
+esac
+
+# ... zsh:
+case ${ZSH_VERSION+z} in
+( z )	case $- in
+	( *x* )	emulate -R sh; set -x ;;
+	( * )	emulate -R sh ;;
+	esac
+	# We need POSIX_ARGZERO for correct initialisation in phase 2.
+	setopt POSIX_ARGZERO
+	# Enable UTF-8 support if we're in such a locale.
+	setopt MULTIBYTE	# TODO: remove when we stop supporting zsh 5.0.8
+	# On zsh < 5.3, "readonly" works like "typeset -r" even in POSIX mode,
+	# meaning readonly variables set in functions are local to functions,
+	# which is contrary to our usage and POSIX. Test for that bug and make
+	# "readonly" do "typeset -rg" if found, making them global.
+	# TODO: remove when we stop supporting zsh < 5.3
+	unset -v _Msh_RO
+	_Msh_testFn() {
+		readonly _Msh_RO=y
+	}
+	_Msh_testFn
+	case ${_Msh_RO-} in
+	( y )	unsetopt POSIX_BUILTINS	# allow 'typeset +r'
+		typeset +r _Msh_RO
+		setopt POSIX_BUILTINS
+		unset -v _Msh_RO ;;
+	( * )	disable -r readonly 2>/dev/null	# it's a reserved word on zsh 5.2
+		disable readonly
+		eval 'function readonly { typeset -rg "$@"; }'
+		alias readonly='typeset -rg' ;;
+		# In stage 2 init at the end, we'll redefine this alias to be
+		# properly conditional upon posixbuiltins. Not doing this now
+		# as it comes at the cost of forking a subshell and
+		# modernish init doesn't need it.
+	esac
+	if ! unset -f _Msh_nonexistent_fn 2>/dev/null; then
+		# 'unset -f' complains about nonexistent functions (contra POSIX);
+		# make it quietly accept them like other shells.
+		# TODO: remove when we stop supporing zsh < 5.5
+		eval 'function unset {
+			case $1 in
+			( -f )  builtin unset "$@" 2>/dev/null || : ;;
+			( * )	builtin unset "$@" ;;
+			esac
+		}'
+	fi
+	# Make zsh even more POSIXy for cross-shell scripts only.
+	case $0 in
+	( modernish | */modernish )
+		# These zsh-specific reserved words may interfere with shell functions.
+		disable -r end foreach nocorrect repeat 2>/dev/null
+		# These revert to builtins, subject to KSH_TYPESET, which is off by default for sh.
+		disable -r declare export float integer local readonly typeset 2>/dev/null
+		# Counting line numbers of 'eval' commands is more in line with other shells.
+		setopt EVAL_LINENO
+		;;
+	esac
+	;;
+esac
+
+# ... pdksh and derivatives (oksh, mksh, lksh, ... ?)
+case ${KSH_VERSION:-${SH_VERSION:-}} in
+( '@(#)'* )
+	set -o posix
+	# mksh/lksh have UTF-8 support as of R38, but it needs to be turned on
+	# explicitly with 'set -U'; the locale is not detected for scripts,
+	# presumably for backwards compatibility with OpenBSD which only
+	# supports ASCII. The recipe below is recommended by mksh's man page.
+	case ${KSH_VERSION:-} in
+	( '@(#)MIRBSD KSH '* | '@(#)LEGACY KSH '* )
+		case ${LC_ALL:-${LC_CTYPE:-${LANG:-}}} in
+		( *[Uu][Tt][Ff]8* | *[Uu][Tt][Ff]-8* )
+			set -U ;;
+		( * )	set +U ;;
+		esac ;;
+	esac ;;
+esac
+
+# ... yash: The posix mode disables most extended shell functionality that scripts might want
+# to detect and use. It also makes yash search for an equivalent external utility in $PATH
+# before each execution of any regular built-in, which seriously impacts performance. So let's
+# leave it off by default. (Enable it manually for a very good POSIX compatibility check.)
+case ${YASH_VERSION+s} in
+( s )	#set -o posix
+	# As of yash 2.49, stop the 'for' loop from making the iteration variable local (BUG_FORLOCAL).
+	command set +o forlocal 2>/dev/null ;;
+esac
+
+# ... NetBSD sh:
+case ${NETBSD_SHELL+n} in
+( n )	set -o posix ;;
+esac
+
+# ... external commands:
+export POSIXLY_CORRECT=y	# this also sets -o posix on bash
+
+# Set default system $PATH, a path guaranteed to find standard POSIX utilities.
+. "$MSH_PREFIX/lib/_install/defpath.sh" || _Msh_initExit	# this line will be changed by install.sh
+
+# Quickly run a battery of fatal bug tests.
+_Msh_test=$( command . "$MSH_AUX/fatal.sh" || echo BUG )
+case ${_Msh_test} in
+( "${PPID:-no_match_on_no_PPID}" ) ;;
+( * ) _Msh_initExit "Fatal shell bug(s) detected; this shell cannot run modernish." ;;
+esac
+
+# $MSH_SHELL is our default confirmed POSIX-compliant shell.
+. "$MSH_PREFIX/lib/_install/goodsh.sh" || _Msh_initExit		# this line will be changed by install.sh
+
+# ^^^ End of standards compliance checks and settings ^^^
+
+# Do the entire initialisation with PATH=/dev/null, so we can test for builtins without external commands interfering.
+# Don't use regular builtins (e.g. 'test'/'[') without PATH=$DEFPATH, or yash in POSIX mode won't find them.
+_Msh_PATH=$PATH
+PATH=/dev/null
+
+# --- $RANDOM ---
+
+# Seed the $RANDOM pseudorandom number generator if we have it. In any case, set it
+# to read-only to block unsetting/overwriting and using it as a regular variable.
+# Modernish library functions depend on it either working properly or being absent.
+case ${RANDOM+s},${RANDOM-} in
+( s, | s,*[!0123456789]* )
+	unset -v RANDOM ;;
+( s,* )	# don't discard any seeding the shell may have done: xor our PID
+	RANDOM=$((RANDOM ^ $$))
+	case $RANDOM,$RANDOM,$RANDOM,$RANDOM in
+	( "$RANDOM,$RANDOM,$RANDOM,$RANDOM" )
+		unset -v RANDOM ;;
+	esac ;;
+esac
+readonly RANDOM
+
+# --- local ---
+
+# If we can do local variables with 'typeset' but not with 'local',
+# then alias 'local' to 'typeset' for greater portability.
+if	! command -v local >/dev/null \
+	&& command -v typeset >/dev/null \
+	&& _Msh_testFn() { typeset _Msh_test && _Msh_test=7; } \
+	&& _Msh_test=42 \
+	&& _Msh_testFn
+then
+	case ${_Msh_test} in
+	( 42 )  alias local=typeset ;;
+	esac
+fi
+
+# --- Control character constants ---
+
+# POSIX does not have a good way to refer to control characters in variable
+# assignments or as parameters to arbitrary commands. Let's make this
+# convenient using readonly variables (constants) in the CC[017][0-9A-F]
+# and CC[a-z] namespaces (CC = control character).
+# ATTENTION: LITERAL CONTROL CHARACTERS BELOW. Most editors handle this gracefully.
+#
+# We cannot have $CC00 because shell variables can't contain the 0 character.
+		CC01=''	CC02=''	CC03=''	CC04=''	CC05=''	CC06=''	CC07=''
+CC08=''	CC09='	'			CC0B=''	CC0C=''	CC0D=''	CC0E=''	CC0F=''
+CC10=''	CC11=''	CC12=''	CC13=''	CC14=''	CC15=''	CC16=''	CC17=''
+CC18=''	CC19=''	CC1A=''	CC1B=''	CC1C=''	CC1D=''	CC1E=''	CC1F=''
+CC7F=''
+CC0A='
+'
+readonly     CC01 CC02 CC03 CC04 CC05 CC06 CC07 \
+	CC08 CC09 CC0A CC0B CC0C CC0D CC0E CC0F \
+	CC10 CC11 CC12 CC13 CC14 CC15 CC16 CC17 \
+	CC18 CC19 CC1A CC1B CC1C CC1D CC1E CC1F \
+	CC7F
+
+# For convenience, provide some synonyms corresponding with 'printf' codes:
+readonly "CCe=$CC1B" "CCa=$CC07" "CCb=$CC08" "CCf=$CC0C" "CCn=$CC0A" "CCr=$CC0D" "CCt=$CC09" "CCv=$CC0B"
+# All the control characters:
+readonly "CONTROLCHARS=$CC01$CC02$CC03$CC04$CC05$CC06$CC07$CC08$CC09$CC0A$CC0B$CC0C$CC0D$CC0E$CC0F$CC10$CC11$CC12$CC13$CC14$CC15$CC16$CC17$CC18$CC19$CC1A$CC1B$CC1C$CC1D$CC1E$CC1F$CC7F"
+# All whitespace characters (starts with a space):
+readonly "WHITESPACE= $CCt$CCn$CCv$CCf$CCr"
+# The ASCII uppercase alphabet:
+readonly "ASCIIUPPER=ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+# The ASCII lowercase alphabet:
+readonly "ASCIILOWER=abcdefghijklmnopqrstuvwxyz"
+# All the ASCII alphanumeric characters:
+readonly "ASCIIALNUM=0123456789${ASCIIUPPER}${ASCIILOWER}"
+# Safelist for shell-quoting, good for use in bracket patterns.
+readonly "SHELLSAFECHARS=${ASCIIALNUM}%+,./:=@_^!-"
+# The complete set of ASCII characters, good for use in bracket patterns.
+readonly "ASCIICHARS=${CONTROLCHARS} \"#\$&'()*;<>?[\\\\\\]\`{|}~${SHELLSAFECHARS}"
+
+# SIGPIPESTATUS
+# According to POSIX, the numerical value of SIGPIPE is implementation-defined. In addition, different
+# shells have different exit status offsets for signals: yash has signum+384, ksh93 has signum+256, the
+# rest signum+128. So we have to kill a process with SIGPIPE to find out its exit status.
+SIGPIPESTATUS=$(PATH=$DEFPATH exec "$MSH_SHELL" -c 'kill -s PIPE "$$" && echo IGNORED')
+SIGPIPESTATUS=${SIGPIPESTATUS:-$?}
+case $SIGPIPESTATUS in
+( IGNORED )
+	SIGPIPESTATUS=99999 ;;
+( '' | *[!0123456789]* | ? | ?? | 1[01]? | 12[!9] )
+	_Msh_initExit "Can't determine SIGPIPESTATUS. Bad value: $SIGPIPESTATUS" ;;
+esac
+readonly SIGPIPESTATUS
+
+
+# --- End of stage 1 init, start of core library ---
+
+
+# preliminary isset
+isset() {
+	eval "case \${$1+s} in ( '' ) return 1 ;; esac"
+}
+
+# more readable synonym for '!'
+alias not='! '		# note: final space = continue to expand aliases
+
+# test preceding command's success with 'if so;' or 'if not so;'
+alias so='{ let "$?==0"; }'	# we'll add 'let' to shells without it
+
+# more readable indefinite loops
+alias forever='while :;'
+
+# die: Emergency program halt for fatal errors.
+# Usage: die [ <message> ]
+unset -v _Msh_die_isrunning _Msh__V_Msh_trapDIE__SP _Msh_POSIXtrapDIE
+# Determine 'ps' invocation options that show at least the PPID and PID columns (position/order irrelevant).
+case $(LC_ALL=C PATH=$DEFPATH exec ps -oppid,pid -p1 2>/dev/null) in
+( *PPID*[" $CCt"]PID${CCn}* | *PPID*[" $CCt"]PID )
+	unset -v _Msh_psBroken ;;	# POSIX '-o ppid,pid' (efficient)
+( * )	_Msh_psBroken='-l' ;;		# Cygwin; legacy unix (a lot of superfluous data)
+esac
+readonly _Msh_psBroken
+# We have two different versions of die() for interactive and scripts.
+case $- in
+( *i* )
+	# On an interactive shell, attempt to interrupt command execution (loops, compounds) and return straight to the
+	# prompt. If we die from within a subshell, kill all the current job's processes, leaving other jobs alone.
+	die() {
+		case $# in
+		( 0 )	;;
+		( * )	put "${ME##*/}: ${@}${CCn}" >/dev/tty
+			if ! is onterminal 2; then
+				put "${ME##*/}: ${@}${CCn}" >&2
+			fi ;;
+		esac
+		if insubshell -p; then
+			export "PATH=$DEFPATH" LC_ALL=C
+			set -f +e
+			IFS=$CCn
+			unset -f ps awk	# QRK_EXECFNBI compat
+			command kill -s KILL $(exec ps ${_Msh_psBroken:--oppid,pid} \
+			| exec awk -v currshpid="$REPLY" -v mainshpid="$$" \
+			'	NR == 1	{ for (i = 1; i <= NF; i++) if ($i == "PPID") pp = i; else if ($i == "PID") p = i; }
+				NR > 1	{ subpidlist[$pp] = (subpidlist[$pp])(" ")($p); ppid[$p] = $pp; }
+				END	{ printsubpids(jobmainpid(currshpid)); }
+				function jobmainpid(pid) {
+					while (ppid[pid] != mainshpid \
+					&& ppid[pid] in ppid \
+					&& ppid[ppid[pid]] != ppid[pid]) {
+						pid = ppid[pid];
+					}
+					return pid;
+				}
+				function printsubpids(pid,   numsubs, i, subpid) {
+					if (pid != currshpid) print pid;
+					numsubs = split(subpidlist[pid], subpid, " ");
+					for (i = 1; i <= numsubs; i++) {
+						printsubpids(subpid[i]);
+					}
+				}
+			') 2>/dev/null
+			command kill -s INT "$$"
+		else
+			# In main shell. If SIGINT is eaten by a trap, unset it and retry.
+			command kill -s INT "$$"
+			command trap - INT
+			command kill -s INT "$$"
+			putln "${ME##*/}: die: Failed to interrupt shell. Emergency exit." >&2
+		fi
+		command trap - 0	# BUG_TRAPEXIT compat
+		command exit 128
+	}
+	;;
+( * )
+	# Non-interactive: execute DIE traps if set (using var/stack/trap), then kill the program:
+	# send SIGKILL to main process plus all its subprocesses (including subshells and commands).
+	die() {
+		# Save current exit status for DIE traps.
+		_Msh_E=$?
+		# Try to prevent loops.
+		case ${_Msh_die_isrunning+s} in
+		( s )	_Msh_doExit 128 "$@" ;;
+		esac
+		_Msh_die_isrunning=y
+		alias die='_Msh_doExit 128'
+		# Execute any DIE traps (set or pushed using var/stack/trap) simultaneously in the background.
+		# Also print the error message in the background in case output blocks due to redirection.
+		# Background jobs are </dev/null by default, which is unwanted for traps, so redirect stdin to a copy of itself.
+		# (Preserving stdin allows 'stty' to restore terminal state from a trap.)
+		{ command : 9<&0; } 2>/dev/null || exec </dev/null  # make sure stdin is open for copying
+		{ {
+			case ${_Msh__V_Msh_trapDIE__SP+s} in
+			( s )	while let "(_Msh__V_Msh_trapDIE__SP-=1) >= 0"; do
+					_Msh_doOneStackTrap DIE "${_Msh__V_Msh_trapDIE__SP}" "${_Msh_E}" 0<&8 &
+				done ;;
+			esac
+			case ${_Msh_POSIXtrapDIE+p} in
+			( p )	eval "setstatus ${_Msh_E}; ${_Msh_POSIXtrapDIE}" 0<&8 & ;;
+			esac
+			put "${ME##*/} died${1+: }$@$CCn" >/dev/tty	#\
+			if ! is onterminal 2; then			# > BUG_PP_1ARG compat: use ${1+: }$@, not ${1+: $@}
+				put "${ME##*/} died${1+: }$@$CCn" >&2	#/
+			fi
+		} & } 8<&0
+		# Save this PID to exclude it, and any DIE traps, from being killed,
+		_Msh_tPID=$!
+		# No need to save any settings now...
+		export "PATH=$DEFPATH" LC_ALL=C
+		set -f +e
+		IFS=$CCn
+		unset -f ps awk	# QRK_EXECFNBI compat
+		# Abort the entire program: kill all its processes except the current (sub)shell process, then exit
+		# the current process. Issue SIGKILL, which cannot be ignored and won't execute any signal traps.
+		insubshell -p  # store current (sub)shell's PID in REPLY
+		command kill -s KILL $(exec ps ${_Msh_psBroken:--oppid,pid} \
+		| exec awk -v currshpid="$REPLY" -v mainshpid="$$" -v dietrapspid="${_Msh_tPID}" \
+		'	NR == 1	{ for (i = 1; i <= NF; i++) if ($i == "PPID") pp = i; else if ($i == "PID") p = i; }
+			NR > 1	{ subpidlist[$pp] = (subpidlist[$pp])(" ")($p); ppid[$p] = $pp; }
+			END {
+				if (!(mainshpid in ppid)) {
+					# In orphaned background job; main shell no longer exists. Move up into the
+					# hierarchy until we find the orphaned (grand)parent, then kill down from there.
+					printsubpids(jobmain(currshpid));
+				} else {
+					printsubpids(mainshpid);
+				}
+			}
+			function jobmain(pid) {
+				while (ppid[pid] in ppid && ppid[ppid[pid]] != ppid[pid]) {
+					pid = ppid[pid];
+				}
+				return pid;
+			}
+			function printsubpids(pid,   numsubs, i, subpid) {
+				if (pid != currshpid) print pid;
+				numsubs = split(subpidlist[pid], subpid, " ");
+				for (i = 1; i <= numsubs; i++) {
+					if (subpid[i] != dietrapspid) printsubpids(subpid[i]);
+				}
+			}
+		') 2>/dev/null
+		command trap - 0  # clear EXIT trap (BUG_TRAPEXIT compat); only DIE traps are executed upon die()
+		command exit 128
+	}
+	;;
+esac
+
+# Extended 'exit'. Usage: exit [ -u ] [ <status> [ <message> ] ]
+# The <status> is a shell arithmetic expression.
+alias exit=_Msh_doExit
+unset -v _Msh_exit_inUsage
+_Msh_doExit() {
+	_Msh_exit_status=$?
+	unset -v _Msh_exit_u
+	while case ${1-} in ( -- ) shift; break ;; ( -* ) ;; ( * ) break ;; esac; do
+		case $1 in
+		( -u )	_Msh_exit_u= ;;
+		( -* )	die "exit: invalid option: $1" ;;
+		esac
+		shift
+	done
+	let $# && _Msh_exit_status=$(( ($1) & 255 )) && shift
+	let _Msh_exit_status 1>&2 && exec 1>&2
+	let $# && put "${ME##*/}: ${@}${CCn}"
+	isset _Msh_exit_u && ! isset _Msh_exit_inUsage && isset -f showusage && (_Msh_exit_inUsage= ; showusage)
+	command exit "${_Msh_exit_status}"
+}
+
+# Manually set exit status ("$?") to the desired value. The canonical method
+# is '(exit $status)' but that forks a subshell. Using a function is much
+# faster. Don't do validation except for non-negative decimal integer, as
+# many shells internally support exit statuses much greater than 255.
+setstatus() {
+	case ${#} in
+	( 1 )	_Msh_sS_E=$(($1))
+		case ${_Msh_sS_E} in
+		( -* )	die "setstatus: negative exit status not supported" ;;
+		( * )	eval "unset -v _Msh_sS_E; return ${_Msh_sS_E}" ;;
+		esac ;;
+	( * )	die "setstatus: need 1 argument, got $#" ;;
+	esac
+}
+
+# Use a modernish module.
+# If the module is already loaded, does nothing and exits successfully
+# (status 0), preventing dependency loops. The newline-separated global
+# internal variable _Msh_using keeps track of the modules in use.
+# If a directory D is given and no module file D.mm is found, then
+# 'use' will recursively load the modules in that directory.
+# Option -q: query if the module is already loaded.
+# Option -e: query if the module exists.
+# Option -l: list modules in use.
+_Msh_using=''
+use() {
+	unset -v _Msh_use_o
+	while	case ${1-} in
+		( -- )		shift; break ;;
+		( -[qel] )	isset _Msh_use_o && die "use: options cannot be combined"
+				_Msh_use_o=${1#-} ;;
+		( -* )		die "use: unknown option: $1" ;;
+		( * )		break ;;
+		esac
+	do
+		shift
+	done
+	case ${_Msh_use_o-} in
+	( l )	let "$#" && die "use -l: excess arguments"
+		str empty "${_Msh_using}" || putln "${_Msh_using}"
+		unset -v _Msh_use_o
+		return 0 ;;
+	( ? )	let "$# == 1" || die "use -${_Msh_use_o}: need 1 argument, got $#" ;;
+	( * )	let "$#" || die "use: need at least 1 argument, got $#" ;;
+	esac
+	case $1 in
+	( '' | *[!$SHELLSAFECHARS]* | /* | */ | *//* | *.mm )
+		die "use: invalid module name: $1" ;;
+	esac
+	case $CCn${_Msh_using}$CCn in
+	( *"$CCn$1$CCn"* ) # module already loaded
+		unset -v _Msh_use_o
+		return 0 ;;
+	esac
+	case ${_Msh_use_o-} in
+	( q )	unset -v _Msh_use_o
+		return 1 ;;
+	( e )	unset -v _Msh_use_o
+		is reg "$MSH_MDL/$1.mm" || is dir "$MSH_MDL/$1"
+		return ;;
+	esac
+	_Msh_doUse "$@"
+	case $? in
+	( 0 )	if isset -i; then putln "Using $1" >&2; fi
+		_Msh_using=${_Msh_using}${_Msh_using:+$CCn}$1 ;;
+	( * )	die "use: initialisation of module $1 failed" ;;
+	esac
+}
+_Msh_doUse() {
+	if is reg "$MSH_MDL/$1.mm"; then
+		. "$MSH_MDL/$1.mm" >&2
+	elif is dir "$MSH_MDL/$1"; then
+		let "$# == 1" || die "use: arguments cannot be passed to module directory: $1"
+		# recursively initialise all modules...
+		push -f; set +f; set -- "$MSH_MDL/$1"/*; pop -f
+		for _Msh_use_F do
+			{ is reg "${_Msh_use_F}" && str end "${_Msh_use_F}" '.mm'; } || is dir "${_Msh_use_F}" || continue
+			_Msh_use_F=${_Msh_use_F#"$MSH_MDL/"}	# "
+			_Msh_use_F=${_Msh_use_F%.mm}
+			str match "${_Msh_use_F}" "*[!$SHELLSAFECHARS]*" && continue
+			use -- "${_Msh_use_F}"
+		done
+		unset -v _Msh_use_F
+	else
+		die "use: module $1 not found"
+	fi
+}
+
+
+# ___ thisshellhas ____________________________________________________________
+# Test if all of the given words are shell keywords, regular or special
+# built in commands, shell options, or (for words that are in all caps)
+# capbilities (features, quirks, bugs or warnings) detected for this shell.
+#
+# Usage: thisshellhas <item> [ <item> ... ]
+#        thisshellhas [ --cache | --show ]
+#
+# If <item> contains only uppercase letter, digits or '_', return the result
+# of the associated modernish capability test.
+# If <item> is an all-lowercase word, check if it's a shell reserved word or
+# built-in command on the current shell.
+# If <item> starts with --rw= or --kw=, check if it's a shell reserved word.
+# If <item> starts with --bi=, check if it's a shell built-in command.
+# If <item> is '-o' followed by a separate word, check if this shell has a
+# long-form shell option by that name.
+# If <item> is any other letter or digit preceded by a single '-', check if
+# this shell has a short-form shell option by that character.
+# --cache: run all capability detection tests and cache the results
+# --show: like --cache, but also output all the IDs of positive results, one per line
+#
+# Capability detection tests and shell option checks are cached in a variable
+# so repeated checks are not inefficient.
+unset -v _Msh_cap	# unexport, just in case
+_Msh_cap=''
+
+# ** First, some internal functions to support thisshellhas():
+
+# Preliminary function to source a bug/capability test (this will be used
+# during initialisation before we have is(), so must use 'test' for now).
+_Msh_doCapTest() {
+	unset -v _Msh_test						# guarantee unset variable for testing purposes
+	set -- "$MSH_PREFIX/lib/modernish/cap/$1.t"			# this can be used by test scripts as well
+	PATH=$DEFPATH command test -f "$1" || return			# return 1 if not found, > 1 (fatal) if 'test' fails
+	PATH=$DEFPATH command test -r "$1" || return 2
+	. "$1" 1>&2
+}
+# Pre-cache the results of all the capability/bug tests.
+_Msh_cacheCap() {
+	case ${_Msh_cap} in
+	( '#ALLCACHED '* )
+		return ;;	# already done
+	esac
+	# do any tests that haven't already been done
+	# eliminate negative test results; they are redundant with #ALLCACHED tag
+	push -f _Msh_c _Msh_newCap
+	set +f
+	_Msh_newCap=
+	for _Msh_c in "$MSH_PREFIX"/lib/modernish/cap/*.t; do
+		_Msh_c=${_Msh_c##*/}
+		_Msh_c=${_Msh_c%.t}
+		str match "${_Msh_c}" "*[!${ASCIIUPPER}0123456789_]*" && continue
+		thisshellhas "${_Msh_c}" && _Msh_newCap="${_Msh_newCap} ${_Msh_c}"
+	done
+	readonly _Msh_cap="#ALLCACHED${_Msh_newCap}"
+	pop -f _Msh_c _Msh_newCap
+}
+
+# ** Shell-specific code for thisshellhas():
+
+# POSIX does not allow for a reliable way to find out what is a shell
+# keyword or built in command, but it's essential for feature testing, so
+# we have to make do with various shell-specific versions.
+
+if isset BASH_VERSION && builtin shopt -s lastpipe 2>/dev/null
+then
+	# The LEPIPEMAIN capability (as of bash 4.2) needs to be tested for as a special
+	# case, because bash only has this capability if 'shopt -s lastpipe' is active
+	# *and* 'set -m' (job control) is *not* active, and either of those options may
+	# be set or unset during the course of a program.
+	_Msh_tSH_bashLEPIPEMAIN='case $1 in
+			( LEPIPEMAIN )
+				case $- in ( *m* ) return 1 ;; esac
+				builtin shopt -p lastpipe >/dev/null || return 1 ;;
+			esac'
+else
+	_Msh_tSH_bashLEPIPEMAIN=''
+fi
+
+if isset BASH_VERSION && builtin compgen -k
+then
+	# Version for bash (but not bash compiled with 'minimal configuration'). The
+	# 'compgen' builtin easily lists all keywords (-k) and special/regular builtins
+	# (-b). Store them in cache variables so that subsequent invocations of
+	# thisshellhas() don't require forking command substitution subshells.
+	readonly "_Msh_biCache=$(builtin compgen -b)" "_Msh_kwCache=$(builtin compgen -k)"
+	_Msh_tSH_testBI='case $CCn${_Msh_biCache}$CCn in
+			( *"$CCn${1#--bi=}$CCn"* ) ;;
+			( * )	return 1 ;;
+			esac'
+	_Msh_tSH_testKW='case $CCn${_Msh_kwCache}$CCn in
+			( *"$CCn${1#--[rk]w=}$CCn"* ) ;;
+			( * )	return 1 ;;
+			esac'
+elif isset ZSH_VERSION && builtin enable -r
+then
+	# Version for zsh, using the same strategy as bash with compgen. 'enable -r' prints all
+	# keywords (reserved words), just 'enable' prints all special and regular builtins.
+	readonly "_Msh_biCache=$(builtin enable)" "_Msh_kwCache=$(builtin enable -r)"
+	_Msh_tSH_testBI='case $CCn${_Msh_biCache}$CCn in
+			( *"$CCn${1#--bi=}$CCn"* ) ;;
+			( * )	return 1 ;;
+			esac 2>/dev/null'	# suppress huge trace if set -x
+	_Msh_tSH_testKW='case $CCn${_Msh_kwCache}$CCn in
+			( *"$CCn${1#--[rk]w=}$CCn"* ) ;;
+			( * )	return 1 ;;
+			esac 2>/dev/null'	# suppress huge trace if set -x
+elif isset YASH_VERSION && {
+	PATH=$DEFPATH command test -o posix
+	case $? in
+	( 0 )	set +o posix; command -vkb if && set -o posix || ! set -o posix ;;
+	( 1 )	command -vkb if ;;
+	( * )	false ;;
+	esac
+}; then
+	# Version for yash. 'command -v --keyword' (-vk) and 'command -v --builtin-command'
+	# (-vb) do just what we want, but only if posix mode is off.
+	_Msh_tSH_testBI='if PATH=$DEFPATH command test -o posix; then
+				set +o posix
+				command -vb -- "${1#--bi=}" || { set -o posix; return 1; }
+				set -o posix
+				# yash in POSIX mode checks builtins against $PATH, so recheck
+				command -v "${1#--bi=}" || return 1
+			else
+				command -vb -- "${1#--bi=}" || return 1
+			fi >/dev/null'
+	_Msh_tSH_testKW='if PATH=$DEFPATH command test -o posix; then
+				set +o posix
+				command -vk -- "${1#--[rk]w=}" || { set -o posix; return 1; }
+				set -o posix
+			else
+				command -vk -- "${1#--[rk]w=}" || return 1
+			fi >/dev/null'
+elif case "${KSH_VERSION-}" in
+	( 'Version '* | 2[0-9][0-9][0-9].* ) ;;
+	( * ) false ;;
+	esac
+then
+	# Version for ksh93.
+	# The 'builtin' command lists all the builtins so we can cache them.
+	# Some builtins have paths starting with path names and are only used
+	# if the (not necessarily existent!) directory is in $PATH.
+	# There is no way to list shell keywords, so use the default technique for those.
+	readonly "_Msh_biCache=$(builtin)"
+	_Msh_kwCache=
+	_Msh_kwOutput=$(command -V 'while')
+	readonly "_Msh_kwOutput=${_Msh_kwOutput#*while}"	# remove the keyword itself
+	_Msh_tSH_testBI='case $CCn${_Msh_biCache}$CCn in
+			( *"$CCn${1#--bi=}$CCn"* ) ;;
+			( *"/${1#--bi=}$CCn"* )
+				# Found builtin with path name. Isolate the "directory" and check $PATH.
+				_Msh_tSH_D=${_Msh_biCache}${CCn}
+				_Msh_tSH_D=${_Msh_tSH_D%%/${1#--bi=}${CCn}*}
+				_Msh_tSH_D=${_Msh_tSH_D##*${CCn}}
+				case :$PATH: in
+				( *":${_Msh_tSH_D}:"* | *":${_Msh_tSH_D}/:"* )
+					unset -v _Msh_tSH_D ;;
+				( * )	unset -v _Msh_tSH_D; return 1 ;;
+				esac ;;
+			( * )	return 1 ;;
+			esac'
+	_Msh_tSH_testKW='case "${_Msh_kwCache} " in
+			( *" ${1#--[rk]w=} "* ) ;;
+			( *" !${1#--[rk]w=} "* ) return 1 ;;
+			( * )	PATH=/dev/null command -v -- "${1#--[rk]w=}" >/dev/null \
+				&& case $(command -V -- "${1#--[rk]w=}" 2>/dev/null) in
+				( *"${_Msh_kwOutput}" )
+					_Msh_kwCache="${_Msh_kwCache} ${1#--[rk]w=}"
+					continue ;;
+				esac
+				_Msh_kwCache="${_Msh_kwCache} !${1#--[rk]w=}"
+				return 1 ;;
+			esac'
+else
+	# Generic/default version. As far as I know, this version works on all other shells;
+	# at least dash, Busybox ash, FreeBSD /bin/sh, {pd,m}ksh.
+	_Msh_biCache=
+	_Msh_kwCache=
+	# Distinguish a keyword from a builtin by checking against 'command -V' output of a POSIX keyword.
+	_Msh_kwOutput=$(command -V 'while')
+	readonly "_Msh_kwOutput=${_Msh_kwOutput#*while}"	# remove the keyword itself
+	# The --bi= test depends on 'command -v' still working for builtins with PATH=/dev/null, which technically
+	# violates POSIX but 'yash -o posix' is the only extant shell that cares, and it has its own version above.
+	_Msh_tSH_testBI='thisshellhas "--rw=${1#--bi=}" && return 1
+			case "${_Msh_biCache} " in
+			( *" ${1#--bi=} "* )	;;
+			( *" !${1#--bi=} "* )	return 1 ;;
+			( * )	PATH=/dev/null command -v -- "${1#--bi=}" >/dev/null \
+				&&    (	unalias -- "${1#--bi=}"
+					unset -f -- "${1#--bi=}"
+					PATH=/dev/null
+					command -v -- "${1#--bi=}" ) >/dev/null 2>&1 \
+				&& _Msh_biCache="${_Msh_biCache} ${1#--bi=}" \
+				&& continue
+				_Msh_biCache="${_Msh_biCache} !${1#--bi=}"
+				return 1 ;;
+			esac'
+	_Msh_tSH_testKW='case "${_Msh_kwCache} " in
+			( *" ${1#--[rk]w=} "* )	;;
+			( *" !${1#--[rk]w=} "* ) return 1 ;;
+			( * )	PATH=/dev/null command -v -- "${1#--[rk]w=}" >/dev/null \
+				&& case $(command -V -- "${1#--[rk]w=}" 2>/dev/null) in
+				( *"${_Msh_kwOutput}" )
+					_Msh_kwCache="${_Msh_kwCache} ${1#--[rk]w=}"
+					continue ;;
+				esac
+				_Msh_kwCache="${_Msh_kwCache} !${1#--[rk]w=}"
+				return 1 ;;
+			esac'
+fi >/dev/null 2>&1
+
+# ** Main function. Insert the above-determined shell-specific code into it.
+
+_Msh_optCache=
+eval 'thisshellhas() {
+	case ${#},${-} in
+	( 0,* )	die "thisshellhas: need at least 1 argument, got $#" ;;
+	( *a* )	set +a; thisshellhas "$@"; eval "set -a; return $?" ;;
+	esac
+	while case $# in (0) break;; esac; do
+		case $1 in
+		( --cache )
+			_Msh_cacheCap
+			;;
+		( --show )
+			_Msh_cacheCap
+			push IFS -f
+			IFS=" "; set -f
+			putln ${_Msh_cap#?ALLCACHED}
+			pop IFS -f
+			;;
+		( "" | --bi= | --[rk]w= | --bi=*/* | --[rk]w=*/* \
+		| --bi=*[!\[\]\!{}"$SHELLSAFECHARS"]* \
+		| --[rk]w=*[!\[\]\!{}"$SHELLSAFECHARS"]* \
+		| --sig=*[!"$SHELLSAFECHARS"]* )
+			return 2  # invalid identifier
+			;;
+		( --bi=* )
+			'"${_Msh_tSH_testBI}"'
+			;;
+		( --[rk]w=* )
+			'"${_Msh_tSH_testKW}"'
+			;;
+		( --sig=* )
+			use -q var/stack/trap || die "thisshellhas: --sig: requires var/stack/trap"
+			if _Msh_arg2sig "${1#--sig=}" -nv; then
+				REPLY=${_Msh_sig}
+				unset -v _Msh_sig
+			else
+				unset -v _Msh_sig REPLY
+				return 1
+			fi ;;
+		( --* )	die "thisshellhas: invalid option: ${1%%=*}"
+			;;
+		( -o )	let "$# >= 2" || die "thisshellhas: -o: long-form option name expected"
+			_Msh_optNamCanon "$2" || eval "unset -v _Msh_opt; return $?"
+			unset -v _Msh_opt
+			shift ;;
+		( -[aCefmnuvx] )
+			;;
+		( -["$ASCIIALNUM"] )
+			case " ${_Msh_optCache} " in
+			( *" $1 "* )	;;
+			( *" !$1 "* )	return 1 ;;
+			( * )	if isset "$1" || (set "+${1#-}") 2>/dev/null; then
+					_Msh_optCache=${_Msh_optCache:+${_Msh_optCache} }$1
+				else
+					_Msh_optCache=${_Msh_optCache:+${_Msh_optCache} }!$1
+					return 1
+				fi ;;
+			esac ;;
+		( -* )	return 2 ;;
+		( *[!ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_]* )
+			thisshellhas "--bi=$1" || thisshellhas "--rw=$1" || return
+			;;
+		( * )	'"${_Msh_tSH_bashLEPIPEMAIN}"'
+			case " ${_Msh_cap} " in
+			( *" $1 "* )	;;
+			( *" !$1 "* | *" #ALLCACHED "* ) return 1 ;;
+			( * )	_Msh_doCapTest "$1"
+				case $? in
+				( 0 )	_Msh_cap=${_Msh_cap:+${_Msh_cap} }$1
+					unset -v _Msh_test ;;
+				( 1 )	_Msh_cap=${_Msh_cap:+${_Msh_cap} }!$1
+					unset -v _Msh_test
+					return 1 ;;
+				( * )	die "thisshellhas(): failure while testing for $1" ;;
+				esac ;;
+			esac
+			;;
+		esac
+		shift
+	done
+}'"${CCn}" || _Msh_initExit "thisshellhas() definition: 'eval' failed"
+unset -v _Msh_tSH_testBI _Msh_tSH_testKW _Msh_tSH_bashLEPIPEMAIN
+
+
+# ___ insubshell ______________________________________________________________
+# Check if we're currently running in a subshell.
+# Usage:	insubshell [ -p | -u ]
+# Returns with status 0 if we're in a subshell, 1 if not.
+# If -p is given, leaves the PID of the current (sub)shell in $REPLY.
+# If -u is given, leaves a shell-specific identifier of the current (sub)shell in $REPLY. This is *only*
+# useful for determining if you've entered a new subshell relative to a previously stored identifier.
+#
+# Generic, slow version. We must exec a shell to get it to report our PID back to us.
+_Msh_inSbSh_g0='_Msh_inSbSh_P=$(PATH=$DEFPATH exec "$MSH_SHELL" -u -c "echo \$PPID")'
+_Msh_inSbSh_g1='case ${1-},${_Msh_inSbSh_P} in
+	( *, | *,*[!0123456789]* )
+		putln "${ME##*/}: insubshell: internal error: cannot determine parent PID" 1>&2
+		isset _Msh_die_isrunning && REPLY=$$ && return 0 || die ;;'
+_Msh_inSbSh_g2='
+	(,$$)	unset -v _Msh_inSbSh_P; return 1 ;;
+	(*,$$)	REPLY=$$; unset -v _Msh_inSbSh_P; return 1 ;;
+	(,*)	unset -v _Msh_inSbSh_P; return 0 ;;
+	(*,*)	REPLY=${_Msh_inSbSh_P}; unset -v _Msh_inSbSh_P; return 0 ;;
+	esac'
+# Try to determine an efficient shell-specific version.
+if isset BASHPID && _Msh_test=$BASHPID &&
+	case $(PATH=$DEFPATH; trap 'echo "$((BASHPID != _Msh_test))"' EXIT; echo "$((BASHPID != _Msh_test))") in
+	("1${CCn}1")	;;
+	( * )		! unset -v BASHPID && _Msh_initExit "can't unset non-working BASHPID!" ;;
+	esac
+then	# bash 4 and mksh
+	# note inverted comparison: true = 1 = return false
+	_Msh_inSbSh_method='case $# in ( 1 ) return "$(((REPLY = BASHPID) == $$))" ;; esac
+		return "$((BASHPID == $$))"'
+elif isset ZSH_VERSION && isset ZSH_SUBSHELL && _Msh_test=$ZSH_SUBSHELL &&
+	case $(PATH=$DEFPATH; trap 'echo "$((ZSH_SUBSHELL != _Msh_test))"' EXIT; echo "$((ZSH_SUBSHELL != _Msh_test))") in
+	("1${CCn}1")	;;
+	( * )		! unset -v ZSH_SUBSHELL && _Msh_initExit "can't unset non-working ZSH_SUBSHELL!" ;;
+	esac
+then	# zsh: $ZSH_SUBSHELL can tell us whether we're in a subshell, but not its PID, so fall back to generic for that.
+	_Msh_inSbSh_method='case ${1-},${ZSH_SUBSHELL} in
+		(,0)	return 1 ;;
+		(,*)	return 0 ;;
+		(-p,0)	REPLY=$$; return 1 ;;
+		(-u,*)	return "$((!(REPLY = ZSH_SUBSHELL)))" ;;
+		esac
+		'"${_Msh_inSbSh_g0}"'
+		'"${_Msh_inSbSh_g1}"'
+		esac
+		REPLY=${_Msh_inSbSh_P}; unset -v _Msh_inSbSh_P'
+elif case ${KSH_VERSION-} in ( Version* | 2[0-9][0-9][0-9].* ) ;; ( * ) ! : ;; esac; then
+	# AT&T ksh93. It usually does non-background subshells without forking a new process. However, such a
+	# non-forked subshell might fork mid-execution at any time, e.g. when executing 'ulimit' or performing a
+	# redirection within a command substitution. As the PID changes *and* ${.sh.subshell} is reset to 0 when
+	# forking (!), 'insubshell -u' would have no way of returning the same ID for the same subshell, which
+	# defeats its purpose. So, to ensure a consistent state, use 'ulimit' to force a non-forked subshell to
+	# fork whenever querying 'insubshell'. We can then simply use the generic method.
+	_Msh_inSbSh_method='
+		if ((.sh.subshell > 0)); then
+			command ulimit -t unlimited 2>/dev/null
+			(($# == 0)) && return 0
+		fi
+		'"{ ${_Msh_inSbSh_g0}; } 2>/dev/null  # suppress spurious job control warnings
+		${_Msh_inSbSh_g1}
+		${_Msh_inSbSh_g2}"
+else	# No shell-specific version available.
+	_Msh_inSbSh_method="${_Msh_inSbSh_g0}
+		${_Msh_inSbSh_g1}
+		${_Msh_inSbSh_g2}"
+fi
+eval 'insubshell() {
+	case ${#},${1-} in
+	( 1,-p | 1,-u )  ;;
+	( [!0]* ) die "insubshell: invalid arguments: $@" ;;
+	esac
+	'"${_Msh_inSbSh_method}"'
+}'
+unset -v _Msh_inSbSh_g0 _Msh_inSbSh_g1 _Msh_inSbSh_g2 _Msh_inSbSh_method
+
+# Protect these names on all shells to keep insubshell() working and portable.
+readonly BASHPID ZSH_SUBSHELL
+
+
+# ___ isset ___________________________________________________________________
+# Check if a variable, shell function or shell option is set.
+# Usage: isset <varname>	# check if variable is set
+#	 isset -v <varname>	# id.
+#	 isset -x <varname>	# check if variable is exported
+#	 isset -r <varname>	# check if variable is read-only
+#	 isset -f <funcname>	# check if shell function is set
+#	 isset -<optionletter>	# e.g. isset -C: check if shell option is set
+#	 isset -o <optionname>	# check if shell option is set by long name
+if thisshellhas BUG_IFSISSET; then
+	_Msh_isset_BUG_IFSISSET='( 1,IFS, | 2,-v,IFS )			# BUG_IFSISSET workaround:
+		case ${IFS:+n} in		# non-empty: it is set
+		( "" )	set -- "a b"		# empty: test for default field splitting
+			set -- $1
+			let "$# == 1"		# no field splitting: it is empty and set
+		esac ;;'
+else
+	_Msh_isset_BUG_IFSISSET=
+fi
+# ...isset -v
+if thisshellhas DBLBRACKET; then
+	if thisshellhas DBLBRACKETV; then
+		_Msh_isset='[[ -v $1 ]]'
+		_Msh_isset_v='[[ -v $2 ]]'
+	else
+		_Msh_isset='eval "[[ -n \${$1+s} ]]"'
+		_Msh_isset_v='eval "[[ -n \${$2+s} ]]"'
+	fi
+else
+	# default (POSIX) version
+	_Msh_isset='eval "case \${$1+s} in ( '\'''\'' ) return 1 ;; esac"'
+	_Msh_isset_v='eval "case \${$2+s} in ( '\'''\'' ) return 1 ;; esac"'
+fi
+# ...isset -x and isset -r
+if isset ZSH_VERSION && ( eval ': ${(t)PATH}' ) 2>/dev/null; then
+	# zsh makes this trivial: ${(t)VARNAME} (dash-separated) contains 'export', and
+	# the P in ${(Pt)1} means: use the variable name stored in $1. Good thing too,
+	# because 'export' on zsh is a reserved word we cannot alias (see below).
+	#
+	# Unfortunately, this does not work for unset readonly variables (zsh 5.0.8+) or unset exported
+	# variables (zsh 5.3+), which only exist with POSIXBUILTINS active. Must have fallback for that.
+	# For readonly, fall back to the simple assignment-in-subshell method. Exported unset variables
+	# require examining the output 'export -p'. Thankfully, on zsh, 'export -p' quotes newlines and
+	# always outputs one line per variable, so we can do the equivalent of simple grepping.
+	_Msh_isset_x='case ${(P)2+s} in
+		( s )	str in "-${(Pt)2}-" -export- ;;
+		( * )	str in "$(export -p)$CCn" " $2$CCn" ;;
+		esac'
+	_Msh_isset_r='case ${(P)2+s} in
+		( s )	str in "-${(Pt)2}-" -readonly- ;;
+		( * )	! ( eval "$2=" ) 2>/dev/null ;;
+		esac'
+elif ! thisshellhas --rw=export; then
+	# On other shells, we must use trickery to reliably parse the output of 'export -p'.
+	# The 'export -p' command in POSIX shells produces 'export' commands (even on bash, as
+	# long as the shell is in POSIX mode, which it must be to run modernish). Grepping this
+	# output is not reliably possible because entries may be split in multiple lines. We
+	# must get the shell to parse it. The only way to do this is to temporarily alias
+	# 'export' to a handler function. This only works if 'export' is not a reserved word.
+	_Msh_isset_x='unset -v _Msh_issetEx_WasRun _Msh_issetEx_FoundIt
+		export "_Msh_issetExV=$2"	# guarantee one exported variable to check if this method works
+		alias export=_Msh_issetExHandleExport
+		eval "$(command export -p)"
+		unalias export
+		unset -v _Msh_issetExV
+		isset _Msh_issetEx_WasRun && unset -v _Msh_issetEx_WasRun ||
+			die "isset -x: internal error: '\''export -p'\'' not parseable or '\''export'\'' not aliasable"
+		isset _Msh_issetEx_FoundIt && unset -v _Msh_issetEx_FoundIt'
+	_Msh_issetExHandleExport() {
+		_Msh_issetEx_WasRun=''
+		case ${1%%=*} in
+		("${_Msh_issetExV}") _Msh_issetEx_FoundIt='' ;;
+		esac
+	}
+	# To find out if a variable is read-only, simply try to unset it in a subshell.
+	_Msh_isset_r='! ( command unset -v "$2" || \exit 1 ) 2>/dev/null'	# BUG_TRAPSUB0 compat: explicit exit
+else
+	_Msh_initExit "init: isset -x: Can't determine method to test if a var. is exported." \
+		"This shell has 'export' as a reserved word, but modernish was only" \
+		"programmed to handle this on zsh. Please report this as a bug in modernish."
+fi
+# ...isset -f
+if thisshellhas --bi=typeset &&
+	command typeset -f isset >/dev/null 2>&1 &&
+	! command typeset -f _Msh_nonExistentFunction >/dev/null 2>&1
+then
+	# bash, zsh, ksh93, mksh/pdksh, yash all have a 'typeset -f' that
+	# returns with exit status 0 if the function is set, 1 if not.
+	_Msh_isset_f='command typeset -f "$2" >/dev/null 2>&1'
+else
+	# Default (POSIX): compare output of 'command -V' against that of a known function.
+	_Msh_fnOutput=$(command -V 'isset') || _Msh_initExit 'internal error (_Msh_fnOutput)'
+	readonly "_Msh_fnOutput=${_Msh_fnOutput#*isset}"	# remove the function itself
+	_Msh_isset_f='PATH=/dev/null command -v "$2" >/dev/null || return 1
+		case $(command unalias "$2" 2>/dev/null; PATH=/dev/null command -V "$2") in
+		( *"${_Msh_fnOutput}" )
+			;;
+		( * )	return 1 ;;
+		esac'
+fi
+# ...isset -o
+if thisshellhas DBLBRACKET; then
+	if isset ZSH_VERSION && eval '{ [[ -o invalid@option ]] 2>/dev/null; } always { TRY_BLOCK_ERROR=0; }; [[ $? -gt 1 ]]'; then
+		# zsh < 5.5 exits on invalid [[ -o option ]]. Use an '{ ... } always { ... }' list to counteract.
+		# TODO: remove when we stop supporting zsh < 5.5
+		_Msh_isset_o='( 2,-o,* ) { [[ -o $2 ]] 2>/dev/null; } always { TRY_BLOCK_ERROR=0; } || return 1'
+	else
+		_Msh_isset_o='( 2,-o,* ) [[ -o $2 ]]'
+	fi
+elif thisshellhas TESTO; then
+	_Msh_isset_o='( 2,-o,* ) test -o "$2"'	# modernish hardened test()
+else
+	# Default (POSIX): compare output of 'set -o' with and without setting option.
+	# - We're relying on 'set -o' output never containing "@_SEP_@"+newline,
+	#   but that should be pretty safe as that's not a valid option name.
+	# But first hand-map a few common long options to their short equivalents as an optimisation.
+	_Msh_isset_o='( 2,-o,allexport )	isset -a ;;
+	( 2,-o,interactive )	isset -i ;;
+	( 2,-o,monitor )	isset -m ;;
+	( 2,-o,noclobber )	isset -C ;;
+	( 2,-o,noglob )		isset -f ;;
+	( 2,-o,notify )		isset -b ;;
+	( 2,-o,nounset )	isset -u ;;
+	( 2,-o,verbose )	isset -v ;;
+	( 2,-o,xtrace )		isset -x ;;
+	( 2,-o,* ) thisshellhas -o "$2" || return
+		{ _Msh_isset_o=$(PATH=$DEFPATH
+				set -o
+				command echo @_SEP_@
+				set +o "$2"		# subshell errors out here if opt does not exist
+				set -o
+				command echo X)
+		} 2>/dev/null \
+		&& ! str eq "${_Msh_isset_o%@_SEP_@$CCn*}X" "${_Msh_isset_o#*@_SEP_@$CCn}" \
+		&& unset -v _Msh_isset_o \
+		|| ! unset -v _Msh_isset_o'
+fi
+# ...with all the code pieced together, define isset()
+eval 'isset() {
+	case ${#},${1-},${2-} in
+	( 1,-o, )  die "isset -o: long-form option name expected" ;;
+	( 1,-["$ASCIIALNUM"], )
+		   case $- in ( *"${1#-}"* ) ;; ( * ) return 1 ;; esac ;;
+	( 1,, | 1,[0123456789]* | 1,*[!"$ASCIIALNUM"_]*, \
+	| 2,-[vxrf], | 2,-[vxrf],[0123456789]* | 2,-[vxrf],*[!"$ASCIIALNUM"_]* \
+	| 2,-o, | 2,-o,*[!"$ASCIIALNUM"_-]* )
+		   return 2 ;;  # invalid identifier
+	'"${_Msh_isset_BUG_IFSISSET}"'
+	( 1,* )    '"${_Msh_isset}"' ;;
+	( 2,-v,* ) '"${_Msh_isset_v}"' ;;
+	( 2,-x,* ) '"${_Msh_isset_x}"' ;;
+	( 2,-r,* ) '"${_Msh_isset_r}"' ;;
+	( 2,-f,* ) '"${_Msh_isset_f}"' ;;
+	'"${_Msh_isset_o}"' ;;
+	( 2,-* )   die "isset: invalid option: $1" ;;
+	( * )	   die "isset: invalid arguments" ;;
+	esac
+}'"$CCn"
+unset -v _Msh_isset_BUG_IFSISSET _Msh_isset _Msh_isset_v _Msh_isset_x _Msh_isset_r _Msh_isset_f _Msh_isset_o
+
+
+# ___ Shell options processing ________________________________________________
+# Internal functions used by 'thisshellhas' and the stack.
+
+# Temporary function. Initialises list of all the shell's canonical long-form option names.
+# These are extracted from 'set -o' output. Format unspecified by POSIX, but parseable in practice.
+unset -v _Msh_allMyLongOpts
+_Msh_tmp_initAllMyLongOpts() {
+	case $- in
+	( *a* )	set +a; _Msh_tmp_initAllMyLongOpts; set -a; return ;;
+	esac
+	thisshellhas QRK_OPTNOPRFX  # cache this result
+	_Msh_allMyLongOpts=$(
+		: 1>&1	# BUG_CSUBSTDO compat
+		IFS=$WHITESPACE; set -fu
+		set -- $(set -o)
+		# Skip 'set -o' header line(s), if any
+		while let "$# >= 2" && str ne "$2" 'on' && str ne "$2" 'off'; do
+			shift
+		done
+		let "$# > 0 && $# % 2 == 0" || die 'internal error in _Msh_tmp_initAllMyLongOpts()'
+		# Remove all the on/off fields and (if QRK_OPTNOPRFX) any 'no' prefixes
+		_Msh_even=0
+		for _Msh_opt do
+			if let "(_Msh_even = !_Msh_even) == 1"; then
+				if thisshellhas QRK_OPTNOPRFX \
+				&& str begin "${_Msh_opt}" 'no' \
+				&& (set -o "${_Msh_opt}" +o "${_Msh_opt#no}") 2>/dev/null; then
+					_Msh_opt=${_Msh_opt#no}
+				fi
+				set -- "$@" "${_Msh_opt}"
+			fi
+			shift
+		done
+		# Output a colon-separated list, adding initial and final colons
+		IFS=':'; putln ":$*:"
+	)
+	readonly _Msh_allMyLongOpts
+}
+
+# Canonicalise a long shell option name according to current shell quirks, leaving the canonical name in
+# _Msh_opt. Returns 0 if option exists, 1 if not, 2 if the identifier is invalid and was not canonicalised.
+_Msh_optNamCanon() {
+	_Msh_opt=$1
+	case $1 in
+	( "" | *[!"$ASCIIALNUM"_-]* )
+		return 2 ;;
+	esac
+	! isset _Msh_allMyLongOpts && _Msh_tmp_initAllMyLongOpts && unset -f _Msh_tmp_initAllMyLongOpts
+	if thisshellhas QRK_OPTCASE && str match "${_Msh_opt}" '*[A-Z]*'; then
+		_Msh_opt=$(unset -f tr	# QRK_EXECFNBI compat
+			putln "${_Msh_opt}" | PATH=$DEFPATH LC_ALL=C exec tr A-Z a-z) \
+		|| die 'internal error in _Msh_optNamCanon()'
+	fi
+	if thisshellhas QRK_OPTULINE; then
+		while str in "${_Msh_opt}" '_'; do	# remove '_'
+			_Msh_opt=${_Msh_opt%%_*}${_Msh_opt#*_}
+		done
+	fi
+	if thisshellhas QRK_OPTDASH; then
+		while str in "${_Msh_opt}" '-'; do	# remove '-'
+			_Msh_opt=${_Msh_opt%%-*}${_Msh_opt#*-}
+		done
+	fi
+	if thisshellhas QRK_OPTNOPRFX && str begin "${_Msh_opt}" "no"; then
+		if thisshellhas QRK_OPTABBR; then
+			# This acts like ksh93, not yash, e.g. in that 'not' becomes 't' and
+			# matches 'trackall', and is not considered ambiguous with 'notify'.
+			str in "${_Msh_allMyLongOpts}" ":${_Msh_opt#no}" && _Msh_opt=${_Msh_opt#no}
+		else
+			_Msh_opt=${_Msh_opt#no}
+		fi
+	fi
+	# Match the name against the list
+	case ${_Msh_allMyLongOpts} in
+	( *:"${_Msh_opt}":* )
+		# Exact match
+		;;
+	( *:"${_Msh_opt}"* )
+		# Partial match
+		thisshellhas QRK_OPTABBR || return 1
+		case ${_Msh_allMyLongOpts#*:"$_Msh_opt"} in
+		( *:"${_Msh_opt}"* )
+			# Ambiguous option abbreviation
+			return 1 ;;
+		esac
+		# Complete the canonical name
+		_Msh_opt=${_Msh_opt}${_Msh_allMyLongOpts#*:"$_Msh_opt"}
+		_Msh_opt=${_Msh_opt%%:*} ;;
+	( * )	# No match
+		return 1 ;;
+	esac
+	if thisshellhas QRK_OPTNOPRFX; then
+		# Restore the no- in standard POSIX options
+		case ${_Msh_opt} in
+		( clobber | exec | glob | log | unset )
+			_Msh_opt="no${_Msh_opt}" ;;
+		esac
+	fi
+}
+
+# Internal function. Convert a long-form option name to short-form option
+# letter, if it exists. Leaves the result in _Msh_opt. Returns status 0 if a
+# corresponding short-form option letter exists, otherwise returns status 1.
+# The option name MUST be canonicalised first.
+unset -v _Msh_optLtrCache	# for caching results that require forking a subshell
+_Msh_optNamToLtr() {
+	case $1 in
+	( nolog )	thisshellhas BUG_OPTNOLOG && unset -v _Msh_opt && return 1 ;;
+	esac
+	case $1 in
+	# hardcode option letters guaranteed by POSIX, plus 'i'
+	( interactive )	_Msh_opt=i ;;
+	( allexport )	_Msh_opt=a ;;
+	( errexit )	_Msh_opt=e ;;
+	( noclobber )	_Msh_opt=C ;;
+	( noglob )	_Msh_opt=f ;;
+	( noexec )	_Msh_opt=n ;;
+	( nounset )	_Msh_opt=u ;;
+	( verbose )	_Msh_opt=v ;;
+	( xtrace )	_Msh_opt=x ;;
+	# shell-specific option
+	( * )	case ${_Msh_optLtrCache-}: in
+		( *:"$1"=?:* )
+			_Msh_opt=${_Msh_optLtrCache#*:"$1"=}
+			_Msh_opt=${_Msh_opt%%:*} ;;
+		( *:!"$1":* )
+			unset -v _Msh_opt
+			return 1 ;;
+		( * )	# figure out if there is a letter for that long-form option
+			_Msh_opt=$(
+				: 1>&1			# BUG_CSUBSTDO workaround
+				PATH=$DEFPATH
+				case $1 in
+				( restricted )
+					set -o restricted && command echo 'r'
+					\exit ;;
+				( shoptionletters )
+					# this zsh option affects "$-" so test below would fail
+					\exit 1 ;;
+				esac
+				set -o "$1" 2>/dev/null	# exits subshell with status > 0 if option does not exist
+				_Msh_o1=$-
+				set +o "$1" 2>/dev/null
+				_Msh_o2=$-
+				case $(( ${#_Msh_o1} - ${#_Msh_o2} )) in
+				( 0 )	# option does not have a letter
+					\exit 1 ;;
+				( 1 )	;;
+				( -1 )	# the long option has an inverse effect to the letter option: swap values
+					_Msh_o=${_Msh_o1}
+					_Msh_o1=${_Msh_o2}
+					_Msh_o2=${_Msh_o} ;;
+				( * )	die "internal error 1 in _Msh_optNamToLtr()" ;;
+				esac
+				# for each char in ${_Msh_o1}, check if it occurs in ${_Msh_o2};
+				# if it does NOT occur, we have found our letter
+				while ! str empty "${_Msh_o1}"; do
+					_Msh_o=${_Msh_o1%${_Msh_o1#?}}	# get first letter
+					if ! str in "${_Msh_o2}" "${_Msh_o}"; then
+						! str match "${_Msh_o}" "*[!$SHELLSAFECHARS]*" && put "${_Msh_o}"
+						\exit
+					fi
+					_Msh_o1=${_Msh_o1#?}
+				done
+				die "internal error 2 in _Msh_optNamToLtr()"
+			) || {
+				_Msh_optLtrCache=${_Msh_optLtrCache-}:!$1
+				unset -v _Msh_opt
+				return 1
+			}
+			_Msh_optLtrCache=${_Msh_optLtrCache-}:$1=${_Msh_opt} ;;
+		esac
+	esac
+}
+
+# Internal function. Validate and convert a long-form option name to its
+# corresponding internal stack variable.
+# Usage: _Msh_optNamToVar <optname> <varname> || die ...
+# This is also used by var/stack/extra/* modules.
+_Msh_optNamToVar() {
+	_Msh_optNamCanon "$1" || let "$? < 2" || { unset -v _Msh_opt; return 2; }
+	_Msh_V=${_Msh_opt}
+	if _Msh_optNamToLtr "${_Msh_V}"; then
+		eval "$2=_Msh_ShellOptLtr_\${_Msh_opt}"
+	else
+		while str in "${_Msh_V}" '-'; do	# change any '-' to '_' in variable name
+			_Msh_V=${_Msh_V%%-*}_${_Msh_V#*-}
+		done
+		eval "$2=_Msh_ShellOpt_\${_Msh_V}"
+	fi
+	unset -v _Msh_opt _Msh_V
+}
+
+# ___ The stack _______________________________________________________________
+# Every variable has its own stack: simply do push VAR and pop VAR.
+# Also works for saving/restoring shell options, e.g.: push -f; pop -o noglob
+# Uses global variable namespace: _Msh__V*__S*
+
+# Push each variable's value or shell option setting on its respective stack.
+# Usage: push [ --key=<value> ] <item> [ <item> ...]
+#	 where <item> is a variable name, shell option (dash plus letter),
+#	 or long-form shell option (two arguments, '-o' and option name).
+#
+# If the "--key=<value>" option is given, then for each <item>, the given
+# key value is stored along with the variable's value for that position in
+# the stack. Popping that value will only succeed if the same key is given
+# with the 'pop' invocation. This feature helps different functions to use
+# the same variable stack safely.
+push() {
+	# Parse options (--long only).
+	unset -v _Msh_push_key
+	while	case ${1-} in
+		( -- )		shift; break ;;
+		( --key=* )	_Msh_push_key=${1#--key=} ;;
+		( --* )		die "push: invalid option: $1" ;;
+		( * )		break ;;
+		esac
+	do
+		shift
+	done
+	case $# in
+	( 0 )	die "push: needs at least 1 non-option argument" ;;
+	esac
+
+	# Exporting the stack would be bad; run 'push' without 'set -a' active.
+	# Save the status of 'set -a' in a variable so 'push -a' works.
+	case $- in
+	( *a* )	set +a; _Msh_push_opta=y ;;
+	( * )	unset -v _Msh_push_opta ;;
+	esac
+
+	# Validate variable names and shell options before doing anything.
+	_Msh_push_err=0
+	unset -v _Msh_push_o
+	for _Msh_push_V do
+		case ${_Msh_push_o-} in		# BUG_ISSETLOOP compat: don't use ${_Msh_push_o+s}
+		( y )	unset -v _Msh_push_o
+			case ${_Msh_push_V} in
+			( "" | *[!"$ASCIIALNUM"_-]* )
+				_Msh_push_err=101
+				break ;;
+			esac ;;
+		( * )	case ${_Msh_push_V} in
+			( -o )	_Msh_push_o=y	# expect another argument
+				continue ;;
+			( -["$ASCIIALNUM"] )
+				;;		# short-form shell option: ok
+			( '' | [0123456789]* | *[!"$ASCIIALNUM"_]* )
+				_Msh_push_err=101
+				break ;;
+			esac ;;
+		esac
+	done
+	case ${_Msh_push_o-} in
+	( y )	_Msh_push_err=100 ;;
+	esac
+
+	# Do the job.
+	case ${_Msh_push_err} in
+	( 0 ) for _Msh_push_V do
+		# Long-form shell option:
+		case ${_Msh_push_o-} in
+		( y )	_Msh_push_o=${_Msh_push_V}
+			_Msh_optNamToVar "${_Msh_push_o}" _Msh_push_V || { _Msh_push_err=103; break; }
+			case ${_Msh_push_V} in
+			( _Msh_ShellOptLtr_a )
+				isset _Msh_push_opta ;;
+			( _Msh_ShellOptLtr_? )
+				isset -${_Msh_push_V#_Msh_ShellOptLtr_} ;;
+			( * )	isset -o "${_Msh_push_o}" ;;
+			esac && eval "${_Msh_push_V}=''" || unset -v "${_Msh_push_V}"
+			unset -v _Msh_push_o ;;
+		esac
+		# Short-form shell option or '-o':
+		case ${_Msh_push_V} in
+		( -o )	_Msh_push_o=y	# expect another argument
+			continue ;;
+		( -a )	case ${_Msh_push_opta+s} in
+			( s )	_Msh_ShellOptLtr_a='' ;;
+			( * )	unset -v _Msh_ShellOptLtr_a ;;
+			esac
+			_Msh_push_V='_Msh_ShellOptLtr_a'
+			;;
+		( -? )	_Msh_push_V=${_Msh_push_V#-}
+			case $- in
+			( *${_Msh_push_V}* )
+				eval "_Msh_ShellOptLtr_${_Msh_push_V}=''" ;;
+			( * )	unset -v "_Msh_ShellOptLtr_${_Msh_push_V}" ;;
+			esac
+			_Msh_push_V="_Msh_ShellOptLtr_${_Msh_push_V}"
+			;;
+		esac
+
+		# Initialize/validate stack pointer.
+		eval "_Msh_push_SP=\${_Msh__V${_Msh_push_V}__SP=0}"
+		case ${_Msh_push_SP} in
+		( '' | *[!0123456789]* ) _Msh_push_err=102; break ;;
+		esac
+
+		# Store value or unset status.
+		if isset "${_Msh_push_V}"; then
+			eval "_Msh__V${_Msh_push_V}__S${_Msh_push_SP}=\$${_Msh_push_V}"
+		else
+			unset -v "_Msh__V${_Msh_push_V}__S${_Msh_push_SP}"
+		fi
+
+		# Store key, if any.
+		case ${_Msh_push_key+s} in
+		( s )	eval "_Msh__V${_Msh_push_V}__K${_Msh_push_SP}=\${_Msh_push_key}" ;;
+		( * )	unset -v "_Msh__V${_Msh_push_V}__K${_Msh_push_SP}" ;;
+		esac
+
+		# Increase stack pointer for next item on stack.
+		_Msh_push_SP=$((_Msh__V${_Msh_push_V}__SP += 1))
+	done;; esac
+	case ${_Msh_push_opta+s} in
+	( s )	set -a; unset -v _Msh_push_opta ;;
+	esac
+	case ${_Msh_push_err} in
+	( 100 )	die "push -o: long-form option name expected" ;;
+	( 101 ) die "push: invalid variable name or shell option: ${_Msh_push_V}" ;;
+	( 102 ) die "push: Stack pointer for ${_Msh_push_V} corrupted" ;;
+	( 103 ) die "push: internal error" ;;
+	esac
+	eval "unset -v _Msh_push_V _Msh_push_SP _Msh_push_err _Msh_push_key; return ${_Msh_push_err}"
+}
+
+# Pop each variable or shell option's last state off the stack and restore it.
+#
+# Usage: pop [ --keepstatus ] [ --key=<value> ] <item> [ <item> ... ]
+#	 where <item> is a variable name, shell option (dash plus letter),
+#	 or long-form shell option (two arguments, '-o' and option name).
+#
+# If the "--keepstatus" option is given, pop() will exit with the exit status
+# of the command executed immediately prior to calling pop(), and failure to
+# pop is a fatal error.
+#
+# If the "--key=<value>" option is given, then for each <item>, the given key
+# value is matched against the stored key value for that position in the stack.
+# If there is any mismatch, no changes are made and pop returns status 2.
+#
+# Returns unsuccessfully without changing anything if *any* of the stacks
+# for the specified variables or shell options is empty or has a key mismatch.
+if thisshellhas BUG_ARITHTYPE; then
+	if thisshellhas typeset && typeset -g +i _Msh_test 2>/dev/null; then
+		# BUG_ARITHTYPE (older zsh) workaround: unset a possible integer
+		# type restriction caused earlier by arithmetic assignment.
+		_Msh_pop_BUG_ARITHTYPE_workaround='typeset -g +i "${_Msh_pop_V}"; '
+	else
+		_Msh_initExit 'init: pop: cannot determine BUG_ARITHTYPE workaround' \
+			"This shell has BUG_ARITHTYPE but does not appear to be zsh. Modernish" \
+			"was not programmed to handle this; please report his as a bug."
+	fi
+else
+	unset -v _Msh_pop_BUG_ARITHTYPE_workaround
+fi
+pop() {
+	_Msh_pop_oldstatus=$?
+
+	# Parse options (--long only).
+	unset -v _Msh_pop_key _Msh_pop_ks
+	while	case ${1-} in
+		( -- )		shift; break ;;
+		(--keepstatus)	_Msh_pop_ks= ;;
+		( --key=* )	_Msh_pop_key=${1#--key=} ;;
+		( --* )		die "pop: invalid option: $1" ;;
+		( * )		break ;;
+		esac
+	do
+		shift
+	done
+	case ${_Msh_pop_ks+s} in
+	( s )	unset -v _Msh_pop_ks ;;
+	( * )	unset -v _Msh_pop_oldstatus ;;
+	esac
+	case $# in
+	( 0 )	die "pop: needs at least 1 non-option argument" ;;
+	esac
+
+	# Exporting the stack would be bad; run "pop" without "set -a" active.
+	# Save the status of "set -a" in a variable so "pop -a" works.
+	case $- in
+	( *a* )	set +a; _Msh_pop_opta=y ;;
+	( * )	unset -v _Msh_pop_opta ;;
+	esac
+
+	# Validate everything before doing anything.
+	_Msh_pop_err=0
+	unset -v _Msh_pop_o
+	for _Msh_pop_V do
+		case ${_Msh_pop_o-} in		# BUG_ISSETLOOP compat: don'\''t use ${_Msh_pop_o+s}
+		( y )	unset -v _Msh_pop_o
+			_Msh_optNamToVar "${_Msh_pop_V}" _Msh_pop_V || { _Msh_pop_err=101; break; } ;;
+		( * )	case ${_Msh_pop_V} in
+			( -o )	_Msh_pop_o=y	# expect another argument
+				continue ;;
+			( -["$ASCIIALNUM"] )
+				_Msh_pop_V="_Msh_ShellOptLtr_${_Msh_pop_V#-}" ;;
+			( "" | [0123456789]* | *[!"$ASCIIALNUM"_]* )
+				_Msh_pop_err=101
+				break ;;
+			esac ;;
+		esac
+
+		# Check for stack empty
+		eval "_Msh_pop_SP=\${_Msh__V${_Msh_pop_V}__SP+s},\${_Msh__V${_Msh_pop_V}__SP-}"
+		case ${_Msh_pop_SP} in
+		( , )	_Msh_pop_err=$((_Msh_pop_err<1 ? 1 : _Msh_pop_err)); continue ;;
+		( s, | s,0* | s,*[!0123456789]* )
+			_Msh_pop_err=102; continue ;;
+		esac
+
+		# Match stored key against given key
+		_Msh_pop_SP=$((_Msh__V${_Msh_pop_V}__SP - 1))
+		eval "case \${_Msh_pop_key+k},\${_Msh_pop_key-},\${_Msh__V${_Msh_pop_V}__K${_Msh_pop_SP}+s} in
+		( ,, | k,\"\${_Msh__V${_Msh_pop_V}__K${_Msh_pop_SP}-}\",s )
+			;;
+		( * )	_Msh_pop_err=\$((_Msh_pop_err<2 ? 2 : _Msh_pop_err)) ;;
+		esac"
+	done
+	case ${_Msh_pop_o-} in
+	( y )	_Msh_pop_err=100 ;;	# -o without long option name
+	esac
+
+	# Do the job.
+	case ${_Msh_pop_err} in
+	( 0 ) for _Msh_pop_V do
+		# Convert long-form shell option to short form if available, then to variable
+		case ${_Msh_pop_o-} in
+		( y )	_Msh_pop_o=${_Msh_pop_V}
+			_Msh_optNamToVar "${_Msh_pop_V}" _Msh_pop_V || { _Msh_pop_err=103; break; } ;;
+		esac
+
+		# If shell option, translate to internal variable.
+		case ${_Msh_pop_V} in
+		( -o )	_Msh_pop_o=y	# expect another argument
+			continue ;;
+		( -? )	_Msh_pop_V="_Msh_ShellOptLtr_${_Msh_pop_V#-}" ;;
+		esac
+
+		# Decrease stack pointer so it points to the item to pop.
+		_Msh_pop_SP=$((_Msh__V${_Msh_pop_V}__SP -= 1))
+
+		# Restore value or unset status.
+		if isset "_Msh__V${_Msh_pop_V}__S${_Msh_pop_SP}"; then
+			eval "${_Msh_pop_BUG_ARITHTYPE_workaround-}${_Msh_pop_V}=\${_Msh__V${_Msh_pop_V}__S${_Msh_pop_SP}}"
+		else
+			unset -v "${_Msh_pop_V}"
+		fi
+
+		# Clean up: unset the stack variable we just popped off the stack, and its key (if any).
+		unset -v "_Msh__V${_Msh_pop_V}__S${_Msh_pop_SP}" "_Msh__V${_Msh_pop_V}__K${_Msh_pop_SP}"
+
+		# Clean up: if the stack is empty, unset the stack pointer.
+		case ${_Msh_pop_SP} in
+		( 0 )	unset -v "_Msh__V${_Msh_pop_V}__SP" _Msh_pop_SP ;;
+		esac
+
+		# If it's a shell option variable, restore the shell option.
+		case ${_Msh_pop_V} in
+		( _Msh_ShellOptLtr_a )
+			case ${_Msh_ShellOptLtr_a+s} in
+			( s )	_Msh_pop_opta=y
+				unset -v _Msh_ShellOptLtr_a ;;
+			( * )	unset -v _Msh_pop_opta ;;
+			esac
+			;;
+		( _Msh_ShellOptLtr_["$ASCIIALNUM"] )
+			if isset "${_Msh_pop_V}"; then
+				isset "-${_Msh_pop_V#_Msh_ShellOptLtr_}" || set "-${_Msh_pop_V#_Msh_ShellOptLtr_}"
+				unset -v "${_Msh_pop_V}"
+			else
+				isset "-${_Msh_pop_V#_Msh_ShellOptLtr_}" && set "+${_Msh_pop_V#_Msh_ShellOptLtr_}"
+			fi
+			;;
+		( _Msh_ShellOpt_?* )
+			if isset "${_Msh_pop_V}"; then
+				isset -o "${_Msh_pop_o}" || set -o "${_Msh_pop_o}"
+				unset -v "${_Msh_pop_V}"
+			elif isset -o "${_Msh_pop_o}"; then
+				isset -o "${_Msh_pop_o}" && set +o "${_Msh_pop_o}"
+			fi ;;
+		esac
+		unset -v _Msh_pop_o
+	done;; esac
+	case ${_Msh_pop_opta+s} in
+	( s )	set -a; unset -v _Msh_pop_opta ;;
+	esac
+	case ${_Msh_pop_err} in
+	( 100 )	die "pop -o: long-form option name expected" ;;
+	( 101 ) die "pop: invalid variable name or shell option: ${_Msh_pop_V}" ;;
+	( 102 ) die "pop: Stack pointer for ${_Msh_pop_V} corrupted" ;;
+	( 103 ) die "pop: internal error" ;;
+	esac
+	case ${_Msh_pop_oldstatus+s} in
+	( s )	eval "unset -v _Msh_pop_V _Msh_pop_SP _Msh_pop_err _Msh_pop_oldstatus _Msh_pop_key
+		case ${_Msh_pop_err} in
+		( 0 )	;;
+		( * )	die \"pop --keepstatus: fatal: couldn't pop \$@${_Msh_pop_SP+${_Msh_pop_key+ (key mismatch)}}\"
+			return ;;
+		esac
+		return ${_Msh_pop_oldstatus}" ;;
+	( * )	eval "unset -v _Msh_pop_V _Msh_pop_SP _Msh_pop_err _Msh_pop_key; return ${_Msh_pop_err}" ;;
+	esac
+}
+
+
+# ___ Writing arbitrary strings: 'putln' and 'put' ____________________________
+# 'putln' prints each argument on a separate line. 'put' prints all arguments,
+# separated by spaces, without a trailing newline. There is no processing of
+# options, '--', escape codes, or any other potential pitfalls.
+
+if thisshellhas print LOCALVARS; then
+	eval 'putln() {
+		case $# in
+		( 0 )	command print ;;
+		( 1 )	command print -r -- "$1" ;;
+		( * )	local IFS="$CCn" && command print -r -- "$*" ;;
+		esac || { let "$? > 125 && $? != SIGPIPESTATUS" && die "putln: internal error"; }
+	}
+
+	put() {
+		case ${#},${1:+n} in
+		( [01], ) ;;
+		( 1,n )  command print -nr -- "$1" ;;
+		( * )	 local IFS=" " && command print -nr -- "$*" ;;
+		esac || { let "$? > 125 && $? != SIGPIPESTATUS" && die "put: internal error"; }
+	}'
+else
+	# For most shells, use 'printf' for putln and put.
+	putln() {
+		case $# in
+		( 0 )	PATH=$DEFPATH command printf '\n' ;;
+		( * )	PATH=$DEFPATH command printf '%s\n' "$@" ;;
+		esac || { let "$? > 125 && $? != SIGPIPESTATUS" && die "putln: internal error"; }
+	}
+
+	if thisshellhas LOCALVARS; then
+		eval 'put() {
+			case ${#},${1:+n} in
+			( [01], ) ;;
+			( 1,n )  PATH=$DEFPATH command printf "%s" "$1" ;;
+			( * )	 local IFS=" " && PATH=$DEFPATH command printf "%s" "$*" ;;
+			esac || { let "$? > 125 && $? != SIGPIPESTATUS" && die "put: internal error"; }
+		}'
+	elif thisshellhas KSH93FUNC; then
+		eval 'function put {
+			case ${#},${1:+n} in
+			( [01], ) ;;
+			( 1,n )  PATH=$DEFPATH command printf "%s" "$1" ;;
+			( * )	 typeset IFS=" " && PATH=$DEFPATH command printf "%s" "$*" ;;
+			esac || { let "$? > 125 && $? != SIGPIPESTATUS" && die "put: internal error"; }
+		}'
+	else
+		# default (POSIX, no local variables)
+		put() {
+			case ${#},${1:+n} in
+			( [01], ) ;;
+			( 1,n )  PATH=$DEFPATH command printf '%s' "$1" ;;
+			( * )	 push IFS; IFS=' '
+				 PATH=$DEFPATH command printf '%s' "$*"
+				 pop --keepstatus IFS ;;
+			esac || { let "$? > 125 && $? != SIGPIPESTATUS" && die "put: internal error"; }
+		}
+	fi
+fi
+
+
+# ___ Hardened 'test'/'[' _____________________________________________________
+# To mitigate the risk of 'test'/'[' brittleness causing legacy shell scripts incorporating modernish to continue in an
+# inconsistent state, harden the 'test' and '[' commands. We use the fact that, if implemented correctly, it exits with
+# status > 1 (usually 2) on error (such as a syntax error due to unexpected split/glob or empty removal). This will not
+# catch all problems, such as the [ -n $empty ] or [ -e $empty ] false positives. BUG_TESTERR{0,1A,1B} also kills this.
+
+test() {
+	PATH=$DEFPATH command test "$@" \
+	|| ! case $? in
+	( 1 )	;;
+	( * )	die "command failed: test $@" ;;
+	esac
+}
+if command alias "[=_Msh_hardenBracket" 2>/dev/null; then
+	# We cannot use '[' as a function name, but every supported shell except AT&T ksh93 can alias '['.
+	_Msh_hardenBracket() {
+		PATH=$DEFPATH command [ "$@" \
+		|| ! case $? in
+		( 1 )	;;
+		( * )	die "command failed: [ $@" ;;
+		esac
+	}
+fi
+
+
+# ___ Safer replacement functions for 'test'/'[' ______________________________
+# Rationale: see README.md
+
+# ---- Arithmetic tests and operations. ----
+# Implementation of 'let' as in ksh, bash, zsh and busybox ash, for shells
+# without it.
+# Usage: let <expr> [ <expr> ... ]
+# where <expr> is an arithmetic expression as in $(( ... )).
+# The exit status is 1 if the last expression evaluates to 0, and 0 if not.
+#
+# There are portability problems with 'let' builtins, particularly *BSD sh versions.
+# So let's test if we have a version that works as expected and override the
+# builtin if it's not up to scratch.
+unset -v _Msh_X _Msh_Y _Msh_goodlet
+if thisshellhas let; then
+	if let -- -1\<0 _Msh_X=1 _Msh_Y=_Msh_X+3 \
+	&& case ${_Msh_X-},${_Msh_Y-} in ( 1,4 ) ;; ( * ) false ;; esac \
+	&& unset -v _Msh_X _Msh_Y
+	then
+		# Workaround for AT&T ksh to make things like 'let -1==var' or 'let --var' work.
+		# For consistency, also use '--' on other shells whose 'let' builtin supports it;
+		# this makes sure 'let' in modernish scripts does not accept '--' on any shell,
+		# instead of accepting it on some shells but not on others.
+		alias let='let --'
+		_Msh_goodlet=y
+	elif let -1\<0 _Msh_X=1 _Msh_Y=_Msh_X+3 \
+	&& case ${_Msh_X-},${_Msh_Y-} in ( 1,4 ) ;; ( * ) false ;; esac \
+	&& unset -v _Msh_X _Msh_Y
+	then
+		# Use the builtin as is: mksh/lksh, Busybox ash
+		_Msh_goodlet=y
+	fi
+fi 2>/dev/null
+case ${_Msh_goodlet+s} in
+( s )	let 014!=12 && command set -o letoctal 2>/dev/null  # make AT&T ksh act like other shells
+	unset -v _Msh_goodlet ;;
+( * )	# We're on a shell with a missing or incompatible 'let' builtin, so provide our own. Optimise
+	# it by processing up to 4 expressions at once. This modernish version, like pdksh/mksh and
+	# Busybox ash, does not accept the '--' end-of-options delimiter.
+	# (Using 'eval' to avoid syntax error in case an alias let='let --' was set above.)
+	eval 'let() {
+		case $# in
+		( 1 )	return "$((!($1)))" ;;
+		( 2 )	: "$(($1))"
+			return "$((!($2)))" ;;
+		( 3 )	: "$(($1))$(($2))"
+			return "$((!($3)))" ;;
+		( 4 )	: "$(($1))$(($2))$(($3))"
+			return "$((!($4)))" ;;
+		( 0 )	die "let: expression expected" ;;
+		( * )	: "$(($1))$(($2))$(($3))$(($4))"
+			shift 4
+			let "$@" ;;
+		esac
+	}' ;;
+esac
+
+# ---- String tests. ----
+# Determine code for glob pattern test.
+if thisshellhas DBLBRACKET; then
+	_Msh_doMatch='[[ $2 == $3 ]]'
+else
+	_Msh_doMatch='case $2 in ( $3 ) ;; ( * ) return 1 ;; esac'
+fi
+# Check if the shell can reliably pass backslash-escaped characters from a parameter.
+# (bash < 5.0 has trouble with backslash-escaped $CC01 and $CC7F specifically.)
+# Also check if a final unescaped backslash can match itself.
+eval "_Msh_tmp_match() { ${_Msh_doMatch}; }"
+if ! _Msh_tmp_match - "? *x${CC01}y${CC7F}z\\" "??\\*\\x\\${CC01}\\y\\${CC7F}\\z\\"; then
+	# Parse patterns containing backslashes as string literals, which requires making the pattern
+	# string safe for 'eval'. Only bother with this if the pattern in fact contains a backslash.
+	if thisshellhas DBLBRACKET; then
+		_Msh_doMatchEval='[[ \$2 == ${_Msh_Q} ]]'
+	else
+		_Msh_doMatchEval='case \$2 in ( ${_Msh_Q} ) ;; ( * ) return 1 ;; esac'
+	fi
+	_Msh_doMatch='case $3 in
+		( *\\* )
+			_Msh_Q=
+			_Msh_P=$3
+			while :; do
+				case ${_Msh_P} in
+				( "" )	break ;;
+				# Handle newline specially with a ref to $CCn.
+				($CCn*)	_Msh_Q=${_Msh_Q}\${CCn}
+					_Msh_P=${_Msh_P#?} ;;
+				# Handle backslash-escaped newline specially with a ref to $CCn.
+				(\\$CCn*)_Msh_Q=${_Msh_Q}\${CCn}
+					_Msh_P=${_Msh_P#??} ;;
+				# Leave other backslash-escaped characters alone.
+				(\\?*)	_Msh_Q=${_Msh_Q}${_Msh_P%"${_Msh_P#??}"}
+					_Msh_P=${_Msh_P#??} ;;
+				# Leave unescaped glob characters and shell-safe characters alone.
+				([][?*]* | ["$SHELLSAFECHARS"]*)
+					_Msh_Q=${_Msh_Q}${_Msh_P%"${_Msh_P#?}"}
+					_Msh_P=${_Msh_P#?} ;;
+				# Backslash-escape everything else.
+				( * )	_Msh_Q=${_Msh_Q}\\${_Msh_P%"${_Msh_P#?}"}
+					_Msh_P=${_Msh_P#?} ;;
+				esac
+			done
+			eval "unset -v _Msh_P _Msh_Q; '"${_Msh_doMatchEval}"'"
+			return ;;
+		esac'${CCn}${_Msh_doMatch}
+fi
+
+# Determine code for extended regular expression test.
+if thisshellhas DBLBRACKETERE; then
+	_Msh_doEMatch='[[ $2 =~ $3 ]]'
+elif thisshellhas --bi=test && PATH=$DEFPATH command test aaa '=~' '^a{2,}$' 2>/dev/null; then
+	# yash and zsh support extended regex matching in builtin test/[
+	_Msh_doEMatch='test "$2" "=~" "$3"'
+else
+	_Msh_doEMatch='POSIXLY_CORRECT=y PATH=$DEFPATH command awk -f "$MSH_AUX/ematch.awk" -- "$2" "$3" \
+		|| { let "$? > 1" && die "str ematch: '\''awk'\'' failed"; }'
+fi
+
+# Determine code for lexical comparison.
+# ...	If we're running on bash, ksh or zsh:
+if thisshellhas DBLBRACKET; then
+	_Msh_doSortsBefore='[[ $2 < $3 ]]'
+	_Msh_doSortsAfter='[[ $2 > $3 ]]'
+# ...	Try to fall back to builtin '['/'test' non-standard feature.
+#	Thankfully, '<' and '>' are pretty widely supported for this builtin. Unlike with [[ ]],
+#	we need to quote everything. (Note that test() is a 'test' hardened in bin/modernish.)
+elif thisshellhas --bi=test \
+&& PATH=$DEFPATH command test "a${CCn}b" '<' "a${CCn}bb" 2>/dev/null \
+&& PATH=$DEFPATH command test "a${CCn}bb" '>' "a${CCn}b" 2>/dev/null
+then
+	_Msh_doSortsBefore='test "X$2" "<" "X$3"'
+	_Msh_doSortsAfter='test "X$2" ">" "X$3"'
+# ...	Fall back to the POSIX way with the external expr(1) utility.
+else
+	_Msh_doSortsBefore='PATH=$DEFPATH command expr "X$2" "<" "X$3" >/dev/null \
+		|| { let "$? > 1" && die "str lt: '\''expr'\'' failed"; }'
+	_Msh_doSortsAfter='PATH=$DEFPATH command expr "X$2" ">" "X$3" >/dev/null \
+		|| { let "$? > 1" && die "str gt: '\''expr'\'' failed"; }'
+fi
+
+# Define the main str() function.
+# Cope with empty removal where possible, allowing unquoted variables in the safe mode.
+# Usage: str UNARY_OP WORD; str BINARY_OP WORD PATTERN; str -M BINARY_OP [ WORD ... ] PATTERN
+eval 'str() {
+	case ${#},${1-} in
+	# ... unary operators
+	( 2,empty )	case ${2:+n} in ( n ) return 1 ;; esac ;;
+	( 2,isint )	case ${2#"${2%%[!" $CCt$CCn"]*}"} in
+			( 0[xX]*[!0123456789abcdefABCDEF]* | [+-]0[xX]*[!0123456789abcdefABCDEF]* )
+				return 1 ;;
+			( 0[xX]?* | [+-]0[xX]?* )
+				;;
+			( "" | [+-] | ?*[+-]* | *[!0123456789+-]* | 0*[!01234567]* | [+-]0*[!01234567]* )
+				return 1 ;;
+			esac ;;
+	( 2,isvarname )	case ${2-} in
+			( "" | [0123456789]* | *[!"$ASCIIALNUM"_]* )
+				return 1 ;;
+			esac ;;
+	# ... binary matching operators
+	( 3,eq )	case $2 in (  "$3"  ) ;; ( * ) return 1 ;; esac ;;
+	( 3,ne )	case $2 in (  "$3"  ) return 1 ;; ( * ) ;; esac ;;
+	( 3,in )	case $2 in ( *"$3"* ) ;; ( * ) return 1 ;; esac ;;
+	( 3,begin )	case $2 in (  "$3"* ) ;; ( * ) return 1 ;; esac ;;
+	( 3,end )	case $2 in ( *"$3"  ) ;; ( * ) return 1 ;; esac ;;
+	( 3,match )	'"${_Msh_doMatch}"' ;;
+	( 3,ematch )	case $3 in ( "" ) die "str ematch: empty ERE" ;; ( * ) '"${_Msh_doEMatch}"' ;; esac ;;
+	( 3,lt )	'"${_Msh_doSortsBefore}"' ;;
+	( 3,gt )	'"${_Msh_doSortsAfter}"' ;;
+	( 3,le )	str lt "$2" "$3" || str eq "$2" "$3" ;;
+	( 3,ge )	str gt "$2" "$3" || str eq "$2" "$3" ;;
+	# ... block operators containing "," to avoid probs below
+	( *,*,* )	die "str: invalid operator: $1" ;;
+	# ... multi-match
+	( *,-M )	case ${2-} in
+			( "" )	die "str -M: missing operator" ;;
+			( empty | isint | isvarname )
+				die "str: -M cannot be used with unary operator $2" ;;
+			esac
+			case $# in
+			( 3 )	set -- "$1" "$2" "" "$3" ;;
+			( 2 )	set -- "$1" "$2" "" "" ;;
+			esac
+			_Msh_str_o=$2
+			eval "_Msh_str_p=\${$#}"
+			_Msh_str_m=0
+			unset -v REPLY
+			while let "$# > 3"; do
+				if str "${_Msh_str_o}" "$3" "${_Msh_str_p}"; then
+					REPLY=${REPLY+$REPLY$CCn}$3
+					_Msh_str_m=$((_Msh_str_m+1))
+				fi
+				shift
+			done
+			eval "unset -v _Msh_str_o _Msh_str_p _Msh_str_m
+				return $(( _Msh_str_m < 2 ? !_Msh_str_m : (_Msh_str_m > 255 ? 255 : _Msh_str_m) ))" ;;
+	# ... empty removal handling
+	( 1,empty )	;;
+	( 1,isint | 1,isvarname )
+			return 1 ;;
+	( [12],* )	str "$1" "" "${2-}" ;;
+	# ... failed arguments check
+	( *,empty | *,isint | *,isvarname )
+			die "str $1: need max. 1 argument, got $((${#}-1))" ;;
+	( *,eq | *,ne | *,in | *,begin | *,end | *,match | *,ematch | *,lt | *,gt | *,le | *,ge )
+			die "str $1: need max. 2 arguments, got $((${#}-1))" ;;
+	( 0, )		die "str: operator expected" ;;
+	( * )		die "str: invalid operator: $1" ;;
+	esac
+}'
+unset -v _Msh_doMatchEval _Msh_doMatch _Msh_doEMatch _Msh_doSortsBefore _Msh_doSortsAfter
+
+# --- General file tests. ---
+# The can() and is() functions deal correctly with empty removal so are good
+# to use with 'use safe' and unquoted variables. They also use substantially
+# different and more intuitive logic than 'test', '[' and '[[' do; see README.md.
+if thisshellhas DBLBRACKET; then
+	# Use [[ if available because it's generally faster and more robust.
+	eval '[[ / -nt /dev/null/nonexistent ]]' && _Msh_test= || _Msh_test=y	# for is newer/is older
+	eval 'can() {
+		case $# in
+		( 1 )	case $1 in
+			( read | write | exec | traverse )
+				# removed empty argument: return false
+				return 1 ;;
+			( * )	die "can: invalid operator: $1" ;;
+			esac ;;
+		( 2 )	case $1 in
+			( read )
+				[[ -r $2 ]] ;;
+			( write )
+				[[ -d $2 && ( -w $2 && -x $2 ) || -w $2 ]] ;;
+			( exec )
+				[[ -x $2 && -f $2 ]] ;;
+			( traverse )
+				[[ -x $2 && -d $2 ]] ;;
+			( * )	die "can: invalid operator: $1" ;;
+			esac ;;
+		( * )	die "can: need 1 or 2 arguments, got $#" ;;
+		esac
+	}
+	is() {
+		case $# in
+		( 1 )	case $1 in
+			( present | reg | dir | sym | fifo | socket | blockspecial | charspecial \
+			| nonempty | setuid | setgid | mine | mygroup )
+				# removed empty argument: return false
+				return 1 ;;
+			( * )	die "is: invalid operator: $1" ;;
+			esac ;;
+		( 2 )	case $1 in
+			( present )
+				[[ -e $2 || -L $2 ]] ;;
+			( reg )	[[ ! -L $2 && -f $2 ]] ;;
+			( dir )	[[ ! -L $2 && -d $2 ]] ;;
+			( sym )	[[ -L $2 ]] ;;
+			( fifo )
+				[[ ! -L $2 && -p $2 ]] ;;
+			( socket )
+				[[ ! -L $2 && -S $2 ]] ;;
+			( blockspecial )
+				[[ ! -L $2 && -b $2 ]] ;;
+			( charspecial )
+				[[ ! -L $2 && -c $2 ]] ;;
+			( nonempty )
+				if [[ -d $2 ]]; then
+					[[ -r $2 && -x $2 ]] || return 2
+					case $- in
+					( *f* ) set +f
+						set -- "${2%/}" "${2%/}"/[*] "${2%/}"/* "${2%/}"/.[!.]* "${2%/}"/.??*
+						set -f ;;
+					( * )	set -- "${2%/}" "${2%/}"/[*] "${2%/}"/* "${2%/}"/.[!.]* "${2%/}"/.??* ;;
+					esac
+					[[ "${#} $2 $3 $4 $5" != "5 $1/[*] $1/* $1/.[!.]* $1/.??*" ]]
+				else
+					[[ -s $2 ]]
+				fi ;;
+			( setuid )
+				[[ -u $2 ]] ;;
+			( setgid )
+				[[ -g $2 ]] ;;
+			( mine )
+				[[ -O $2 ]] ;;
+			( mygroup )
+				[[ -G $2 ]] ;;
+			( onterminal )
+				case $2 in
+				( stdin )		[[ -t 0 ]] ;;
+				( stdout )		[[ -t 1 ]] ;;
+				( stderr )		[[ -t 2 ]] ;;
+				( *[!0123456789]* )	die "is onterminal: invalid file descriptor: $2" ;;
+				( * )			[[ -t $2 ]] ;;
+				esac ;;
+			( -L )	case $2 in
+				( present | reg | dir | sym | fifo | socket | blockspecial | charspecial )
+					# removed empty argument: return false
+					return 1 ;;
+				( * )	die "is -L: invalid operator: $2" ;;
+				esac ;;
+			( * )	die "is: invalid operator: $2" ;;
+			esac ;;
+		( 3 )	case $1 in
+			( -L )	case $2 in
+				( present )
+					[[ -e $3 ]] ;;
+				( reg )	[[ -f $3 ]] ;;
+				( dir )	[[ -d $3 ]] ;;
+				( sym )	[[ -L $3 && -e $3 ]] ;;	# "is -L sym": test if valid symlink.
+				( fifo )
+					[[ -p $3 ]] ;;
+				( socket )
+					[[ -S $3 ]] ;;
+				( blockspecial )
+					[[ -b $3 ]] ;;
+				( charspecial )
+					[[ -c $3 ]] ;;
+				( * )	die "is -L: invalid operator: $2" ;;
+				esac ;;
+			( newer )
+				if [[ -L "$2" || -L "$3" ]]; then
+					if is present "$2"; then is present "$3" || return 0; else return 1; fi
+					[[ $2 == -* ]] && set -- "$1" "./$2" "$3"
+					case $(PATH=$DEFPATH; unset -f find  # QRK_EXECFNBI compat
+						exec find "$2" -newer "$3" -print -prune) in
+					( "" ) return 1 ;;
+					esac
+				else
+					[[ $2 -nt $3'${_Msh_test:+' || ( -e $2 && ! -e $3 )'}' ]]
+				fi ;;
+			( older )
+				if [[ -L "$2" || -L "$3" ]]; then
+					if is present "$3"; then is present "$2" || return 0; else return 1; fi
+					[[ $3 == -* ]] && set -- "$1" "$2" "./$3"
+					case $(PATH=$DEFPATH; unset -f find  # QRK_EXECFNBI compat
+						exec find "$3" -newer "$2" -print -prune) in
+					( "" ) return 1 ;;
+					esac
+				else
+					[[ $2 -ot $3'${_Msh_test:+' || ( -e $3 && ! -e $2 )'}' ]]
+				fi ;;
+			( samefile )
+				[[ -L "$2" ]] && set -- "$1" "$2" "$3" "A"
+				[[ -L "$3" ]] && set -- "$1" "$2" "$3" "${4-}B"
+				case ${4-} in
+				( AB )	# Check if two symlinks are hardlinks of each other, which "test A -ef B" does not allow.
+					# We use the first field of "ls -i" output, which is the inode.
+					push IFS -f
+					IFS=$WHITESPACE; set -f
+					set -- "$1" "$2" $(PATH=$DEFPATH; unset -f ls; exec ls -idF "$3")  # QRK_EXECFNBI compat
+					set -- "$1" "$3" $(PATH=$DEFPATH; unset -f ls; exec ls -idF "$2")  # QRK_EXECFNBI compat
+					pop IFS -f
+					let "$# > 3" && str isint "$3" && str isint "$2" \
+					|| die "is samefile: internal error"
+					[[ $3 == "$2" ]] ;;
+				( "" )	[[ $2 -ef $3 ]] ;;
+				( * )	return 1 ;;
+				esac ;;
+			( onsamefs )
+				# Make sure we have path names so we can strip the last element.
+				[[ $2 != */* ]] && set -- "$1" "$PWD/$2" "$3"
+				[[ $3 != */* ]] && set -- "$1" "$2" "$PWD/$3"
+				# Return false if either of the items does not exist.
+				[[ -e $2 || -L $2 ]] || return
+				[[ -e $3 || -L $3 ]] || return
+				# Strip any non-regular, non-directory files from the paths.
+				[[ -L $2 || (! -f $2 && ! -d $2) ]] && set -- "$1" "${2%/*}" "$3"
+				[[ -L $3 || (! -f $3 && ! -d $3) ]] && set -- "$1" "$2" "${3%/*}"
+				# Do the test if the stripped paths are different.
+				[[ ${2:-/} == "${3:-/}" ]] || _Msh_doIsOnSameFs "${2:-/}" "${3:-/}" ;;
+			( * )	die "is: invalid arguments" ;;
+			esac ;;
+		( 4 )	case $1 in
+			( -L )	case $2 in
+				( newer )
+					[[ $3 -nt $4'${_Msh_test:+' || ( -e $3 && ! -e $4 )'}' ]] ;;
+				( older )
+					[[ $3 -ot $4'${_Msh_test:+' || ( -e $4 && ! -e $3 )'}' ]] ;;
+				( samefile )
+					[[ $3 -ef $4 ]] ;;
+				( onsamefs )
+					# Make sure we have path names so we can strip the last element.
+					[[ $3 != */* ]] && set -- "$1" "$2" "$PWD/$3" "$4"
+					[[ $4 != */* ]] && set -- "$1" "$2" "$3" "$PWD/$4"
+					# Return false if either of the items does not exist.
+					[[ -e $3 || -L $3 ]] || return
+					[[ -e $4 || -L $4 ]] || return
+					# If we have a valid symlink to a non-regular, non-directory file, substitute the
+					# target of the link before stripping its final element to keep "df -P" happy.
+					if [[ -L $3 && -e $3 && ! -d $3 && ! -f $3 ]]; then
+						set -- "$1" "$2" "$(POSIXLY_CORRECT=y PATH=$DEFPATH command ls -ld -- "$3"
+							put X)" "$4" "$3"
+						set -- "$1" "$2" "${3%${CCn}X}" "$4" "$5"
+						set -- "$1" "$2" "${3#*" $5 -> "}" "$4"
+					fi
+					if [[ -L $4 && -e $3 && ! -d $4 && ! -f $4 ]]; then
+						set -- "$1" "$2" "$3" "$(POSIXLY_CORRECT=y PATH=$DEFPATH command ls -ld -- "$4"
+							put X)" "$4"
+						set -- "$1" "$2" "$3" "${4%${CCn}X}" "$5"
+						set -- "$1" "$2" "$3" "${4#*" $5 -> "}"
+					fi
+					# Strip any invalid symlinks or non-regular, non-directory files from the paths.
+					[[ ! -e $3 || (! -f $3 && ! -d $3) ]] && set -- "$1" "$2" "${3%/*}" "$4"
+					[[ ! -e $4 || (! -f $4 && ! -d $4) ]] && set -- "$1" "$2" "$3" "${4%/*}"
+					# Do the test if the paths are different.
+					[[ ${3:-/} == "${4:-/}" ]] || _Msh_doIsOnSameFs "${3:-/}" "${4:-/}" ;;
+				( * )	die "is -L: invalid operator: $3" ;;
+				esac ;;
+			( * )	die "is: invalid arguments" ;;
+			esac ;;
+		( * )	die "is: need 1 or 2 arguments, got $#" ;;
+		esac
+	}'
+else
+	# Note: 'test' was hardened against failure above using a shell function.
+	test / -nt /dev/null/nonexistent && _Msh_test= || _Msh_test=y	# for is newer/is older
+	eval 'can() {
+		case $# in
+		( 1 )	case $1 in
+			( read | write | exec | traverse )
+				# removed empty argument: return false
+				return 1 ;;
+			( * )	die "can: invalid operator: $1" ;;
+			esac ;;
+		( 2 )	case $1 in
+			( read )
+				test -r "$2" ;;
+			( write )
+				if	test -d "$2"
+				then	test -w "$2" && test -x "$2"
+				else	test -w "$2"
+				fi ;;
+			( exec )
+				test -x "$2" && test -f "$2" ;;
+			( traverse )
+				test -x "$2" && test -d "$2" ;;
+			( * )	die "can: invalid operator: $1" ;;
+			esac ;;
+		( * )	die "can: need 1 or 2 arguments, got $#" ;;
+		esac
+	}
+	is() {
+		case $# in
+		( 1 )	case $1 in
+			( present | reg | dir | sym | fifo | socket | blockspecial | charspecial \
+			| setuid | setgid | mine | mygroup )
+				# removed empty argument: return false
+				return 1 ;;
+			( * )	die "is: invalid operator: $1" ;;
+			esac ;;
+		( 2 )	case $1 in
+			( present )
+				test -e "$2" || test -L "$2" ;;
+			( reg )	! test -L "$2" && test -f "$2" ;;
+			( dir )	! test -L "$2" && test -d "$2" ;;
+			( sym )	test -L "$2" ;;
+			( fifo )
+				! test -L "$2" && test -p "$2" ;;
+			( socket )
+				! test -L "$2" && test -S "$2" ;;
+			( blockspecial )
+				! test -L "$2" && test -b "$2" ;;
+			( charspecial )
+				! test -L "$2" && test -c "$2" ;;
+			( nonempty )
+				if test -d "$2"; then
+					test -r "$2" && test -x "$2" || return 2
+					case $- in
+					( *f* ) set +f
+						set -- "${2%/}" "${2%/}"/[*] "${2%/}"/* "${2%/}"/.[!.]* "${2%/}"/.??*
+						set -f ;;
+					( * )	set -- "${2%/}" "${2%/}"/[*] "${2%/}"/* "${2%/}"/.[!.]* "${2%/}"/.??* ;;
+					esac
+					case "${#} $2 $3 $4 $5" in
+					( "5 $1/[*] $1/* $1/.[!.]* $1/.??*" )
+						return 1 ;;
+					esac
+				else
+					test -s "$2"
+				fi ;;
+			( setuid )
+				test -u "$2" ;;
+			( setgid )
+				test -g "$2" ;;
+			# (The -O and -G test/[ operators are technically
+			# non-standard, but their support in shells that can
+			# run the rest of modernish is universal.)
+			( mine )
+				test -O "$2" ;;
+			( mygroup )
+				test -G "$2" ;;
+			( onterminal )
+				case $2 in
+				( stdin )		test -t 0 ;;
+				( stdout )		test -t 1 ;;
+				( stderr )		test -t 2 ;;
+				( *[!0123456789]* )	die "is onterminal: invalid file descriptor: $2" ;;
+				( * )			test -t "$2" ;;
+				esac ;;
+			( -L )	case $2 in
+				( present | reg | dir | sym | fifo | socket | blockspecial | charspecial )
+					# removed empty argument: return false
+					return 1 ;;
+				( * )	die "is -L: invalid operator: $2" ;;
+				esac ;;
+			( * )	die "is: invalid operator: $1" ;;
+			esac ;;
+		( 3 )	case $1 in
+			( -L )	case $2 in
+				( present )
+					test -e "$3" ;;
+				( reg )	test -f "$3" ;;
+				( dir )	test -d "$3" ;;
+				( sym )	test -L "$3" && test -e "$3" ;;	# "is -L sym": test if valid symlink.
+				( fifo )
+					test -p "$3" ;;
+				( socket )
+					test -S "$3" ;;
+				( blockspecial )
+					test -b "$3" ;;
+				( charspecial )
+					test -c "$3" ;;
+				( * )	die "is -L: invalid operator: $2" ;;
+				esac ;;
+			# (The -nt, -ot and -ef test/[ operators are
+			# technically non-standard, but their support in shells
+			# that can run the rest of modernish is universal.)
+			( newer )
+				if test -L "$2" || test -L "$3"; then
+					if is present "$2"; then is present "$3" || return 0; else return 1; fi
+					case $2 in ( -* ) set -- "$1" "./$2" "$3";; esac
+					case $(PATH=$DEFPATH; unset -f find  # QRK_EXECFNBI compat
+						exec find "$2" -newer "$3" -print -prune) in
+					( "" ) return 1 ;;
+					esac
+				else
+					test "$2" -nt "$3"'${_Msh_test:+' || { test -e "$2" && ! test -e "$3"; '\}}'
+				fi ;;
+			( older )
+				if test -L "$2" || test -L "$3"; then
+					if is present "$3"; then is present "$2" || return 0; else return 1; fi
+					case $3 in ( -* ) set -- "$1" "$2" "./$3";; esac
+					case $(PATH=$DEFPATH; unset -f find  # QRK_EXECFNBI compat
+						exec find "$3" -newer "$2" -print -prune) in
+					( "" ) return 1 ;;
+					esac
+				else
+					test "$2" -ot "$3"'${_Msh_test:+' || { test -e "$3" && ! test -e "$2"; '\}}'
+				fi ;;
+			( samefile )
+				test -L "$2" && set -- "$1" "$2" "$3" "A"
+				test -L "$3" && set -- "$1" "$2" "$3" "${4-}B"
+				case ${4-} in
+				( AB )	# Check if two symlinks are hardlinks of each other, which "test A -ef B" does not allow.
+					# We use the first field of "ls -i" output, which is the inode.
+					push IFS -f
+					IFS=$WHITESPACE; set -f
+					set -- "$1" "$2" $(PATH=$DEFPATH; unset -f ls; exec ls -idF "$3")  # QRK_EXECFNBI compat
+					set -- "$1" "$3" $(PATH=$DEFPATH; unset -f ls; exec ls -idF "$2")  # QRK_EXECFNBI compat
+					pop IFS -f
+					let "$# > 3" && str isint "$3" && str isint "$2" \
+					|| die "is samefile: internal error"
+					str eq "$3" "$2" ;;
+				( "" )	test "$2" -ef "$3" ;;
+				( * )	return 1 ;;
+				esac ;;
+			( onsamefs )
+				# Make sure we have path names so we can strip the last element.
+				case $2 in (*/*) ;; (*) set -- "$1" "$PWD/$2" "$3" ;; esac
+				case $3 in (*/*) ;; (*) set -- "$1" "$2" "$PWD/$3" ;; esac
+				# Return false if either of the items does not exist.
+				test -e "$2" || test -L "$2" || return
+				test -e "$3" || test -L "$3" || return
+				# Strip any non-regular, non-directory files from the paths.
+				{ test -L "$2" || { ! test -f "$2" && ! test -d "$2"; }; } && set -- "$1" "${2%/*}" "$3"
+				{ test -L "$3" || { ! test -f "$3" && ! test -d "$3"; }; } && set -- "$1" "$2" "${3%/*}"
+				# Do the test if the stripped paths are different.
+				case ${2:-/} in ("${3:-/}") ;; ( * ) _Msh_doIsOnSameFs "${2:-/}" "${3:-/}" ;; esac ;;
+			( * )	die "is: invalid arguments" ;;
+			esac ;;
+		( 4 )	case $1 in
+			( -L )	case $2 in
+				( newer )
+					test "$3" -nt "$4"'${_Msh_test:+' || { test -e "$3" && ! test -e "$4"; '\}}' ;;
+				( older )
+					test "$3" -ot "$4"'${_Msh_test:+' || { test -e "$4" && ! test -e "$3"; '\}}' ;;
+				( samefile )
+					test "$3" -ef "$4" ;;
+				( onsamefs )
+					# Make sure we have path names so we can strip the last element.
+					case $3 in (*/*) ;; (*) set -- "$1" "$2" "$PWD/$3" "$4" ;; esac
+					case $4 in (*/*) ;; (*) set -- "$1" "$2" "$3" "$PWD/$4" ;; esac
+					# Return false if either of the items does not exist.
+					test -e "$3" || test -L "$3" || return
+					test -e "$4" || test -L "$4" || return
+					# If we have a valid symlink to a non-regular, non-directory file, substitute the
+					# target of the link before stripping its final element to keep "df -P" happy.
+					if test -L "$3" && test -e "$3" && ! test -d "$3" && ! test -f "$3"; then
+						set -- "$1" "$2" "$(POSIXLY_CORRECT=y PATH=$DEFPATH command ls -ld -- "$3"
+							put X)" "$4" "$3"
+						set -- "$1" "$2" "${3%${CCn}X}" "$4" "$5"
+						set -- "$1" "$2" "${3#*" $5 -> "}" "$4"
+					fi
+					if test -L "$4" && test -e "$3" && ! test -d "$4" && ! test -f "$4"; then
+						set -- "$1" "$2" "$3" "$(POSIXLY_CORRECT=y PATH=$DEFPATH command ls -ld -- "$4"
+							put X)" "$4"
+						set -- "$1" "$2" "$3" "${4%${CCn}X}" "$5"
+						set -- "$1" "$2" "$3" "${4#*" $5 -> "}"
+					fi
+					# Strip any invalid symlinks or non-regular, non-directory files from the paths.
+					{ ! test -e "$3"||{ ! test -f "$3"&&! test -d "$3";};} && set -- "$1" "$2" "${3%/*}" "$4"
+					{ ! test -e "$4"||{ ! test -f "$4"&&! test -d "$4";};} && set -- "$1" "$2" "$3" "${4%/*}"
+					# Do the test if the stripped paths are different.
+					case ${3:-/} in ("${4:-/}") ;; ( * ) _Msh_doIsOnSameFs "${3:-/}" "${4:-/}" ;; esac ;;
+				( * )	die "is -L: invalid operator: $3" ;;
+				esac ;;
+			( * )	die "is: invalid arguments" ;;
+			esac ;;
+		( * )	die "is: need 1 or 2 arguments, got $#" ;;
+		esac
+	}'
+fi
+_Msh_doIsOnSameFs() {
+	# Invoke POSIX "df -P" and isolate the file system names and mount points as reliably as possible.
+	# Ref. (thread): https://www.mail-archive.com/austin-group-l@opengroup.org/msg01699.html
+	_Msh_is=$(export POSIXLY_CORRECT=y "PATH=$DEFPATH"
+		unset -f df sed  # QRK_EXECFNBI compat
+		exec df -P -- "$1" "$2" | exec sed '1d; s/\([[:blank:]]\{1,\}[[:digit:]]\{1,\}\)\{4\}%[[:blank:]]\{1,\}/,/')
+	# If the two lines are identical, the files are on the same filesystem.
+	case ${_Msh_is#*$CCn} in
+	( *$CCn* | "${_Msh_is}" )  # >2 lines or 1 line
+		die "is onsamefs: internal error" ;;
+	( "${_Msh_is%$CCn*}" )
+		unset -v _Msh_is ;;
+	( * )	! unset -v _Msh_is ;;
+	esac
+}
+
+
+# --- End of core library, start of initialisation phase 2 ---
+
+# For thisshellhas(): Now that we have is(), we can replace the preliminary
+# _Msh_doCapTest() with a more straightforward and robust one.
+_Msh_doCapTest() {
+	unset -v _Msh_test						# guarantee unset variable for testing purposes
+	set -- "$MSH_PREFIX/lib/modernish/cap/$1.t"			# this can be used by test scripts as well
+	is -L reg "$1" || return 1
+	can read "$1" || return 2
+	. "$1" 1>&2
+}
+
+# If shell supports it, then set modernish functions to read-only.
+if thisshellhas ROFUNC; then
+	readonly -f \
+	@ROFUNC@	# install.sh will replace this tag
+fi 2>/dev/null
+
+# On some shells (e.g. mksh), the POSIX 'type' command is an alias. Init
+# killed it, so restore it, to avoid it being either missing or run as an
+# external command (where the results w.r.t. what is a builtin don't apply
+# to the current shell).
+PATH=/dev/null command -v type >/dev/null || alias type='command -V'
+
+# On zsh with broken POSIX 'readonly', we redefined 'readonly' as an alias for
+# 'typeset -rg' near the top. For purposes other than modernish initialisation,
+# we can properly fix the bug by making it conditional upon posixbuiltins,
+# albeit at the cost of forking a subshell for every 'readonly' invocation.
+if isset ZSH_VERSION && alias readonly >/dev/null 2>&1 && thisshellhas DBLBRACKET; then
+	alias readonly='typeset -r"$([[ -o posixbuiltins ]] && builtin echo g)"'
+fi
+
+# Avoid some hairy AT&T ksh93 bugs where possible.
+case ${KSH_VERSION-} in
+( 'Version '* | 2[0-9][0-9][0-9].* )
+	# Multibyte locale settings intermittently corrupt the shell-quoting in the output
+	# of commands like 'export -p' and 'trap'. Triggering a locale re-init fixes it.
+	LC_ALL=foo_BAR.baz command true 2>/dev/null  # BUG_CMDSPASGN compat: 'true' is a regular builtin
+
+	# Initialise $! so it can be used reliably. See https://github.com/att/ast/issues/1357
+	case ${!-} in
+	( '' )	case $- in
+		( *m* )	{ true & wait "$!"; } 2>/dev/null ;;  # suppress job control noise
+		( * )	true & ;;
+		esac ;;
+	esac
+	;;
+esac
+
+# Internal function to process all immediately adjacent hashbang lines that
+# have non-pathname commands. This is needed for aliases set by these to be
+# properly expanded on ksh93.
+# Allows only certain commands. No shell grammar is parsed: all arguments are
+# whitespace-separated with no way of quoting them to include whitespace;
+# variables and compound commands won't work; etc. An argument starting with
+# '#' causes it and the rest of the line to be ignored. It is considered a
+# fatal error for any command to yield an exit status > 0.
+_Msh_tmp_doHashbangPreload() {
+	while IFS='' read -r _Msh_doHbPl_L 2>/dev/null; do
+		str begin "${_Msh_doHbPl_L}" "#!" || break
+		# remove initial '#!' and any right-hand comment
+		_Msh_doHbPl_L=${_Msh_doHbPl_L#??}
+		_Msh_doHbPl_L=${_Msh_doHbPl_L%%[" $CCt"]#*}
+		# split it, trimming whitespace
+		push IFS -f
+		unset -v IFS; set -f  # default field splitting; no globbing
+		set -- ${_Msh_doHbPl_L}
+		pop IFS -f
+		let "$# > 0" || continue
+		str in "$1" '/' && continue
+		# whitelist allowed commands below
+		case $1 in
+		( \#* )	continue ;;
+		( use ) ;;
+		(trace)	let "$# == 3" && str eq "$2" '-f' || die "#!trace: only 'trace -f FUNCNAME' allowed as #!"
+			use -q sys/cmd/harden || die "#!trace: requires sys/cmd/harden" ;;
+		( * )	die "invalid hashbang command: ${_Msh_doHbPl_L}" ;;
+		esac
+		"$@" || die "hashbang command failed: ${_Msh_doHbPl_L}"
+	done
+	# keep first non-hashbang line in _Msh_doHbPl_L in case we're reading a script from stdin
+}
+
+# Cleanup.
+PATH=${_Msh_PATH}
+unset -v _Msh_PATH _Msh_test
+unset -f _Msh_initExit _Msh_testFn
+
+# With init succeeded, time to make these permanent.
+#readonly MSH_VERSION MSH_SHELL MSH_PREFIX MSH_MDL MSH_AUX MSH_CONFIG DEFPATH	# installer will uncomment this
+
+# --------------------
+# ------- MAIN -------
+# --------------------
+
+# Find out how modernish was invoked and launch the invoking program if necessary.
+ME=$0	# temporary identity for possible error messages
+if ! str end "$0" '/modernish' && ! str eq "$0" 'modernish'; then
+
+	# --- modernish was sourced (simple use) ---
+	if isset -i; then
+		# interactive shell: be welcoming
+		readonly "ME=modernish on ${0#-}"
+		putln "Welcome to the modernish age (version $MSH_VERSION)."
+		. "$MSH_AUX/id.sh"
+		use var/stack/trap
+		pushtrap 'putln "Exiting modernish $MSH_VERSION. Bye."' EXIT
+	else
+		# non-interactive shell
+		readonly "ME=$0"
+		if is -L reg "$ME" && can read "$ME"; then
+			_Msh_tmp_doHashbangPreload < "$ME"
+			unset -v _Msh_doHbPl_L
+		fi
+	fi
+	unset -f _Msh_tmp_doHashbangPreload
+	# Restore 'allexport' option if it was set
+	if isset _Msh_allexport; then
+		set -a
+		unset -v _Msh_allexport
+	fi
+	# Resume parent program or return to command prompt.
+	# We used to 'return' from the dot script here, but yash < 2.44 in interactive mode doesn't like it.
+	# Instead, enclose the rest in an extra else ... fi.
+	# TODO: when yash < 2.44 support ends, re-insert 'return' here and remove the extra else...fi.
+
+else
+
+# --- modernish *is* the shell (cross-platform use, must be portable) ---
+# (e.g. '#!/usr/bin/env modernish' or 'modernish -c "commands here"'):
+
+# Turn off brace expansion by default, if it exists.
+command set +o braceexpand 2>/dev/null
+
+# Provide one consistent modernish version of the notoriously unportable 'echo', so cross-shell
+# modernish programs can safely expect the same behaviour. This version does not interpret any control
+# characters and supports only one option, '-n', which, like BSD 'echo', suppresses the newline.
+# However, unlike BSD 'echo', if '-n' is the only argument, it is not interpreted as an option and the
+# string '-n' is printed instead. This makes it safe to output arbitrary data using this version of
+# 'echo' as long as it is given as a single argument (using quoting if needed).
+echo() {
+	case ${#},${1-} in
+	( 0, )   putln ;;
+	( 1,* )  putln "$1" ;;
+	( *,-n ) shift; put "$@" ;;
+	( * )	 put "$@$CCn" ;;
+	esac
+}
+if thisshellhas ROFUNC; then
+	readonly -f echo
+fi
+
+if let "$#"; then
+	# parse standard shell options.
+	unset -v _Msh_script _Msh_noexec _Msh_xtrace _Msh_stdin
+	while str match "${1:-}" '[+-]*'; do
+		case $1 in
+		( [+-][!-]?* ) # split a set of combined options
+			_Msh_opts=$1
+			_Msh_plusmin=${1%"${1#?}"} # "
+			shift
+			while _Msh_opts=${_Msh_opts#?} && ! str empty "${_Msh_opts}"; do
+				_Msh_arg=${_Msh_plusmin}${_Msh_opts%"${_Msh_opts#?}"} # "
+				push _Msh_arg
+				case ${_Msh_opts} in
+				( o* )	# split optarg
+					_Msh_arg=${_Msh_opts#?}
+					! str empty "${_Msh_arg}" && push _Msh_arg && break ;;
+				esac
+			done
+			while pop _Msh_arg; do
+				set -- "${_Msh_arg}" "$@"
+			done
+			unset -v _Msh_opts _Msh_arg _Msh_plusmin
+			continue ;;
+		( -c )	_Msh_script= ;;
+		( +c )	unset -v _Msh_script ;;
+		( -i | -l )
+			_Msh_doExit 2 "To use modernish interactively, source it ('. modernish') in your shell profile."
+			;;
+		( +i | +l ) ;;
+		( -s )	_Msh_stdin= ;;
+		( +s )	unset -v _Msh_stdin ;;
+		( [+-]o )
+			let "$# >= 2" || _Msh_doExit 2 "option requires argument: -o"
+			case $1,$2 in
+			( -o,errexit )
+				_Msh_doExit 2 "'$1 $2' not supported; use sys/cmd/harden instead." ;;
+			( -o,noexec | -o,stdin )
+				eval "_Msh_$2=" ;;
+			( +o,noexec | +o,stdin )
+				unset -v "_Msh_$2" ;;
+			( ?o,xtrace )
+				_Msh_xtrace=${1%o}x ;;
+			( * )	set "$1" "$2" || exit ;;
+			esac
+			shift
+			;;
+		( -e )	_Msh_doExit 2 "'-e' not supported; use sys/cmd/harden instead."
+			;;
+		( -n )	_Msh_noexec= ;;
+		( +n )	unset _v _Msh_noexec ;;
+		( [+-]x )
+			_Msh_xtrace=$1 ;;
+		( [+-][!-]* )
+			set "$1" || exit ;;
+		( --use | --use= )
+			_Msh_doExit 2 "option requires argument: --use" ;;
+		( --use=* )
+			# Preload module. Safely field-split the argument to allow for arguments to modules.
+			_Msh_tmp_doUse() {
+				push IFS -f
+				unset -v IFS; set -f
+				set -- $1
+				pop IFS -f
+				use "$@"
+			}
+			_Msh_tmp_doUse "${1#--use=}"
+			unset -f _Msh_tmp_doUse ;;
+		( --version )
+			putln "$MSH_VERSION"
+			exit
+			;;
+		( --test )
+			shift
+			testsdir=lib/modernish/tst
+			_Msh_tmp_doHashbangPreload < "$MSH_PREFIX/$testsdir/run.sh" || exit
+			unset -f _Msh_tmp_doHashbangPreload
+			unset -v _Msh_doHbPl_L
+			isset _Msh_xtrace && set -x
+			. "$MSH_PREFIX/$testsdir/run.sh"
+			exit
+			;;
+		( --help )
+			putln "This is modernish version $MSH_VERSION." \
+			      "Not installed. Run install.sh to set up modernish with your preferred shell." \
+			      "Modernish lives in:	MSH_PREFIX=$MSH_PREFIX" \
+			      "Known-good shell:	MSH_SHELL=$MSH_SHELL" \
+			      "Default utility PATH:	DEFPATH=$DEFPATH" \
+			      "User config directory:	MSH_CONFIG=$MSH_CONFIG"
+			PATH=$DEFPATH sed -n '3,$ p' "$MSH_PREFIX/share/doc/modernish/HELP"
+			exit ;;
+		( -- )
+			shift
+			break
+			;;
+		( * )
+			_Msh_doExit 2 "invalid option: $1"
+			;;
+		esac
+		shift
+	done
+fi
+if isset _Msh_script; then
+	# A script was given with the -c option.
+	# Other shells take the first non-option argument as the script and pass the rest on to the PPs for
+	# the script, starting with $0; act alike, except we can't set $0 so we'll set $ME instead.
+	let "$#" && _Msh_script=$1 && shift || _Msh_doExit 2 'the -c option was specified but no script was given'
+	let "$#" && ME=$1 && shift
+	readonly ME
+	thisshellhas BUG_HDOCMASK && _Msh_umask=$(umask) && umask u+r
+	_Msh_tmp_doHashbangPreload <<-EOF
+	${_Msh_script}
+	EOF
+	thisshellhas BUG_HDOCMASK && umask "${_Msh_umask}" && unset -v _Msh_umask
+	unset -f _Msh_tmp_doHashbangPreload
+	isset _Msh_allexport && set -a && unset -v _Msh_allexport
+	eval "unset -v _Msh_script _Msh_doHbPl_L _Msh_noexec _Msh_xtrace" \
+		"${_Msh_noexec+${CCn}set -n${CCn}set +n${CCn}exit 128 'this shell cannot switch to noexec'}" \
+		"${_Msh_xtrace+${CCn}set ${_Msh_xtrace}}" \
+		"${CCn}${_Msh_script}"
+elif let "$#" && ! isset _Msh_stdin; then
+	# A script file was given as the first argument.
+	is -L reg "$1" || _Msh_doExit 127 "file not found: $1"
+	readonly "ME=$1"
+	shift
+	_Msh_tmp_doHashbangPreload < "$ME"
+	unset -f _Msh_tmp_doHashbangPreload
+	unset -v _Msh_doHbPl_L
+	isset _Msh_allexport && set -a && unset -v _Msh_allexport
+	if isset _Msh_noexec; then
+		eval "$(putln "set -n" "set +n" "exit 128 'this shell cannot switch to noexec'"
+			PATH=$DEFPATH exec cat "$ME")"
+		\exit	# on yash, noexec is local to 'eval'
+	fi
+	case $ME in	# keep '.' from searching in PATH if no directory was given
+	( */* )	isset _Msh_xtrace && eval "unset -v _Msh_xtrace; set ${_Msh_xtrace}"
+		. "$ME" ;;
+	( * )	isset _Msh_xtrace && eval "unset -v _Msh_xtrace; set ${_Msh_xtrace}"
+		. "./$ME" ;;
+	esac
+elif is onterminal stdin && ! isset _Msh_stdin; then
+	# This is where we wish it were possible to switch a non-interactive shell to interactive and go to
+	# its command prompt, retaining all the shell functions we just set, but no shell supports this.
+	# We could fake a simple interactive shell here using a loop with 'read', but who would use that?
+	_Msh_doExit 2 "To use modernish interactively, source it ('. modernish') in your shell profile."
+else
+	# We're reading a modernish script from standard input; the user did
+	# something like 'echo "$scriptcode" | modernish' or 'modernish <<"EOF"'
+	readonly ME
+	_Msh_tmp_doHashbangPreload
+	unset -f _Msh_tmp_doHashbangPreload
+	isset _Msh_allexport && set -a && unset -v _Msh_allexport
+	eval "unset -v _Msh_doHbPl_L _Msh_noexec _Msh_xtrace" \
+		"${_Msh_noexec+${CCn}set -n${CCn}set +n${CCn}exit 128 'this shell cannot switch to noexec'}" \
+		"${_Msh_xtrace+${CCn}set ${_Msh_xtrace}}" \
+		"${CCn}${_Msh_doHbPl_L}${CCn}$(PATH=$DEFPATH exec cat)"
+fi
+
+fi # if ! str end "$0" '/modernish' && ! str eq "$0" 'modernish'
