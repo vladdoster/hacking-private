@@ -94,7 +94,7 @@ Other available `make` variables are: `INSTALL` (to customize install command),
 
 `Zshelldoc` highly motivates to document code, my other project `Zplugin` gained from this.
 Also, `Zplugin` documentation demonstrates rich cross-file invocations.
-[Check out Zplugin's code documentation](https://github.com/zdharma/zplugin/tree/master/zsdoc).
+[Check out Zplugin's code documentation](https://github.com/zdharma-continuum/zinit/tree/master/zsdoc).
 
 For other, in-place examples see:
 [example 1](https://github.com/zdharma/zshelldoc/blob/master/examples/zsh-syntax-highlighting.zsh.adoc),
@@ -116,7 +116,7 @@ Few rules helping to use `Zshelldoc` in your project:
  1. Be aware that to convert a group of scripts, you simply need `zsd file1.zsh file2.zsh ...` – cross-file function invocations will work automatically, and multiple `*.adoc` files will be created.
  1. Create `Makefile` with `doc` target, that does `rm -rf zsdoc/data; zsd -v file1.zsh ...`. Documentation will land in `zsdoc` directory.
  1. Directory `zsdoc/data` holds meta-data used to create `asciidoc` documents (`*.adoc` files). You can remove it or analyze it yourself.
- 1. Obtain **PDFs** with [Asciidoctor](http://asciidoctor.org/) tool via: `asciidoctor -b pdf -r asciidoctor-pdf file1.zsh.adoc`. Install `Asciidoctor` with: `gem install asciidoctor-pdf --pre`. (Check out [Zplugin's Makefile](https://github.com/zdharma/zplugin/blob/master/zsdoc/Makefile).)
+ 1. Obtain **PDFs** with [Asciidoctor](http://asciidoctor.org/) tool via: `asciidoctor -b pdf -r asciidoctor-pdf file1.zsh.adoc`. Install `Asciidoctor` with: `gem install asciidoctor-pdf --pre`. (Check out [Zplugin's Makefile](https://github.com/zdharma-continuum/zinit/blob/master/zsdoc/Makefile).)
  1. HTML: `asciidoctor script.adoc`.
  1. Obtain manual pages with `Asciidoc` package via: `a2x -L --doctype manpage --format manpage file1.zsh.adoc` (`asciidoc` is a common package; its `a2x` command is little slow).
  1. Github supports `Asciidoc` documents and renders them automatically.
