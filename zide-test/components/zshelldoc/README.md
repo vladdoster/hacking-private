@@ -1,13 +1,14 @@
 [![paypal](https://img.shields.io/badge/-Donate-yellow.svg?longCache=true&style=for-the-badge)](https://www.paypal.me/ZdharmaInitiative)
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=D54B3S7C6HGME)
 [![patreon](https://img.shields.io/badge/-Patreon-orange.svg?longCache=true&style=for-the-badge)](https://www.patreon.com/psprint)
-<br/>New: You can request a feature when donating, even fancy or advanced ones get implemented this way. [There are
-reports](DONATIONS.md) about what is being done with the money received. Patreon members get rewards (currently:
-syntax-highlighting themes).
+<br/>New: You can request a feature when donating, even fancy or advanced ones get implemented this way.
+[There are reports](DONATIONS.md) about what is being done with the money received. Patreon members get rewards
+(currently: syntax-highlighting themes).
 
 # Zshelldoc - Doxygen For Shell Scripts
 
 Parses `Zsh` and `Bash` scripts, outputs `Asciidoc` document with:
+
 - list of functions, including autoload functions,
 - call trees of functions and script body,
 - comments for functions,
@@ -58,8 +59,8 @@ Change the default brace block-delimeters with --blocka, --blockb. Block body sh
 
 # Installation
 
-Clone and issue `make && make install`. Default install path-prefix is `/usr/local`, you
-can change it by setting `PREFIX` variable in `make` invocation:
+Clone and issue `make && make install`. Default install path-prefix is `/usr/local`, you can change it by setting
+`PREFIX` variable in `make` invocation:
 
 ```SystemVerilog
 % make install PREFIX=~/opt/local
@@ -87,19 +88,17 @@ cp zsd.config ~/opt/local/share/zshelldoc
             └── zsd.config
 ```
 
-Other available `make` variables are: `INSTALL` (to customize install command),
-`BIN_DIR`, `SHARE_DIR`, `DOC_DIR`.
+Other available `make` variables are: `INSTALL` (to customize install command), `BIN_DIR`, `SHARE_DIR`, `DOC_DIR`.
 
 # Examples
 
-`Zshelldoc` highly motivates to document code, my other project `Zplugin` gained from this.
-Also, `Zplugin` documentation demonstrates rich cross-file invocations.
+`Zshelldoc` highly motivates to document code, my other project `Zplugin` gained from this. Also, `Zplugin`
+documentation demonstrates rich cross-file invocations.
 [Check out Zplugin's code documentation](https://github.com/zdharma-continuum/zinit/tree/master/zsdoc).
 
 For other, in-place examples see:
 [example 1](https://github.com/zdharma/zshelldoc/blob/master/examples/zsh-syntax-highlighting.zsh.adoc),
-[example 2](https://github.com/zdharma/zshelldoc/blob/master/examples/zsh-autosuggestions.zsh.adoc)
-(also in **PDF**:
+[example 2](https://github.com/zdharma/zshelldoc/blob/master/examples/zsh-autosuggestions.zsh.adoc) (also in **PDF**:
 [example 1](https://raw.githubusercontent.com/zdharma/zshelldoc/master/examples/zsh-syntax-highlighting.zsh.pdf),
 [example 2](https://raw.githubusercontent.com/zdharma/zshelldoc/master/examples/zsh-autosuggestions.zsh.pdf)).
 
@@ -107,16 +106,26 @@ For other, in-place examples see:
 
 Few rules helping to use `Zshelldoc` in your project:
 
- 1. Write function comments before function. Empty lines between comment and function are allowed.
- 1. If you use special comments, e.g. `vim` (or `emacs-origami`) **folds**, you can ignore these lines with `--cignore` (see [Usage](https://github.com/zdharma/zshelldoc#usage)).
- 1. If it's possible to avoid `eval`, then do that – `Zshelldoc` will analyze more code.
- 1. Currently, functions defined in functions are ignored, but this will change shortly.
- 1. I've greatly optimized new `Zsh` version (`5.4.2`) for data processing – `Zshelldoc` parses long sources very fast starting from that `Zsh` version.
- 1. If you have multiple `Zsh` versions installed, then (for example) set `zsh_control_bin="/usr/local/bin/zsh-5.4.2"` in `/usr/local/share/zshelldoc/zsd.config`.
- 1. Be aware that to convert a group of scripts, you simply need `zsd file1.zsh file2.zsh ...` – cross-file function invocations will work automatically, and multiple `*.adoc` files will be created.
- 1. Create `Makefile` with `doc` target, that does `rm -rf zsdoc/data; zsd -v file1.zsh ...`. Documentation will land in `zsdoc` directory.
- 1. Directory `zsdoc/data` holds meta-data used to create `asciidoc` documents (`*.adoc` files). You can remove it or analyze it yourself.
- 1. Obtain **PDFs** with [Asciidoctor](http://asciidoctor.org/) tool via: `asciidoctor -b pdf -r asciidoctor-pdf file1.zsh.adoc`. Install `Asciidoctor` with: `gem install asciidoctor-pdf --pre`. (Check out [Zplugin's Makefile](https://github.com/zdharma-continuum/zinit/blob/master/zsdoc/Makefile).)
- 1. HTML: `asciidoctor script.adoc`.
- 1. Obtain manual pages with `Asciidoc` package via: `a2x -L --doctype manpage --format manpage file1.zsh.adoc` (`asciidoc` is a common package; its `a2x` command is little slow).
- 1. Github supports `Asciidoc` documents and renders them automatically.
+1. Write function comments before function. Empty lines between comment and function are allowed.
+1. If you use special comments, e.g. `vim` (or `emacs-origami`) **folds**, you can ignore these lines with `--cignore`
+   (see [Usage](https://github.com/zdharma/zshelldoc#usage)).
+1. If it's possible to avoid `eval`, then do that – `Zshelldoc` will analyze more code.
+1. Currently, functions defined in functions are ignored, but this will change shortly.
+1. I've greatly optimized new `Zsh` version (`5.4.2`) for data processing – `Zshelldoc` parses long sources very fast
+   starting from that `Zsh` version.
+1. If you have multiple `Zsh` versions installed, then (for example) set `zsh_control_bin="/usr/local/bin/zsh-5.4.2"` in
+   `/usr/local/share/zshelldoc/zsd.config`.
+1. Be aware that to convert a group of scripts, you simply need `zsd file1.zsh file2.zsh ...` – cross-file function
+   invocations will work automatically, and multiple `*.adoc` files will be created.
+1. Create `Makefile` with `doc` target, that does `rm -rf zsdoc/data; zsd -v file1.zsh ...`. Documentation will land in
+   `zsdoc` directory.
+1. Directory `zsdoc/data` holds meta-data used to create `asciidoc` documents (`*.adoc` files). You can remove it or
+   analyze it yourself.
+1. Obtain **PDFs** with [Asciidoctor](http://asciidoctor.org/) tool via:
+   `asciidoctor -b pdf -r asciidoctor-pdf file1.zsh.adoc`. Install `Asciidoctor` with:
+   `gem install asciidoctor-pdf --pre`. (Check out
+   [Zplugin's Makefile](https://github.com/zdharma-continuum/zinit/blob/master/zsdoc/Makefile).)
+1. HTML: `asciidoctor script.adoc`.
+1. Obtain manual pages with `Asciidoc` package via: `a2x -L --doctype manpage --format manpage file1.zsh.adoc`
+   (`asciidoc` is a common package; its `a2x` command is little slow).
+1. Github supports `Asciidoc` documents and renders them automatically.

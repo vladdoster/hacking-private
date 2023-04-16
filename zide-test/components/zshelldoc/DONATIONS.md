@@ -1,6 +1,8 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+**Table of Contents** *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [2018-08-14, received $30](#2018-08-14-received-30)
 - [2018-08-03, received $8](#2018-08-03-received-8)
@@ -15,25 +17,23 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-Below are reports about what is being done with donations, i.e. which commits
-are created thanks to them, which new features are added, etc. From the money
-I receive I buy myself coffee and organize the time to work on the requested
+Below are reports about what is being done with donations, i.e. which commits are created thanks to them, which new
+features are added, etc. From the money I receive I buy myself coffee and organize the time to work on the requested
 features, sometimes many days in a row.
 
 ## 2018-08-14, received $30
 
- * **Project**: **[Zplugin](https://github.com/zdharma-continuum/zinit)**
- * **Goal**: Create a binary Zsh module with one Zplugin optimization and optionally some
-   other features.
- * **Status**: The job is done.
+- **Project**: **[Zplugin](https://github.com/zdharma-continuum/zinit)**
+- **Goal**: Create a binary Zsh module with one Zplugin optimization and optionally some other features.
+- **Status**: The job is done.
 
-Thanks to this donation I have finally started to code **[binary Zplugin module](
-https://github.com/zdharma-continuum/zinit#quick-start-module-only)**, which is a big step onward
-in evolution of Zplugin. I've implemented and published the module with 3 complete
-features: 1) `load` optimization, 2) autocompilation of scripts, 3) profiling of script
-load times.
+Thanks to this donation I have finally started to code
+**[binary Zplugin module](https://github.com/zdharma-continuum/zinit#quick-start-module-only)**, which is a big step
+onward in evolution of Zplugin. I've implemented and published the module with 3 complete features: 1) `load`
+optimization, 2) autocompilation of scripts, 3) profiling of script load times.
 
 Commit list:
+
 ```
 2018-08-22 7b96fad doc: mod-install.sh
 2018-08-22 ba1ba64 module: Update zpmod usage text
@@ -58,12 +58,12 @@ Commit list:
 
 ## 2018-08-03, received $8
 
- * **Project**: **[zdharma/history-search-multi-word](https://github.com/zdharma/history-search-multi-word)**
- * **Goal**: Allow calling `zle reset-prompt` (Zshell feature).
- * **Status**: The job is done.
+- **Project**: **[zdharma/history-search-multi-word](https://github.com/zdharma/history-search-multi-word)**
+- **Goal**: Allow calling `zle reset-prompt` (Zshell feature).
+- **Status**: The job is done.
 
-A user wanted to be able to call `reset-prompt` Zshell widget without disturbing my project
-`history-search-multi-word`. I've implemented the necessary changes to HSMW.
+A user wanted to be able to call `reset-prompt` Zshell widget without disturbing my project `history-search-multi-word`.
+I've implemented the necessary changes to HSMW.
 
 Commit list:
 
@@ -75,12 +75,12 @@ Commit list:
 
 ## 2018-08-02, received $3 from Patreon
 
- * **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
- * **Goal**: No goal set up.
- * **Status**: Bug-fixing work.
+- **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
+- **Goal**: No goal set up.
+- **Status**: Bug-fixing work.
 
-I did bug-fixing run on `fast-syntax-highlighting`, spotted many small and sometimes important things to
-improve. Did one bigger thing – added global-aliases functionality.
+I did bug-fixing run on `fast-syntax-highlighting`, spotted many small and sometimes important things to improve. Did
+one bigger thing – added global-aliases functionality.
 
 Commit list:
 
@@ -107,13 +107,13 @@ Commit list:
 
 ## 2018-07-31, received $7
 
- * **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
- * **Goal**: Implement ideal brackets highlighting.
- * **Status**: The job is done.
+- **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
+- **Goal**: Implement ideal brackets highlighting.
+- **Status**: The job is done.
 
-When a source code is edited e.g. in `Notepad++` or some IDE, then most often brackets are somehow matched to
-each other, so that the programmer can detect mistakes. `Fast-syntax-highlighting` too gained that feature. It
-was done in such a way that FSH cannot make any mistake, colors will perfectly match brackets to each other.
+When a source code is edited e.g. in `Notepad++` or some IDE, then most often brackets are somehow matched to each
+other, so that the programmer can detect mistakes. `Fast-syntax-highlighting` too gained that feature. It was done in
+such a way that FSH cannot make any mistake, colors will perfectly match brackets to each other.
 
 Commit list:
 
@@ -136,15 +136,15 @@ Commit list:
 
 ## 2018-07-28, received $2
 
- * **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
- * **Goal**: Distinguish file and directory when highlighting
- * **Status**: The job is done.
+- **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
+- **Goal**: Distinguish file and directory when highlighting
+- **Status**: The job is done.
 
-A user requested that when `fast-syntax-highlighting` colorizes the command line it should use different
-styles (e.g. colors) for token that's a *file* and that's a *directory*. It was a reasonable idea and I've
-implemented it.
+A user requested that when `fast-syntax-highlighting` colorizes the command line it should use different styles (e.g.
+colors) for token that's a *file* and that's a *directory*. It was a reasonable idea and I've implemented it.
 
 Commit list:
+
 ```
 2018-07-28 7f48e04 themes: Extend all themes with new style `path-to-dir'
 2018-07-28 c7c6a91 fast-theme: Support for new style `path-to-dir'
@@ -153,13 +153,13 @@ Commit list:
 
 ## 2018-07-25, received $3
 
- * **Project**: **[zdharma/zshelldoc](https://github.com/zdharma/zshelldoc)**
- * **Goal**: Implement documenting of used environment variables.
- * **Status**: The job is done.
+- **Project**: **[zdharma/zshelldoc](https://github.com/zdharma/zshelldoc)**
+- **Goal**: Implement documenting of used environment variables.
+- **Status**: The job is done.
 
-Zshelldoc generates code-documentation like Doxygen or Javadoc, etc. User requested a
-new feature: the generated docs should enumerate environment variables used and/or
-exported by every function. Everything went fine and this feature has been implemented.
+Zshelldoc generates code-documentation like Doxygen or Javadoc, etc. User requested a new feature: the generated docs
+should enumerate environment variables used and/or exported by every function. Everything went fine and this feature has
+been implemented.
 
 Commit list:
 
@@ -177,31 +177,33 @@ Commit list:
 
 ## 2018-07-20, received $3
 
- * **Project**: **[zdharma/zshelldoc](https://github.com/zdharma/zshelldoc)**
- * **Goal**: Implement stripping of leading `#` char from functions' descriptions.
- * **Status**: The job is done.
+- **Project**: **[zdharma/zshelldoc](https://github.com/zdharma/zshelldoc)**
+- **Goal**: Implement stripping of leading `#` char from functions' descriptions.
+- **Status**: The job is done.
 
-A user didn't like that functions' descriptions in the JavaDoc-like document (generated with Zshelldoc) all
-contain a leading `#` character. I've added stripping of this character (it is there in the processed source
-code) controlled by a new Zshelldoc option.
+A user didn't like that functions' descriptions in the JavaDoc-like document (generated with Zshelldoc) all contain a
+leading `#` character. I've added stripping of this character (it is there in the processed source code) controlled by a
+new Zshelldoc option.
 
 Commit list:
+
 ```
 2018-07-20 172c220 zsd,*adoc,README: Option --scomm to strip "#" from function descriptions
 ```
 
 ## 2018-06-17, received ~$155 (200 CAD)
 
- * **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
- * **Goal**: No goal set up.
- * **Status**: Done intense research.
+- **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
+- **Goal**: No goal set up.
+- **Status**: Done intense research.
 
-I've created 2 new branches: `Hue-optimization` (33 commits) and `Tidbits-feature` (22 commits). Those were
-branches with architectural changes and extraordinary features. The changes yielded to be too slow, and I had
-to withdraw the merge. Below are fixing and optimizing commits (i.e. the valuable ones) that I've restored
-from the two branches into master.
+I've created 2 new branches: `Hue-optimization` (33 commits) and `Tidbits-feature` (22 commits). Those were branches
+with architectural changes and extraordinary features. The changes yielded to be too slow, and I had to withdraw the
+merge. Below are fixing and optimizing commits (i.e. the valuable ones) that I've restored from the two branches into
+master.
 
 Commit list:
+
 ```
 2018-07-21 dab6576 *-highlight: Merge-restore: remove old comments
 2018-07-21 637521f *-highlight: Merge-restore: a threshold on # of zle .redisplay calls
@@ -220,16 +222,16 @@ Commit list:
 
 ## 2018-06-10, received $10
 
- * **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
- * **Goal**: No goal set up.
- * **Status**: Done intense experimenting.
+- **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
+- **Goal**: No goal set up.
+- **Status**: Done intense experimenting.
 
-I was working on *chromas* – command-specific colorization. I've added `which` and
-`printf` colorization, then added asynchronous path checking (needed on slow network
-drives), then coded experimental `ZPath` feature for chromas, but it couldn't be optimized
-so I had to resign of it.
+I was working on *chromas* – command-specific colorization. I've added `which` and `printf` colorization, then added
+asynchronous path checking (needed on slow network drives), then coded experimental `ZPath` feature for chromas, but it
+couldn't be optimized so I had to resign of it.
 
 Commit list:
+
 ```
 2018-06-12 c4ed1c6 Optimization – the same idea as in previous patch, better method
 2018-06-12 c36feef Optimization – a) don't index large buffer, b) with negative index
@@ -248,16 +250,15 @@ Commit list:
 
 ## 2018-05-25, received $50
 
- * **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
- * **Goal**: No goal set up.
- * **Status**: New ideas and features.
+- **Project**: **[zdharma/fast-syntax-highlighting](https://github.com/zdharma/fast-syntax-highlighting)**
+- **Goal**: No goal set up.
+- **Status**: New ideas and features.
 
-I was working from May, 25 to June, 9 and came up with key ideas and implemented them. First were *themes*
-that were very special because they were using `INI` files instead of some Zsh-script format. Creating themes
-for `fast-syntax-highlighting` is thus easy and fun. Then I came up with *chromas*, command-specific
-highlighting, which redefine how syntax-highlighting for Zshell works – detailed highlighting for e.g. Git
-became possible, the user is informed about e.g. a mistake even before running a command. Overall 178 commits
-in 16 days.
+I was working from May, 25 to June, 9 and came up with key ideas and implemented them. First were *themes* that were
+very special because they were using `INI` files instead of some Zsh-script format. Creating themes for
+`fast-syntax-highlighting` is thus easy and fun. Then I came up with *chromas*, command-specific highlighting, which
+redefine how syntax-highlighting for Zshell works – detailed highlighting for e.g. Git became possible, the user is
+informed about e.g. a mistake even before running a command. Overall 178 commits in 16 days.
 
 ```
 2018-06-09 3f72e6c -git.ch: `revert' works almost like `checkout', attach `revert' there
